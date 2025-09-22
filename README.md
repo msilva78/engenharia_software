@@ -1,4 +1,4 @@
-# engenharia_software
+# Engeharia de Software
 Aulas de Engenharia de Software.
 Sobre o Repositório
 Este repositório foi criado para servir como material de apoio para a disciplina de Engenharia de Software. Aqui você encontrará códigos-fonte, exemplos práticos, slides de aula e materiais de leitura complementares para cada tópico abordado em sala de aula.
