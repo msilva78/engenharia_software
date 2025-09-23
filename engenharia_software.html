@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Engenharia de Software</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #FFB642;
+            --background-light: #f9f9fb;
+            --background-dark: #2c3e50;
+            --text-dark: #2A364F;
+            --text-light: #ffffff;
+            --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-family: 'Lato', sans-serif;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(to right, var(--primary-color), #6aa8e8);
+            border-radius: 15px;
+            color: white;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+        }
+
+        .portal-description {
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: white;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: var(--card-shadow);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+        }
+
+        .card-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-description {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .portal-description {
+                font-size: 1.1rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+            
+            .tab {
+                border-radius: 10px;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Portal de Engenharia de Software</h1>
+            <p class="subtitle">Prof. Marcelo Silva | Análise de Desenvolvimento de Sistemas</p>
+        </header>
+        
+        <div class="portal-description">
+            <p>Explore as 10 aulas do curso de Engenharia de Software e teste seus conhecimentos com os exercícios de fixação. Cada aula aborda um tópico fundamental para a formação de um profissional completo na área.</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="aulas">Aulas</div>
+            <div class="tab" data-tab="exercicios">Exercícios</div>
+        </div>
+        
+        <div class="content-section active" id="aulas-section">
+            <div class="grid">
+                <!-- Aula 1 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">01</div>
+                        <div class="card-title">Engenharia de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Introdução aos conceitos básicos da Engenharia de Software, ciclo de vida do desenvolvimento e importância da disciplina.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/01_engenharia_software.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 2 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">02</div>
+                        <div class="card-title">Engenharia de Requisitos</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Estudo dos processos de elicitação, análise, especificação e validação de requisitos de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/02_engenharia_requisitos.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 3 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">03</div>
+                        <div class="card-title">Modelagem e Arquitetura</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Princípios de modelagem de software, padrões arquiteturais e técnicas de design de sistemas.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/03_modelagem_arquitetura.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 4 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">04</div>
+                        <div class="card-title">Teste de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Estratégias, técnicas e ferramentas para teste de software, garantindo qualidade e confiabilidade.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/04_teste_software.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 5 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">05</div>
+                        <div class="card-title">Manutenção de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Processos e técnicas para manutenção e evolução de sistemas de software existentes.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/05_manutencao_software.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 6 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">06</div>
+                        <div class="card-title">Gestão de Projeto</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Planejamento, estimativa, acompanhamento e controle de projetos de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/06_gestao_projeto.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 7 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">07</div>
+                        <div class="card-title">Qualidade de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Métricas, padrões e processos para garantir a qualidade em produtos de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/07_qualidade_software.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 8 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">08</div>
+                        <div class="card-title">Processos Ágeis</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Metodologias ágeis como Scrum, Kanban e XP para desenvolvimento iterativo e incremental.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/08_processos_ageis.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 9 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">09</div>
+                        <div class="card-title">IA na Engenharia de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Aplicações de inteligência artificial no desenvolvimento, testes e manutenção de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/09_ia_engenharia.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aula 10 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">10</div>
+                        <div class="card-title">Futuro da Engenharia de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Tendências emergentes e o futuro da profissão de engenheiro de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_aulas/10_futuro_engenharia.html" class="btn btn-primary">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="exercicios-section">
+            <div class="grid">
+                <!-- Exercício 1 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">01</div>
+                        <div class="card-title">Exercícios - Engenharia de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Teste seus conhecimentos sobre os conceitos fundamentais da Engenharia de Software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec01.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 2 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">02</div>
+                        <div class="card-title">Exercícios - Engenharia de Requisitos</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Avalie seu entendimento sobre processos de elicitação e especificação de requisitos.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec02.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 3 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">03</div>
+                        <div class="card-title">Exercícios - Modelagem e Arquitetura</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Pratique conceitos de modelagem de software e padrões arquiteturais.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec03.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 4 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">04</div>
+                        <div class="card-title">Exercícios - Teste de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Teste seus conhecimentos sobre estratégias e técnicas de teste de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec04.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 5 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">05</div>
+                        <div class="card-title">Exercícios - Manutenção de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Avalie seu domínio sobre processos de manutenção e evolução de sistemas.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec05.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 6 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">06</div>
+                        <div class="card-title">Exercícios - Gestão de Projeto</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Pratique conceitos de planejamento e controle de projetos de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec06.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 7 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">07</div>
+                        <div class="card-title">Exercícios - Qualidade de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Teste seus conhecimentos sobre métricas e processos de qualidade de software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec07.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 8 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">08</div>
+                        <div class="card-title">Exercícios - Processos Ágeis</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Avalie seu entendimento sobre metodologias ágeis de desenvolvimento.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec08.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 9 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">09</div>
+                        <div class="card-title">Exercícios - IA na Engenharia de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Teste seus conhecimentos sobre aplicações de IA na Engenharia de Software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec09.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exercício 10 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-number">10</div>
+                        <div class="card-title">Exercícios - Futuro da Engenharia de Software</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>Avalie sua compreensão sobre as tendências futuras da Engenharia de Software.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="es_exercicios/es_exec10.html" class="btn btn-secondary">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Portal de Engenharia de Software - Prof. Marcelo Silva</p>
+            <p>Análise de Desenvolvimento de Sistemas</p>
+        </footer>
+    </div>
+
+    <script>
+        // Sistema de abas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.content-section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-tab');
+                    
+                    // Atualizar abas ativas
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Atualizar seções ativas
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === `${target}-section`) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Verificar se há um parâmetro na URL para abrir uma aba específica
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            if (tabParam && (tabParam === 'aulas' || tabParam === 'exercicios')) {
+                const tabToActivate = document.querySelector(`.tab[data-tab="${tabParam}"]`);
+                if (tabToActivate) {
+                    tabToActivate.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
