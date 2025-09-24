@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício de Fixação - O Futuro da Engenharia de Software</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #2c3e50;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom right, #f5f7fa, #e4e8ee);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .question-number {
+            color: #3498db;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .option input {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .option label {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-submit {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-reset {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .results {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .score {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+        }
+        
+        .feedback-item {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .correct {
+            background-color: #d5f5e3;
+            border-left: 5px solid #2ecc71;
+        }
+        
+        .incorrect {
+            background-color: #fadbd8;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .feedback-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-answer {
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #1558b0;
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .quiz-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Exercício de Fixação</h1>
+            <p class="subtitle">O Futuro da Engenharia de Software - Aula 10</p>
+        </div>
+        
+        <div class="quiz-info">
+            <div><i class="fas fa-list-ol"></i> <strong>10 questões</strong></div>
+            <div><i class="fas fa-clock"></i> <strong>Tempo estimado: 20 minutos</strong></div>
+            <div><i class="fas fa-graduation-cap"></i> <strong>Valor: 10 pontos</strong></div>
+        </div>
+        
+        <form id="quiz-form">
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 1</div>
+                <div class="question-text">Qual é uma das principais tendências da IA Generativa para o período de 2028-2030, segundo a aula?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1a" value="a">
+                        <label for="q1a">A) Sistemas de software auto-evolutivos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1b" value="b">
+                        <label for="q1b">B) Eliminação completa da necessidade de desenvolvedores</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1c" value="c">
+                        <label for="q1c">C) Programação apenas por interface visual</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1d" value="d">
+                        <label for="q1d">D) Computadores que programam sem qualquer intervenção humana</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 2</div>
+                <div class="question-text">Como a computação quântica impactará o desenvolvimento de software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2a" value="a">
+                        <label for="q2a">A) Exigirá novos paradigmas de programação e mudanças na arquitetura de software</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2b" value="b">
+                        <label for="q2b">B) Tornará obsoletas todas as linguagens de programação atuais</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2c" value="c">
+                        <label for="q2c">C) Eliminará a necessidade de testes de software</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2d" value="d">
+                        <label for="q2d">D) Permitirá que computadores programem sozinhos sem supervisão</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 3</div>
+                <div class="question-text">O que caracteriza o "Software como Serviço Evolutivo"?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3a" value="a">
+                        <label for="q3a">A) Sistemas que aprendem com o uso e se atualizam automaticamente</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3b" value="b">
+                        <label for="q3b">B) Software que funciona apenas com assinatura mensal</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3c" value="c">
+                        <label for="q3c">C) Programas que evoluem sem qualquer intervenção humana</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3d" value="d">
+                        <label for="q3d">D) Aplicativos que se autodestroem após o uso</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 4</div>
+                <div class="question-text">Qual é um dos principais desafios éticos mencionados para o futuro da Engenharia de Software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4a" value="a">
+                        <label for="q4a">A) Responsabilidade por sistemas autônomos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4b" value="b">
+                        <label for="q4b">B) Escassez de recursos computacionais</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4c" value="c">
+                        <label for="q4c">C) Limitação da velocidade da internet</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4d" value="d">
+                        <label for="q4d">D) Dificuldade em aprender novas linguagens de programação</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 5</div>
+                <div class="question-text">Qual das seguintes é uma habilidade técnica emergente mencionada como importante para o futuro?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5a" value="a">
+                        <label for="q5a">A) Prompt engineering e orquestração de IA</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5b" value="b">
+                        <label for="q5b">B) Domínio de todas as linguagens de programação existentes</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5c" value="c">
+                        <label for="q5c">C) Capacidade de memorizar códigos complexos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5d" value="d">
+                        <label for="q5d">D) Habilidade de programar sem usar teclado</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 6</div>
+                <div class="question-text">Qual papel emergente foi mencionado como tendência para o engenheiro de software em 2030?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6a" value="a">
+                        <label for="q6a">A) Arquiteto de Sistemas Inteligentes</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6b" value="b">
+                        <label for="q6b">B) Programador de algoritmos quânticos puros</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6c" value="c">
+                        <label for="q6c">C) Especialista em uma única linguagem de programação</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6d" value="d">
+                        <label for="q6d">D) Operador de máquinas de desenvolvimento automático</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 7</div>
+                <div class="question-text">Qual é uma característica do Software como Serviço Evolutivo?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7a" value="a">
+                        <label for="q7a">A) Personalização em tempo real para cada usuário</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7b" value="b">
+                        <label for="q7b">B) Software que funciona apenas uma vez</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7c" value="c">
+                        <label for="q7c">C) Programas que não precisam de manutenção</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7d" value="d">
+                        <label for="q7d">D) Aplicativos que se autodestroem após o uso</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 8</div>
+                <div class="question-text">Qual é um dos novos paradigmas regulatórios mencionados para o futuro?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8a" value="a">
+                        <label for="q8a">A) Certificação de sistemas de IA</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8b" value="b">
+                        <label for="q8b">B) Proibição de sistemas autônomos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8c" value="c">
+                        <label for="q8c">C) Limitação do número de linhas de código por projeto</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8d" value="d">
+                        <label for="q8d">D) Exigência de uso apenas de software open-source</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 9</div>
+                <div class="question-text">Qual habilidade humana foi destacada como essencial para o futuro engenheiro de software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9a" value="a">
+                        <label for="q9a">A) Pensamento crítico e criatividade</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9b" value="b">
+                        <label for="q9b">B) Capacidade de trabalhar isoladamente</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9c" value="c">
+                        <label for="q9c">C) Memorização de padrões de código</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9d" value="d">
+                        <label for="q9d">D) Velocidade de digitação</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 10</div>
+                <div class="question-text">Qual foi o princípio final destacado para uma carreira de sucesso na Engenharia de Software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10a" value="a">
+                        <label for="q10a">A) Aprender a aprender - a única constante é a mudança</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10b" value="b">
+                        <label for="q10b">B) Especializar-se em uma única tecnologia</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10c" value="c">
+                        <label for="q10c">C) Evitar trabalhar com tecnologias emergentes</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10d" value="d">
+                        <label for="q10d">D) Focar apenas em projetos de grande porte</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="submit-btn" class="btn btn-submit"><i class="fas fa-paper-plane"></i> Enviar Respostas</button>
+                <button type="reset" class="btn btn-reset"><i class="fas fa-redo"></i> Limpar Tudo</button>
+            </div>
+        </form>
+        
+        <div id="results" class="results">
+            <div class="score">Sua pontuação: <span id="score-value" class="score-value">0</span> de 10</div>
+            
+            <div class="feedback">
+                <div id="feedback-container"></div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="retry-btn" class="btn btn-submit"><i class="fas fa-sync-alt"></i> Tentar Novamente</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="print-btn" id="print-btn">
+        <i class="fas fa-print"></i>
+    </div>
+
+    <script>
+        // Respostas corretas
+        const correctAnswers = {
+            q1: 'a',
+            q2: 'a',
+            q3: 'a',
+            q4: 'a',
+            q5: 'a',
+            q6: 'a',
+            q7: 'a',
+            q8: 'a',
+            q9: 'a',
+            q10: 'a'
+        };
+        
+        // Comentários para cada questão
+        const questionComments = {
+            q1: "Para o período de 2028-2030, espera-se o desenvolvimento de sistemas de software auto-evolutivos, onde a IA atuará como co-desenvolvedora, mas ainda com supervisão humana.",
+            q2: "A computação quântica exigirá novos paradigmas de programação, algoritmos híbridos e mudanças na arquitetura de software, mas não tornará obsoletas as linguagens atuais.",
+            q3: "O Software como Serviço Evolutivo caracteriza-se por sistemas que aprendem com o uso contínuo, atualizam-se automaticamente e personalizam-se em tempo real para cada usuário.",
+            q4: "A responsabilidade por sistemas autônomos é um dos principais desafios éticos, envolvendo questões sobre quem é responsável quando sistemas inteligentes tomam decisões.",
+            q5: "O prompt engineering (engenharia de prompts) e a orquestração de IA são habilidades técnicas emergentes essenciais para trabalhar eficientemente com sistemas de IA generativa.",
+            q6: "O Arquiteto de Sistemas Inteligentes é um dos papéis emergentes, focando no design de sistemas que integram IA de forma eficaz e ética.",
+            q7: "A personalização em tempo real para cada usuário é uma característica fundamental do Software como Serviço Evolutivo, permitindo experiências altamente customizadas.",
+            q8: "A certificação de sistemas de IA é um novo paradigma regulatório necessário para garantir que sistemas autônomos operem de forma segura e ética.",
+            q9: "O pensamento crítico e a criatividade são habilidades humanas essenciais que diferenciam os profissionais de IA e são cada vez mais valorizadas.",
+            q10: "'Aprender a aprender' é o princípio fundamental, pois a única constante na tecnologia é a mudança, exigindo adaptabilidade contínua dos profissionais."
+        };
+        
+        // Elementos DOM
+        const quizForm = document.getElementById('quiz-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const resultsDiv = document.getElementById('results');
+        const scoreValue = document.getElementById('score-value');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const printBtn = document.getElementById('print-btn');
+        
+        // Event Listeners
+        submitBtn.addEventListener('click', calculateScore);
+        retryBtn.addEventListener('click', resetQuiz);
+        printBtn.addEventListener('click', () => window.print());
+        
+        // Calcular pontuação
+        function calculateScore() {
+            let score = 0;
+            const formData = new FormData(quizForm);
+            const userAnswers = {};
+            
+            // Coletar respostas do usuário
+            for (let pair of formData.entries()) {
+                userAnswers[pair[0]] = pair[1];
+            }
+            
+            // Verificar se todas as questões foram respondidas
+            if (Object.keys(userAnswers).length < 10) {
+                alert('Por favor, responda todas as questões antes de enviar.');
+                return;
+            }
+            
+            // Calcular pontuação e gerar feedback
+            feedbackContainer.innerHTML = '';
+            
+            for (let i = 1; i <= 10; i++) {
+                const questionKey = 'q' + i;
+                const userAnswer = userAnswers[questionKey];
+                const correctAnswer = correctAnswers[questionKey];
+                
+                const feedbackItem = document.createElement('div');
+                feedbackItem.classList.add('feedback-item');
+                
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    feedbackItem.classList.add('correct');
+                    feedbackItem.innerHTML = `
+                        <div class="feedback-question">Questão ${i} - Correta!</div>
+                        <div>Sua resposta: ${userAnswer.toUpperCase()})</div>
+                        <div class="feedback-answer">${questionComments[questionKey]}</div>
+                    `;
+                } else {
+                    feedbackItem.classList.add('incorrect');
+                    feedbackItem.innerHTML = `
+                        <div class="feedback-question">Questão ${i} - Incorreta</div>
+                        <div>Sua resposta: ${userAnswer.toUpperCase()})</div>
+                        <div>Resposta correta: ${correctAnswer.toUpperCase()})</div>
+                        <div class="feedback-answer">${questionComments[questionKey]}</div>
+                    `;
+                }
+                
+                feedbackContainer.appendChild(feedbackItem);
+            }
+            
+            // Exibir pontuação
+            scoreValue.textContent = score;
+            resultsDiv.style.display = 'block';
+            
+            // Rolar para os resultados
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Reiniciar quiz
+        function resetQuiz() {
+            quizForm.reset();
+            resultsDiv.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

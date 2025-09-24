@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engenharia de Software - Aula 4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #FFB642;
+            --background-light: #f9f9fb;
+            --background-dark: #2c3e50;
+            --text-dark: #2A364F;
+            --text-light: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.6rem;
+        }
+
+        .slides-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 5vh 5vw;
+            background: linear-gradient(to bottom right, #f9f9fb, #eceff1);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 100;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 3vh;
+            padding-bottom: 1.5vh;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .slide-title {
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .slide-subtitle {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-content-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5vw;
+            align-items: center;
+        }
+
+        .slide-content-centered {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-footer {
+            text-align: center;
+            padding-top: 2vh;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .slide-nav {
+            position: fixed;
+            bottom: 3vh;
+            right: 3vw;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 3vh;
+            left: 3vw;
+            z-index: 1000;
+            background-color: rgba(44, 62, 80, 0.8);
+            color: var(--text-light);
+            padding: 1.5vh 2vw;
+            border-radius: 25px;
+            font-size: 1.2rem;
+        }
+
+        .content-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 3vh 3vw;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .content-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 2vh;
+            font-size: 2rem;
+        }
+
+        .content-card ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 1.5rem;
+        }
+
+        .content-card li {
+            margin-bottom: 1.5vh;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .content-card li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.5em;
+            line-height: 0.8;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4vw;
+            text-align: left;
+        }
+
+        .highlight {
+            background-color: var(--secondary-color);
+            padding: 0.5vh 1vw;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .exercise-box {
+            background-color: #e3f2fd;
+            border-left: 8px solid var(--primary-color);
+            padding: 3vh 3vw;
+            border-radius: 12px;
+            margin: 2vh 0;
+        }
+
+        .exercise-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1vh;
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            font-size: 2rem;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 11vh;
+            right: 3vw;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #1558b0;
+            transform: scale(1.1);
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            z-index: 1001;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+        }
+
+        .step {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 5vh;
+            height: 5vh;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .step-content {
+            flex: 1;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+            margin: 3vh 0;
+            text-align: left;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .timeline-date {
+            min-width: 10vw;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-bottom: 3vh;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 2vw;
+            position: relative;
+        }
+
+        .timeline-content:before {
+            content: "";
+            width: 1.5vh;
+            height: 1.5vh;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            left: -0.75vh;
+            top: 0;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                overflow: visible !important;
+            }
+
+            .slides-container {
+                overflow: visible !important;
+                height: auto !important;
+                width: auto !important;
+            }
+
+            .slide {
+                position: relative !important;
+                page-break-after: always;
+                opacity: 1 !important;
+                background: white !important;
+                height: 100vh;
+                width: 100vw;
+                padding: 20mm;
+            }
+
+            .slide:last-of-type {
+                page-break-after: avoid;
+            }
+
+            .slide-nav,
+            .slide-counter,
+            .print-btn,
+            .progress-bar-container {
+                display: none !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-grid,
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .slide-subtitle {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slides-container">
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">Implementação e Teste de Software</h1>
+                <p class="slide-subtitle">4ª Aula - Qualidade, Boas Práticas e Estratégias de Teste</p>
+            </div>
+            <div class="slide-content slide-content-centered">
+                <div style="font-size: 8rem; color: var(--primary-color); margin: 3vh 0;">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <h2 style="font-size: 3rem; margin-bottom: 2vh; color: var(--text-dark);">Garantindo a Qualidade do Código e do Produto Final</h2>
+                <p style="max-width: 80vw; margin: 0 auto 3vh; font-size: 1.8rem;">
+                    Conheça os princípios para escrever código robusto, escalável e testável.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 5vw; margin-top: 3vh; font-size: 1.8rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 4rem; color: var(--primary-color);"><i class="fas fa-code-branch"></i></div>
+                        <p>Implementação</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 4rem; color: var(--primary-color);"><i class="fas fa-check-circle"></i></div>
+                        <p>Testes</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 4rem; color: var(--primary-color);"><i class="fas fa-bug"></i></div>
+                        <p>Depuração</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Disciplina de Engenharia de Software | Professor: Marcelo Silva | 4ª Aula</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 1 - Implementação</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card" style="text-align: left;">
+                    <ul style="font-size: 2rem;">
+                        <li>Visão geral do processo de implementação</li>
+                        <li>Qualidade de código: legibilidade, manutenibilidade</li>
+                        <li>Padrões de projeto: o que são e por que usar?</li>
+                        <li>Ferramentas para codificação: IDEs, sistemas de controle de versão</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 2 - Teste</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card" style="text-align: left;">
+                    <ul style="font-size: 2rem;">
+                        <li>Conceitos básicos de teste de software</li>
+                        <li>Tipos de teste: unitário, integração, sistema e aceitação</li>
+                        <li>Teste manual vs. teste automatizado</li>
+                        <li>O papel do teste na garantia de qualidade</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Qualidade de Código</h1>
+                <p class="slide-subtitle">O que significa escrever um "bom" código?</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Características Chave</h3>
+                    <ul style="text-align: left;">
+                        <li><span class="highlight">Legibilidade:</span> Fácil de ler e entender.</li>
+                        <li><span class="highlight">Manutenibilidade:</span> Simples de modificar e corrigir.</li>
+                        <li><span class="highlight">Eficiência:</span> Consome menos recursos (memória, CPU).</li>
+                        <li><span class="highlight">Escalabilidade:</span> Suporta crescimento e novos recursos.</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Por que é Importante?</h3>
+                    <p style="font-size: 1.8rem;">Um código de alta qualidade é a base para um software que pode evoluir, ser corrigido rapidamente e ser mantido por uma equipe.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Boas Práticas de Programação</h1>
+                <p class="slide-subtitle">Diretrizes para um Código de Qualidade</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Recomendações</h3>
+                    <ul style="text-align: left;">
+                        <li>Use nomes de variáveis e funções descritivos.</li>
+                        <li>Adicione comentários para explicar lógicas complexas.</li>
+                        <li>Siga um padrão de codificação (style guide).</li>
+                        <li>Refatore o código regularmente.</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Padrões de Projeto</h3>
+                    <p style="font-size: 1.8rem;">Soluções reutilizáveis para problemas comuns no projeto de software, como o padrão Singleton ou Factory.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Teste de Software</h1>
+                <p class="slide-subtitle">A arte de encontrar bugs</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>O que é?</h3>
+                    <p style="font-size: 1.8rem;">O processo de execução de um sistema com a intenção de encontrar erros.</p>
+                    <ul style="text-align: left; font-size: 1.5rem;">
+                        <li>Garante que os requisitos foram atendidos.</li>
+                        <li>Identifica e reduz riscos de falhas.</li>
+                        <li>Aumenta a confiança no produto.</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Objetivos</h3>
+                    <ul style="text-align: left;">
+                        <li>Verificar se o software funciona como esperado.</li>
+                        <li>Garantir a qualidade e a conformidade.</li>
+                        <li>Fornecer informações sobre a qualidade do produto.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Tipos de Teste</h1>
+                <p class="slide-subtitle">A Pirâmide de Testes</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Teste Unitário</h3>
+                    <ul style="text-align: left;">
+                        <li><span class="highlight">O quê:</span> Componentes ou funções individuais.</li>
+                        <li><span class="highlight">Quem:</span> Desenvolvedor.</li>
+                        <li><span class="highlight">Vantagem:</span> Encontra bugs cedo, fácil de automatizar.</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Teste de Integração</h3>
+                    <ul style="text-align: left;">
+                        <li><span class="highlight">O quê:</span> Interações entre módulos.</li>
+                        <li><span class="highlight">Quem:</span> Desenvolvedores/QA.</li>
+                        <li><span class="highlight">Vantagem:</span> Garante a comunicação correta.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Tipos de Teste</h1>
+                <p class="slide-subtitle">Testando o Sistema Completo</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Teste de Sistema</h3>
+                    <ul style="text-align: left;">
+                        <li><span class="highlight">O quê:</span> O sistema como um todo.</li>
+                        <li><span class="highlight">Quem:</span> Equipe de QA.</li>
+                        <li><span class="highlight">Vantagem:</span> Simula o uso real.</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Teste de Aceitação</h3>
+                    <ul style="text-align: left;">
+                        <li><span class="highlight">O quê:</span> Se o sistema atende aos requisitos do cliente.</li>
+                        <li><span class="highlight">Quem:</span> Cliente/Usuário.</li>
+                        <li><span class="highlight">Vantagem:</span> Valida o produto com base nas necessidades.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Exercício - Teste de Software</p>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box">
+                    <div class="exercise-title">
+                        <i class="fas fa-tasks"></i>
+                        Cenário: Sistema de Cadastro de Usuários
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">Em grupos, identifique 2 cenários para cada tipo de teste (unitário, integração, sistema e aceitação) para um sistema simples de cadastro de usuários. Discuta quais ferramentas seriam usadas para automatizá-los.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 4</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Resumo e Próximos Passos</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card" style="text-align: left;">
+                    <h3>Principais Conceitos Abordados</h3>
+                    <ul style="font-size: 1.5rem;">
+                        <li>A importância de código de qualidade.</li>
+                        <li>A pirâmide de testes e seus tipos.</li>
+                        <li>Testes como parte da garantia de qualidade.</li>
+                    </ul>
+                </div>
+                <div class="content-card" style="text-align: left;">
+                    <h3>Próxima Aula</h3>
+                    <ul style="font-size: 1.5rem;">
+                        <li>Gerenciamento de Projetos e Metodologias Ágeis</li>
+                        <li>Scrum e Kanban</li>
+                        <li>Ferramentas de Gerenciamento</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Obrigado pela participação! | Engenharia de Software | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+    </div>
+    <div class="slide-nav">
+        <div class="nav-btn" id="prev-btn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <div class="nav-btn" id="next-btn">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+    </div>
+    <div class="print-btn" id="print-btn">
+        <i class="fas fa-print"></i>
+    </div>
+    <div class="slide-counter">Slide
+        <span id="current-slide">1</span> de
+        <span id="total-slides">10</span>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const printBtn = document.getElementById('print-btn');
+        const currentSlideEl = document.getElementById('current-slide');
+        const totalSlidesEl = document.getElementById('total-slides');
+        const progressBar = document.querySelector('.progress-bar');
+        let currentSlide = 0;
+
+        totalSlidesEl.textContent = slides.length;
+
+        function showSlide(index) {
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else if (index >= slides.length) {
+                currentSlide = 0;
+            } else {
+                currentSlide = index;
+            }
+            slides[currentSlide].classList.add('active');
+            currentSlideEl.textContent = currentSlide + 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            showSlide(currentSlide + 1);
+        });
+
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                showSlide(currentSlide - 1);
+            } else if (e.key === 'ArrowRight') {
+                showSlide(currentSlide + 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+
+</html>

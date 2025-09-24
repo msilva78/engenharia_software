@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício de Fixação - IA na Engenharia de Software</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #2c3e50;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom right, #f5f7fa, #e4e8ee);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #3498db;
+        }
+        
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .question-number {
+            color: #3498db;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .option input {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .option label {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-submit {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-reset {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .results {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .score {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+        }
+        
+        .feedback-item {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .correct {
+            background-color: #d5f5e3;
+            border-left: 5px solid #2ecc71;
+        }
+        
+        .incorrect {
+            background-color: #fadbd8;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .feedback-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-answer {
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #1558b0;
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .quiz-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Exercício de Fixação</h1>
+            <p class="subtitle">IA na Engenharia de Software - Aula 9</p>
+        </div>
+        
+        <div class="quiz-info">
+            <div><i class="fas fa-list-ol"></i> <strong>10 questões</strong></div>
+            <div><i class="fas fa-clock"></i> <strong>Tempo estimado: 20 minutos</strong></div>
+            <div><i class="fas fa-graduation-cap"></i> <strong>Valor: 10 pontos</strong></div>
+        </div>
+        
+        <form id="quiz-form">
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 1</div>
+                <div class="question-text">O que significa a sigla "LLM" no contexto de IA aplicada à Engenharia de Software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1a" value="a">
+                        <label for="q1a">A) Linguagem de Low Memory</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1b" value="b">
+                        <label for="q1b">B) Large Language Model</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1c" value="c">
+                        <label for="q1c">C) Logical Loop Module</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1d" value="d">
+                        <label for="q1d">D) Linear Learning Method</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 2</div>
+                <div class="question-text">Qual das seguintes NÃO é uma aplicação comum de IA na fase de testes de software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2a" value="a">
+                        <label for="q2a">A) Geração automática de casos de teste</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2b" value="b">
+                        <label for="q2b">B) Identificação de code smells</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2c" value="c">
+                        <label for="q2c">C) Otimização de suítes de teste</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2d" value="d">
+                        <label for="q2d">D) Análise de cobertura inteligente</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 3</div>
+                <div class="question-text">Qual ferramenta é conhecida por integrar-se ao VS Code e sugerir código em tempo real?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3a" value="a">
+                        <label for="q3a">A) ChatGPT</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3b" value="b">
+                        <label for="q3b">B) GitHub Copilot</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3c" value="c">
+                        <label for="q3c">C) JIRA</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3d" value="d">
+                        <label for="q3d">D) Selenium</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 4</div>
+                <div class="question-text">Qual das seguintes afirmações sobre IA na Engenharia de Software é VERDADEIRA?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4a" value="a">
+                        <label for="q4a">A) A IA pode ser utilizada para refatoração inteligente, sugerindo melhorias de código</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4b" value="b">
+                        <label for="q4b">B) A IA substitui completamente a necessidade de desenvolvedores humanos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4c" value="c">
+                        <label for="q4c">C) Ferramentas de IA sempre geram código perfeito sem necessidade de revisão</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4d" value="d">
+                        <label for="q4d">D) A IA não apresenta limitações na geração de código</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 5</div>
+                <div class="question-text">Qual é um dos principais desafios éticos relacionados ao uso de IA na Engenharia de Software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5a" value="a">
+                        <label for="q5a">A) Privacidade do código enviado para ferramentas baseadas em nuvem</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5b" value="b">
+                        <label for="q5b">B) A IA exige hardware muito caro para funcionar</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5c" value="c">
+                        <label for="q5c">C) As ferramentas de IA não são precisas o suficiente</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5d" value="d">
+                        <label for="q5d">D) A IA só funciona com linguagens de programação específicas</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 6</div>
+                <div class="question-text">Como a IA pode auxiliar na gestão de projetos de software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6a" value="a">
+                        <label for="q6a">A) Previsão de prazos e identificação de riscos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6b" value="b">
+                        <label for="q6b">B) Substituindo completamente o gerente de projetos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6c" value="c">
+                        <label for="q6c">C) Eliminando a necessidade de planejamento</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6d" value="d">
+                        <label for="q6d">D) Automatizando todas as decisões do projeto</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 7</div>
+                <div class="question-text">Qual é uma aplicação da IA em testes de software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7a" value="a">
+                        <label for="q7a">A) Geração automática de casos de teste a partir de especificações</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7b" value="b">
+                        <label for="q7b">B) Eliminação completa da necessidade de testes manuais</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7c" value="c">
+                        <label for="q7c">C) Criação automática de relatórios de bugs sem análise</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7d" value="d">
+                        <label for="q7d">D) Substituição de todas as ferramentas de teste existentes</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 8</div>
+                <div class="question-text">O que é "code generation" no contexto de IA na Engenharia de Software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8a" value="a">
+                        <label for="q8a">A) Geração de código a partir de descrições em linguagem natural</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8b" value="b">
+                        <label for="q8b">B) Criação automática de documentação técnica</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8c" value="c">
+                        <label for="q8c">C) Conversão de código entre diferentes linguagens de programação</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8d" value="d">
+                        <label for="q8d">D) Análise automática de vulnerabilidades de segurança</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 9</div>
+                <div class="question-text">Qual é uma limitação técnica da IA na geração de código?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9a" value="a">
+                        <label for="q9a">A) Possível introdução de vulnerabilidades de segurança</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9b" value="b">
+                        <label for="q9b">B) Incapacidade de trabalhar com linguagens modernas</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9c" value="c">
+                        <label for="q9c">C) Necessidade de hardware especializado muito caro</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9d" value="d">
+                        <label for="q9d">D) Limitação a projetos de pequeno porte apenas</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 10</div>
+                <div class="question-text">Qual das seguintes é uma tendência emergente da IA na Engenharia de Software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10a" value="a">
+                        <label for="q10a">A) Desenvolvimento baseado em linguagem natural</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10b" value="b">
+                        <label for="q10b">B) Substituição completa de desenvolvedores humanos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10c" value="c">
+                        <label for="q10c">C) Eliminação da necessidade de testes de software</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10d" value="d">
+                        <label for="q10d">D) Criação automática de requisitos de negócio</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="submit-btn" class="btn btn-submit"><i class="fas fa-paper-plane"></i> Enviar Respostas</button>
+                <button type="reset" class="btn btn-reset"><i class="fas fa-redo"></i> Limpar Tudo</button>
+            </div>
+        </form>
+        
+        <div id="results" class="results">
+            <div class="score">Sua pontuação: <span id="score-value" class="score-value">0</span> de 10</div>
+            
+            <div class="feedback">
+                <div id="feedback-container"></div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="retry-btn" class="btn btn-submit"><i class="fas fa-sync-alt"></i> Tentar Novamente</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="print-btn" id="print-btn">
+        <i class="fas fa-print"></i>
+    </div>
+
+    <script>
+        // Respostas corretas
+        const correctAnswers = {
+            q1: 'b',
+            q2: 'b',
+            q3: 'b',
+            q4: 'a',
+            q5: 'a',
+            q6: 'a',
+            q7: 'a',
+            q8: 'a',
+            q9: 'a',
+            q10: 'a'
+        };
+        
+        // Comentários para cada questão
+        const questionComments = {
+            q1: "LLM significa Large Language Model (Modelo de Linguagem de Grande Escala), que são modelos de IA treinados em grandes volumes de texto para entender e gerar linguagem natural.",
+            q2: "A identificação de code smells é mais relacionada à fase de manutenção/revisão de código, enquanto as outras opções são aplicações comuns de IA em testes de software.",
+            q3: "GitHub Copilot é uma ferramenta de IA que se integra ao VS Code e outros IDEs, sugerindo código em tempo real com base no contexto.",
+            q4: "A IA pode ser utilizada para refatoração inteligente, sugerindo melhorias de código sem alterar seu comportamento, mas não substitui completamente os desenvolvedores e tem limitações.",
+            q5: "A privacidade do código é um desafio ético importante, pois ao usar ferramentas baseadas em nuvem, o código pode ser enviado para servidores externos.",
+            q6: "A IA pode auxiliar na gestão de projetos através da previsão de prazos, identificação de riscos, alocação de recursos e análise de métricas, mas não substitui o gerente de projetos.",
+            q7: "A IA pode gerar casos de teste automaticamente a partir de especificações em linguagem natural, mas não elimina completamente a necessidade de testes manuais.",
+            q8: "Code generation refere-se à geração de código a partir de descrições em linguagem natural, uma das aplicações mais promissoras da IA na Engenharia de Software.",
+            q9: "Uma limitação técnica importante é a possível introdução de vulnerabilidades de segurança no código gerado por IA, que precisa ser revisado cuidadosamente.",
+            q10: "O desenvolvimento baseado em linguagem natural, onde desenvolvedores descrevem o que desejam em linguagem comum e a IA gera o código correspondente, é uma tendência emergente."
+        };
+        
+        // Elementos DOM
+        const quizForm = document.getElementById('quiz-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const resultsDiv = document.getElementById('results');
+        const scoreValue = document.getElementById('score-value');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const printBtn = document.getElementById('print-btn');
+        
+        // Event Listeners
+        submitBtn.addEventListener('click', calculateScore);
+        retryBtn.addEventListener('click', resetQuiz);
+        printBtn.addEventListener('click', () => window.print());
+        
+        // Calcular pontuação
+        function calculateScore() {
+            let score = 0;
+            const formData = new FormData(quizForm);
+            const userAnswers = {};
+            
+            // Coletar respostas do usuário
+            for (let pair of formData.entries()) {
+                userAnswers[pair[0]] = pair[1];
+            }
+            
+            // Verificar se todas as questões foram respondidas
+            if (Object.keys(userAnswers).length < 10) {
+                alert('Por favor, responda todas as questões antes de enviar.');
+                return;
+            }
+            
+            // Calcular pontuação e gerar feedback
+            feedbackContainer.innerHTML = '';
+            
+            for (let i = 1; i <= 10; i++) {
+                const questionKey = 'q' + i;
+                const userAnswer = userAnswers[questionKey];
+                const correctAnswer = correctAnswers[questionKey];
+                
+                const feedbackItem = document.createElement('div');
+                feedbackItem.classList.add('feedback-item');
+                
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    feedbackItem.classList.add('correct');
+                    feedbackItem.innerHTML = `
+                        <div class="feedback-question">Questão ${i} - Correta!</div>
+                        <div>Sua resposta: ${userAnswer.toUpperCase()})</div>
+                        <div class="feedback-answer">${questionComments[questionKey]}</div>
+                    `;
+                } else {
+                    feedbackItem.classList.add('incorrect');
+                    feedbackItem.innerHTML = `
+                        <div class="feedback-question">Questão ${i} - Incorreta</div>
+                        <div>Sua resposta: ${userAnswer.toUpperCase()})</div>
+                        <div>Resposta correta: ${correctAnswer.toUpperCase()})</div>
+                        <div class="feedback-answer">${questionComments[questionKey]}</div>
+                    `;
+                }
+                
+                feedbackContainer.appendChild(feedbackItem);
+            }
+            
+            // Exibir pontuação
+            scoreValue.textContent = score;
+            resultsDiv.style.display = 'block';
+            
+            // Rolar para os resultados
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Reiniciar quiz
+        function resetQuiz() {
+            quizForm.reset();
+            resultsDiv.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

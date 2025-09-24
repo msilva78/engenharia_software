@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício de Fixação - Engenharia de Requisitos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #2c3e50;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom right, #f5f7fa, #e4e8ee);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #9b59b6;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #9b59b6;
+        }
+        
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+        
+        .question-number {
+            color: #9b59b6;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .option input {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .option label {
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-submit {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #8e44ad;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-reset {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .results {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .score {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #9b59b6;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+        }
+        
+        .feedback-item {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .correct {
+            background-color: #d5f5e3;
+            border-left: 5px solid #2ecc71;
+        }
+        
+        .incorrect {
+            background-color: #fadbd8;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .feedback-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .feedback-answer {
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #1558b0;
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .quiz-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Exercício de Fixação</h1>
+            <p class="subtitle">Engenharia de Requisitos - Aula 2</p>
+        </div>
+        
+        <div class="quiz-info">
+            <div><i class="fas fa-list-ol"></i> <strong>10 questões</strong></div>
+            <div><i class="fas fa-clock"></i> <strong>Tempo estimado: 20 minutos</strong></div>
+            <div><i class="fas fa-graduation-cap"></i> <strong>Valor: 10 pontos</strong></div>
+        </div>
+        
+        <form id="quiz-form">
+            <!-- Questão 1 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 1</div>
+                <div class="question-text">O que são requisitos de software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1a" value="a">
+                        <label for="q1a">A) Descrições dos serviços que um sistema deve fornecer e as restrições sob as quais deve operar</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1b" value="b">
+                        <label for="q1b">B) Documentação técnica detalhada sobre como o sistema será implementado</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1c" value="c">
+                        <label for="q1c">C) Planos de teste para validar a qualidade do software</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1d" value="d">
+                        <label for="q1d">D) Cronogramas e estimativas de custo para o projeto</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1e" value="e">
+                        <label for="q1e">E) Código-fonte comentado do sistema</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 2 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 2</div>
+                <div class="question-text">Qual é a principal diferença entre requisitos funcionais e não funcionais?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2a" value="a">
+                        <label for="q2a">A) Requisitos funcionais descrevem o que o sistema deve fazer, enquanto não funcionais descrevem como deve operar</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2b" value="b">
+                        <label for="q2b">B) Requisitos funcionais são opcionais, enquanto não funcionais são obrigatórios</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2c" value="c">
+                        <label for="q2c">C) Requisitos funcionais são técnicos, enquanto não funcionais são de negócio</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2d" value="d">
+                        <label for="q2d">D) Requisitos funcionais são para sistemas desktop, enquanto não funcionais são para web</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2e" value="e">
+                        <label for="q2e">E) Requisitos funcionais são mais importantes que não funcionais</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 3 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 3</div>
+                <div class="question-text">Qual dos seguintes é um exemplo de requisito não funcional?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3a" value="a">
+                        <label for="q3a">A) O sistema deve permitir que usuários façam login com email e senha</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3b" value="b">
+                        <label for="q3b">B) O sistema deve processar pagamentos em menos de 2 segundos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3c" value="c">
+                        <label for="q3c">C) O sistema deve gerar relatórios de vendas mensais</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3d" value="d">
+                        <label for="q3d">D) O sistema deve permitir o cadastro de novos produtos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q3" id="q3e" value="e">
+                        <label for="q3e">E) O sistema deve ter uma tela de configurações do usuário</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 4 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 4</div>
+                <div class="question-text">O que são stakeholders em um projeto de software?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4a" value="a">
+                        <label for="q4a">A) Todas as pessoas ou organizações que têm interesse no sistema</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4b" value="b">
+                        <label for="q4b">B) Apenas os usuários finais do sistema</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4c" value="c">
+                        <label for="q4c">C) Exclusivamente os desenvolvedores e testadores</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4d" value="d">
+                        <label for="q4d">D) Somente o patrocinador e o gerente do projeto</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q4" id="q4e" value="e">
+                        <label for="q4e">E) A equipe de infraestrutura e suporte técnico</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 5 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 5</div>
+                <div class="question-text">Qual técnica de elicitação de requisitos é mais adequada para obter informações detalhadas de um especialista no domínio?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5a" value="a">
+                        <label for="q5a">A) Entrevistas</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5b" value="b">
+                        <label for="q5b">B) Questionários</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5c" value="c">
+                        <label for="q5c">C) Brainstorming</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5d" value="d">
+                        <label for="q5d">D) Análise de documentos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q5" id="q5e" value="e">
+                        <label for="q5e">E) Observação</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 6 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 6</div>
+                <div class="question-text">Qual das seguintes opções descreve melhor a técnica de prototipação na elicitação de requisitos?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6a" value="a">
+                        <label for="q6a">A) Desenvolvimento de uma versão preliminar do sistema para obter feedback</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6b" value="b">
+                        <label for="q6b">B) Aplicação de questionários para muitos stakeholders</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6c" value="c">
+                        <label for="q6c">C) Observação direta dos usuários em seu ambiente de trabalho</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6d" value="d">
+                        <label for="q6d">D) Realização de sessões colaborativas com múltiplos stakeholders</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q6" id="q6e" value="e">
+                        <label for="q6e">E) Estudo de documentos e manuais existentes</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 7 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 7</div>
+                <div class="question-text">O que é um caso de uso na engenharia de requisitos?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7a" value="a">
+                        <label for="q7a">A) Uma descrição das interações entre atores e o sistema para atingir um objetivo</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7b" value="b">
+                        <label for="q7b">B) Um documento que descreve a arquitetura técnica do sistema</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7c" value="c">
+                        <label for="q7c">C) Um plano de testes para validar o sistema</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7d" value="d">
+                        <label for="q7d">D) Uma estimativa de custos e prazos do projeto</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q7" id="q7e" value="e">
+                        <label for="q7e">E) Um relatório de análise de mercado para o produto</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 8 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 8</div>
+                <div class="question-text">Qual das seguintes características é essencial para um requisito bem elaborado?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8a" value="a">
+                        <label for="q8a">A) Ser verificável (testável)</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8b" value="b">
+                        <label for="q8b">B) Ser tecnologicamente avançado</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8c" value="c">
+                        <label for="q8c">C) Ser ambíguo para permitir flexibilidade</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8d" value="d">
+                        <label for="q8d">D) Ser independente de outros requisitos</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" id="q8e" value="e">
+                        <label for="q8e">E) Ser complexo para demonstrar sofisticação</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 9 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 9</div>
+                <div class="question-text">O que é uma história de usuário no contexto de metodologias ágeis?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9a" value="a">
+                        <label for="q9a">A) Uma descrição concisa de uma funcionalidade sob a perspectiva do usuário</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9b" value="b">
+                        <label for="q9b">B) Um documento detalhado com todos os requisitos do sistema</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9c" value="c">
+                        <label for="q9c">C) Um caso de teste para validar uma funcionalidade</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9d" value="d">
+                        <label for="q9d">D) Um relatório de progresso do projeto</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q9" id="q9e" value="e">
+                        <label for="q9e">E) Uma descrição técnica da arquitetura do sistema</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questão 10 -->
+            <div class="question">
+                <div class="question-number"><i class="fas fa-question-circle"></i> Questão 10</div>
+                <div class="question-text">Qual é o principal objetivo da validação de requisitos?</div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10a" value="a">
+                        <label for="q10a">A) Garantir que os requisitos atendam às necessidades reais dos stakeholders</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10b" value="b">
+                        <label for="q10b">B) Reduzir o custo total do projeto</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10c" value="c">
+                        <label for="q10c">C) Acelerar o processo de desenvolvimento</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10d" value="d">
+                        <label for="q10d">D) Demonstrar capacidades técnicas avançadas</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q10" id="q10e" value="e">
+                        <label for="q10e">E) Criar documentação extensa para auditoria</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="submit-btn" class="btn btn-submit"><i class="fas fa-paper-plane"></i> Enviar Respostas</button>
+                <button type="reset" class="btn btn-reset"><i class="fas fa-redo"></i> Limpar Tudo</button>
+            </div>
+        </form>
+        
+        <div id="results" class="results">
+            <div class="score">Sua pontuação: <span id="score-value" class="score-value">0</span> de 10</div>
+            
+            <div class="feedback">
+                <div id="feedback-container"></div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="retry-btn" class="btn btn-submit"><i class="fas fa-sync-alt"></i> Tentar Novamente</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="print-btn" id="print-btn">
+        <i class="fas fa-print"></i>
+    </div>
+
+    <script>
+        // Respostas corretas
+        const correctAnswers = {
+            q1: 'a',
+            q2: 'a',
+            q3: 'b',
+            q4: 'a',
+            q5: 'a',
+            q6: 'a',
+            q7: 'a',
+            q8: 'a',
+            q9: 'a',
+            q10: 'a'
+        };
+        
+        // Comentários para cada questão
+        const questionComments = {
+            q1: "Requisitos de software são de fato descrições dos serviços que um sistema deve fornecer e as restrições sob as quais deve operar. Eles definem O QUE o sistema deve fazer, não COMO deve fazer.",
+            q2: "A principal diferença é que requisitos funcionais descrevem o que o sistema deve fazer (suas funcionalidades), enquanto requisitos não funcionais descrevem como o sistema deve operar (suas propriedades e restrições).",
+            q3: "O processamento de pagamentos em menos de 2 segundos é um requisito não funcional relacionado ao desempenho. As outras opções são exemplos de requisitos funcionais.",
+            q4: "Stakeholders são todas as pessoas ou organizações que têm interesse no sistema, incluindo usuários finais, patrocinadores, desenvolvedores, gerentes, entre outros.",
+            q5: "Entrevistas são a técnica mais adequada para obter informações detalhadas de um especialista no domínio, pois permitem aprofundamento e esclarecimento de dúvidas em tempo real.",
+            q6: "A prototipação envolve o desenvolvimento de uma versão preliminar do sistema (protótipo) para obter feedback dos stakeholders e validar os requisitos.",
+            q7: "Um caso de uso é uma descrição das interações entre atores (usuários ou sistemas externos) e o sistema para atingir um objetivo específico.",
+            q8: "Um requisito bem elaborado deve ser verificável (testável), entre outras características como necessário, não ambíguo, consistente, viável e rastreável.",
+            q9: "Uma história de usuário é uma descrição concisa de uma funcionalidade sob a perspectiva do usuário, geralmente seguindo o formato: 'Como [ator], eu quero [ação] para [benefício]'.",
+            q10: "O principal objetivo da validação de requisitos é garantir que os requisitos atendam às necessidades reais dos stakeholders e que estejam corretos, completos e consistentes."
+        };
+        
+        // Elementos DOM
+        const quizForm = document.getElementById('quiz-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const resultsDiv = document.getElementById('results');
+        const scoreValue = document.getElementById('score-value');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const printBtn = document.getElementById('print-btn');
+        
+        // Event Listeners
+        submitBtn.addEventListener('click', calculateScore);
+        retryBtn.addEventListener('click', resetQuiz);
+        printBtn.addEventListener('click', () => window.print());
+        
+        // Calcular pontuação
+        function calculateScore() {
+            let score = 0;
+            const formData = new FormData(quizForm);
+            const userAnswers = {};
+            
+            // Coletar respostas do usuário
+            for (let pair of formData.entries()) {
+                userAnswers[pair[0]] = pair[1];
+            }
+            
+            // Verificar se todas as questões foram respondidas
+            if (Object.keys(userAnswers).length < 10) {
+                alert('Por favor, responda todas as questões antes de enviar.');
+                return;
+            }
+            
+            // Calcular pontuação e gerar feedback
+            feedbackContainer.innerHTML = '';
+            
+            for (let i = 1; i <= 10; i++) {
+                const questionKey = 'q' + i;
+                const userAnswer = userAnswers[questionKey];
+                const correctAnswer = correctAnswers[questionKey];
+                
+                const feedbackItem = document.createElement('div');
+                feedbackItem.classList.add('feedback-item');
+                
+                if (userAnswer === correctAnswer) {
+                    score++;
+                    feedbackItem.classList.add('correct');
+                    feedbackItem.innerHTML = `
+                        <div class="feedback-question">Questão ${i} - Correta!</div>
+                        <div>Sua resposta: ${userAnswer.toUpperCase()})</div>
+                        <div class="feedback-answer">${questionComments[questionKey]}</div>
+                    `;
+                } else {
+                    feedbackItem.classList.add('incorrect');
+                    feedbackItem.innerHTML = `
+                        <div class="feedback-question">Questão ${i} - Incorreta</div>
+                        <div>Sua resposta: ${userAnswer.toUpperCase()})</div>
+                        <div>Resposta correta: ${correctAnswer.toUpperCase()})</div>
+                        <div class="feedback-answer">${questionComments[questionKey]}</div>
+                    `;
+                }
+                
+                feedbackContainer.appendChild(feedbackItem);
+            }
+            
+            // Exibir pontuação
+            scoreValue.textContent = score;
+            resultsDiv.style.display = 'block';
+            
+            // Rolar para os resultados
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Reiniciar quiz
+        function resetQuiz() {
+            quizForm.reset();
+            resultsDiv.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

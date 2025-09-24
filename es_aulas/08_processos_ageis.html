@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engenharia de Software - Aula 8</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #FFB642;
+            --background-light: #f9f9fb;
+            --background-dark: #2c3e50;
+            --text-dark: #2A364F;
+            --text-light: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.6rem;
+        }
+
+        .slides-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 5vh 5vw;
+            background: linear-gradient(to bottom right, #f9f9fb, #eceff1);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 100;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 3vh;
+            padding-bottom: 1.5vh;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .slide-title {
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .slide-subtitle {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-content-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5vw;
+            align-items: center;
+        }
+
+        .slide-content-centered {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-footer {
+            text-align: center;
+            padding-top: 2vh;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .slide-nav {
+            position: fixed;
+            bottom: 3vh;
+            right: 3vw;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 3vh;
+            left: 3vw;
+            z-index: 1000;
+            background-color: rgba(44, 62, 80, 0.8);
+            color: var(--text-light);
+            padding: 1.5vh 2vw;
+            border-radius: 25px;
+            font-size: 1.2rem;
+        }
+
+        .content-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 3vh 3vw;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .content-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 2vh;
+            font-size: 2rem;
+        }
+
+        .content-card ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 1.5rem;
+        }
+
+        .content-card li {
+            margin-bottom: 1.5vh;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .content-card li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.5em;
+            line-height: 0.8;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4vw;
+            text-align: left;
+        }
+
+        .highlight {
+            background-color: var(--secondary-color);
+            padding: 0.5vh 1vw;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .exercise-box {
+            background-color: #e3f2fd;
+            border-left: 8px solid var(--primary-color);
+            padding: 3vh 3vw;
+            border-radius: 12px;
+            margin: 2vh 0;
+        }
+
+        .exercise-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1vh;
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            font-size: 2rem;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 11vh;
+            right: 3vw;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #1558b0;
+            transform: scale(1.1);
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            z-index: 1001;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+        }
+
+        .step {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 5vh;
+            height: 5vh;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .step-content {
+            flex: 1;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+            margin: 3vh 0;
+            text-align: left;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .timeline-date {
+            min-width: 10vw;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-bottom: 3vh;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 2vw;
+            position: relative;
+        }
+
+        .timeline-content:before {
+            content: "";
+            width: 1.5vh;
+            height: 1.5vh;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            left: -0.75vh;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slides-container">
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">Engenharia de Software</h1>
+                <p class="slide-subtitle">8ª Aula - Processos Ágeis</p>
+            </div>
+            <div class="slide-content">
+                <div style="font-size: 8rem; color: var(--primary-color);">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2 style="font-size: 3rem; margin: 3vh 0;">Desenvolvimento Ágil: Flexibilidade e Entrega Contínua de Valor</h2>
+                <p style="font-size: 1.8rem; max-width: 80vw;">Explore as metodologias ágeis que revolucionaram o desenvolvimento de software.</p>
+            </div>
+            <div class="slide-footer">
+                <p>Disciplina de Engenharia de Software | Prof. Marcelo Silva | Análise de Desenvolvimento de Sistemas</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 1 - Fundamentos do Ágil</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <ul style="text-align: left; font-size: 2rem;">
+                        <li>Manifesto Ágil e seus princípios</li>
+                        <li>Diferenças entre métodos tradicionais e ágeis</li>
+                        <li>Valores e benefícios da abordagem ágil</li>
+                        <li>Quando usar metodologias ágeis</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 2 - Frameworks e Práticas</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <ul style="text-align: left; font-size: 2rem;">
+                        <li>Scrum: Papéis, artefatos e cerimônias</li>
+                        <li>Kanban: Fluxo contínuo e limitação de WIP</li>
+                        <li>XP (Extreme Programming): Práticas técnicas</li>
+                        <li>Atividade Prática: Simulação de Sprint</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">O Manifesto Ágil</h1>
+                <p class="slide-subtitle">Valores Fundamentais</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <div class="two-columns">
+                        <div>
+                            <h3>Valorizamos Mais:</h3>
+                            <ul style="text-align: left;">
+                                <li><strong>Indivíduos e interação</strong> entre processos e ferramentas</li>
+                                <li><strong>Software em funcionamento</strong> sobre documentação abrangente</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Valorizamos Mais:</h3>
+                            <ul style="text-align: left;">
+                                <li><strong>Colaboração com o cliente</strong> sobre negociação de contratos</li>
+                                <li><strong>Responder a mudanças</strong> sobre seguir um plano</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p style="margin-top: 2vh; font-style: italic; text-align: center;">Embora haja valor nos itens à direita, valorizamos mais os itens à esquerda.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Princípios do Desenvolvimento Ágil</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <ul style="text-align: left;">
+                        <li>Entregar software funcionando frequentemente</li>
+                        <li>Aceitar mudanças de requisitos, mesmo tardiamente</li>
+                        <li>Entregar software funcionando em ciclos curtos</li>
+                        <li>Pessoas de negócio e desenvolvedores trabalhando juntos</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <ul style="text-align: left;">
+                        <li>Construir projetos em torno de indivíduos motivados</li>
+                        <li>Conversa face a face como melhor forma de comunicação</li>
+                        <li>Software funcionando como medida primária de progresso</li>
+                        <li>Simplicidade - arte de maximizar a quantidade de trabalho não realizado</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Tradicional vs. Ágil</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Waterfall (Tradicional)</h3>
+                    <ul style="text-align: left;">
+                        <li>Planejamento detalhado upfront</li>
+                        <li>Mudanças são difíceis e custosas</li>
+                        <li>Entregas em fases longas</li>
+                        <li>Documentação extensa</li>
+                        <li>Foco em seguir o plano</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Ágil</h3>
+                    <ul style="text-align: left;">
+                        <li>Planejamento adaptativo</li>
+                        <li>Mudanças são bem-vindas</li>
+                        <li>Entregas frequentes (sprints)</li>
+                        <li>Documentação mínima essencial</li>
+                        <li>Foco em responder a mudanças</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Framework Scrum</h1>
+                <p class="slide-subtitle">Papéis Principais</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Product Owner</h3>
+                    <ul style="text-align: left;">
+                        <li>Representa os stakeholders</li>
+                        <li>Define e prioriza o Product Backlog</li>
+                        <li>Garante valor do negócio</li>
+                        <li>Aceita as entregas da sprint</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Scrum Master</h3>
+                    <ul style="text-align: left;">
+                        <li>Facilita o processo Scrum</li>
+                        <li>Remove impedimentos</li>
+                        <li>Garante que o time segue as práticas</li>
+                        <li>Coach do time</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Scrum - Time de Desenvolvimento</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <h3>Características do Time</h3>
+                    <ul style="text-align: left;">
+                        <li>Time multifuncional (3-9 pessoas)</li>
+                        <li>Auto-gerenciável</li>
+                        <li>Colaborativo</li>
+                        <li>Responsável coletivamente</li>
+                        <li>Comprometido com as entregas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Artefatos do Scrum</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Product Backlog</h3>
+                    <ul style="text-align: left;">
+                        <li>Lista priorizada de funcionalidades</li>
+                        <li>Itens descritos como User Stories</li>
+                        <li>Dinâmico e evolutivo</li>
+                        <li>Gerenciado pelo Product Owner</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Sprint Backlog</h3>
+                    <ul style="text-align: left;">
+                        <li>Itens selecionados para a sprint atual</li>
+                        <li>Plano detalhado do time</li>
+                        <li>Tasks com estimativas de esforço</li>
+                        <li>Visível e atualizado diariamente</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Cerimônias do Scrum</h1>
+            </div>
+            <div class="slide-content">
+                <div class="step-container" style="font-size: 1.8rem;">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">Sprint Planning: Planejamento do trabalho da sprint (2-4 horas)</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">Daily Scrum: Reunião diária de sincronização (15 minutos)</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">Sprint Review: Demonstração do incremento (1-2 horas)</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">Sprint Retrospective: Melhoria do processo (1-2 horas)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Kanban</h1>
+                <p class="slide-subtitle">Fluxo Contínuo de Valor</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Princípios do Kanban</h3>
+                    <ul style="text-align: left;">
+                        <li>Visualizar o fluxo de trabalho</li>
+                        <li>Limitar o trabalho em progresso (WIP)</li>
+                        <li>Medir e gerenciar o fluxo</li>
+                        <li>Melhorar colaborativamente</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Vantagens</h3>
+                    <ul style="text-align: left;">
+                        <li>Flexibilidade para mudanças</li>
+                        <li>Redução de lead time</li>
+                        <li>Identificação de gargalos</li>
+                        <li>Melhoria contínua do fluxo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Extreme Programming (XP)</h1>
+                <p class="slide-subtitle">Práticas Técnicas</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <div class="two-columns">
+                        <div>
+                            <h3>Práticas de Desenvolvimento</h3>
+                            <ul style="text-align: left;">
+                                <li>Test-Driven Development (TDD)</li>
+                                <li>Pair Programming</li>
+                                <li>Integração Contínua</li>
+                                <li>Refactoring</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Práticas de Gestão</h3>
+                            <ul style="text-align: left;">
+                                <li>Planning Game</li>
+                                <li>Small Releases</li>
+                                <li>Customer Tests</li>
+                                <li>Collective Code Ownership</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Para Reflexão</h1>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box">
+                    <div class="exercise-title">
+                        <i class="fas fa-brain"></i>
+                        Perguntas para discussão
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">Em que tipos de projeto as metodologias ágeis são mais adequadas? Quais os principais desafios na adoção de práticas ágeis em organizações tradicionais?</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Simulação de Sprint Planning</p>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box" style="max-width: 80vw;">
+                    <div class="exercise-title">
+                        <i class="fas fa-users"></i>
+                        Contexto do Projeto
+                    </div>
+                    <p style="font-size: 1.5rem; text-align: left;">Desenvolver um aplicativo de gestão de tarefas pessoais com as funcionalidades: criar tarefas, definir prioridades, notificações e relatórios simples.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Tarefa em Grupo</p>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box" style="max-width: 80vw;">
+                    <div class="exercise-title">
+                        <i class="fas fa-tasks"></i>
+                        Planejamento da Sprint
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">Em grupos de 4-5 pessoas, assumindo papéis (PO, SM, Devs):</p>
+                    <ul style="font-size: 1.8rem; text-align: left;">
+                        <li>Crie um Product Backlog com User Stories</li>
+                        <li>Priorize as funcionalidades</li>
+                        <li>Planeje uma sprint de 2 semanas</li>
+                        <li>Defina a meta da sprint</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Resumo</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <h3>Principais Conceitos Abordados</h3>
+                    <ul style="text-align: left;">
+                        <li>Manifesto Ágil e seus princípios</li>
+                        <li>Diferenças entre abordagens tradicional e ágil</li>
+                        <li>Framework Scrum: papéis, artefatos e cerimônias</li>
+                        <li>Kanban e Extreme Programming</li>
+                        <li>Benefícios e desafios da adoção ágil</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 8 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Próximos Passos</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-columns">
+                    <div>
+                        <div class="content-card">
+                            <h3>Próxima Aula</h3>
+                            <ul style="text-align: left;">
+                                <li>Inteligência Artificial na Engenharia de Software</li>
+                                <li>IA Generativa no desenvolvimento</li>
+                                <li>Automação de testes com IA</li>
+                                <li>Ferramentas e tendências</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="content-card">
+                            <h3>Leitura Recomendada</h3>
+                            <ul style="text-align: left;">
+                                <li>Manifesto Ágil: agilemanifesto.org</li>
+                                <li>Scrum Guide: scrumguides.org</li>
+                                <li>Extreme Programming Explained - Kent Beck</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Obrigado pela participação! | Engenharia de Software | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+    </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+    </div>
+    <div class="slide-nav">
+        <div class="nav-btn" id="prev-btn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <div class="nav-btn" id="next-btn">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+    </div>
+    <div class="print-btn" id="print-btn">
+        <i class="fas fa-print"></i>
+    </div>
+    <div class="slide-counter">Slide
+        <span id="current-slide">1</span> de
+        <span id="total-slides">17</span>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const printBtn = document.getElementById('print-btn');
+        const currentSlideEl = document.getElementById('current-slide');
+        const totalSlidesEl = document.getElementById('total-slides');
+        const progressBar = document.querySelector('.progress-bar');
+        let currentSlide = 0;
+
+        totalSlidesEl.textContent = slides.length;
+
+        function showSlide(index) {
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else if (index >= slides.length) {
+                currentSlide = 0;
+            } else {
+                currentSlide = index;
+            }
+            slides[currentSlide].classList.add('active');
+            currentSlideEl.textContent = currentSlide + 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            showSlide(currentSlide + 1);
+        });
+
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                showSlide(currentSlide - 1);
+            } else if (e.key === 'ArrowRight') {
+                showSlide(currentSlide + 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+
+</html>

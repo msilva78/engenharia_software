@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engenharia de Software - Aula 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #FFB642;
+            --background-light: #f9f9fb;
+            --background-dark: #2c3e50;
+            --text-dark: #2A364F;
+            --text-light: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.6rem;
+        }
+
+        .slides-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 5vh 5vw;
+            background: linear-gradient(to bottom right, #f9f9fb, #eceff1);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 100;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 3vh;
+            padding-bottom: 1.5vh;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .slide-title {
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .slide-subtitle {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-content-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5vw;
+            align-items: center;
+        }
+
+        .slide-content-centered {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-footer {
+            text-align: center;
+            padding-top: 2vh;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .slide-nav {
+            position: fixed;
+            bottom: 3vh;
+            right: 3vw;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 3vh;
+            left: 3vw;
+            z-index: 1000;
+            background-color: rgba(44, 62, 80, 0.8);
+            color: var(--text-light);
+            padding: 1.5vh 2vw;
+            border-radius: 25px;
+            font-size: 1.2rem;
+        }
+
+        .content-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 3vh 3vw;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .content-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 2vh;
+            font-size: 2rem;
+        }
+
+        .content-card ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 1.5rem;
+        }
+
+        .content-card li {
+            margin-bottom: 1.5vh;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .content-card li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.5em;
+            line-height: 0.8;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4vw;
+            text-align: left;
+        }
+
+        .highlight {
+            background-color: var(--secondary-color);
+            padding: 0.5vh 1vw;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .exercise-box {
+            background-color: #e3f2fd;
+            border-left: 8px solid var(--primary-color);
+            padding: 3vh 3vw;
+            border-radius: 12px;
+            margin: 2vh 0;
+        }
+
+        .exercise-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1vh;
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            font-size: 2rem;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 11vh;
+            right: 3vw;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #1558b0;
+            transform: scale(1.1);
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            z-index: 1001;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+        }
+
+        .step {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 5vh;
+            height: 5vh;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .step-content {
+            flex: 1;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+            margin: 3vh 0;
+            text-align: left;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .timeline-date {
+            min-width: 10vw;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-bottom: 3vh;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 2vw;
+            position: relative;
+        }
+
+        .timeline-content:before {
+            content: "";
+            width: 1.5vh;
+            height: 1.5vh;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            left: -0.75vh;
+            top: 0;
+        }
+
+        .requirement-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2vh 0;
+        }
+
+        .requirement-table th, .requirement-table td {
+            padding: 1.5vh;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 1.2rem;
+        }
+
+        .requirement-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.4rem;
+        }
+
+        .requirement-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .requirement-table tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slides-container">
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">Engenharia de Requisitos</h1>
+                <p class="slide-subtitle">2ª Aula - Fundamentos e Técnicas de Elicitação</p>
+            </div>
+            <div class="slide-content slide-content-centered">
+                <div style="font-size: 8rem; color: var(--primary-color); margin: 3vh 0;">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h2 style="font-size: 3rem; margin-bottom: 2vh; color: var(--text-dark);">Compreendendo e Documentando as Necessidades do Cliente</h2>
+                <p style="max-width: 80vw; margin: 0 auto 3vh; font-size: 1.8rem;">
+                    Técnicas e métodos para identificar, analisar e documentar requisitos de software de forma eficaz.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 5vw; margin-top: 3vh; font-size: 1.8rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 4rem; color: var(--primary-color);"><i class="fas fa-comments"></i></div>
+                        <p>Elicitação</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 4rem; color: var(--primary-color);"><i class="fas fa-file-alt"></i></div>
+                        <p>Documentação</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 4rem; color: var(--primary-color);"><i class="fas fa-check-double"></i></div>
+                        <p>Validação</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Disciplina de Engenharia de Software | Professor: Marcelo Silva | 2ª Aula</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 1 - Introdução e Conceitos</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <ul style="text-align: left; font-size: 2rem;">
+                        <li>Conceitos e importância dos requisitos</li>
+                        <li>Classificação de requisitos (funcionais e não funcionais)</li>
+                        <li>Stakeholders e seus papéis</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 2 - Técnicas e Documentação</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <ul style="text-align: left; font-size: 2rem;">
+                        <li>Técnicas de Elicitação de Requisitos</li>
+                        <li>Documentação de Requisitos</li>
+                        <li>Boas Práticas e Atividade Prática</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">O que são Requisitos?</h1>
+                <p class="slide-subtitle">Definição Formal</p>
+            </div>
+            <div class="slide-content">
+                <p style="font-size: 2.2rem; max-width: 80vw;">Requisitos são descrições dos serviços que um sistema deve fornecer e as restrições sob as quais deve operar.</p>
+                <p style="margin-top: 2vh; font-size: 2.5rem; font-weight: bold;">Eles definem o que o sistema deve fazer.</p>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">A Importância dos Requisitos</h1>
+                <p class="slide-subtitle">A Base de um Projeto de Sucesso</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <ul style="text-align: left;">
+                        <li>Base para planejamento e estimativas</li>
+                        <li>Guia para desenvolvedores e testadores</li>
+                        <li>Critério para validação e aceitação</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <ul style="text-align: left;">
+                        <li>Redução de retrabalho e custos</li>
+                        <li>Alinhamento de expectativas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">A Importância em Números</h1>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box">
+                    <div class="exercise-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Dados Estatísticos
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">Estudos mostram que problemas relacionados a requisitos são a causa principal de falhas em projetos de software, representando até **60%** dos problemas identificados.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Classificação de Requisitos</h1>
+                <p class="slide-subtitle">O que o sistema faz vs. Como ele opera</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Funcionais</h3>
+                    <p style="font-size: 1.8rem;">Descrevem **o que** o sistema deve fazer - as funcionalidades.</p>
+                    <ul style="text-align: left; font-size: 1.5rem;">
+                        <li>Processar pagamentos</li>
+                        <li>Cadastrar usuários</li>
+                        <li>Emitir relatórios</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Não Funcionais</h3>
+                    <p style="font-size: 1.8rem;">Descrevem **como** o sistema deve operar - as restrições.</p>
+                    <ul style="text-align: left; font-size: 1.5rem;">
+                        <li>Segurança</li>
+                        <li>Desempenho</li>
+                        <li>Usabilidade</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Stakeholders</h1>
+                <p class="slide-subtitle">Identificando os Interessados no Sistema</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Tipos de Stakeholders</h3>
+                    <ul style="text-align: left;">
+                        <li>Clientes/Usuários finais</li>
+                        <li>Patrocinadores</li>
+                        <li>Analistas de negócio</li>
+                        <li>Equipe de desenvolvimento</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Desafios Comuns</h3>
+                    <ul style="text-align: left;">
+                        <li>Interesses conflitantes</li>
+                        <li>Dificuldade de comunicação</li>
+                        <li>Mudanças de requisitos</li>
+                        <li>Stakeholders não identificados</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Técnicas de Elicitação</h1>
+                <p class="slide-subtitle">Métodos para Descobrir Necessidades</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Entrevistas</h3>
+                    <p style="font-size: 1.5rem;">Permitem aprofundamento. Requerem preparação.</p>
+                </div>
+                <div class="content-card">
+                    <h3>Questionários</h3>
+                    <p style="font-size: 1.5rem;">Úteis para muitos stakeholders. Superficiais.</p>
+                </div>
+                <div class="content-card">
+                    <h3>Workshops</h3>
+                    <p style="font-size: 1.5rem;">Sessões colaborativas. Foco em consenso rápido.</p>
+                </div>
+                <div class="content-card">
+                    <h3>Observação</h3>
+                    <p style="font-size: 1.5rem;">Identifica necessidades não verbalizadas. Base em dados reais.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Mais Técnicas de Elicitação</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Prototipação</h3>
+                    <p style="font-size: 1.5rem;">Feedback visual e rápido.</p>
+                </div>
+                <div class="content-card">
+                    <h3>Análise de Documentos</h3>
+                    <p style="font-size: 1.5rem;">Estudo de manuais e formulários existentes.</p>
+                </div>
+                <div class="content-card">
+                    <h3>Brainstorming</h3>
+                    <p style="font-size: 1.5rem;">Geração de ideias criativas sem críticas.</p>
+                </div>
+                <div class="content-card">
+                    <h3>Casos de Uso</h3>
+                    <p style="font-size: 1.5rem;">Descrição de interações entre atores e sistema.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Documentação de Requisitos</h1>
+                <p class="slide-subtitle">Estruturando as Necessidades do Cliente</p>
+            </div>
+            <div class="slide-content">
+                <div class="step-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Documento de Visão</h3>
+                            <p>Visão de alto nível do produto e objetivos.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Especificação de Requisitos</h3>
+                            <p>Descrição detalhada dos requisitos funcionais e não funcionais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Documentação de Requisitos</h1>
+            </div>
+            <div class="slide-content">
+                <div class="step-container">
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Casos de Uso</h3>
+                            <p>Descrições textuais das interações entre usuários e sistema.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Histórias de Usuário (Ágil)</h3>
+                            <p>Funcionalidades sob a perspectiva do usuário: "Como [ator], eu quero [ação] para [benefício]".</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Backlog do Produto (Ágil)</h3>
+                            <p>Lista priorizada de todas as funcionalidades e melhorias.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Boas Práticas em Requisitos</h1>
+                <p class="slide-subtitle">Diretrizes para Qualidade</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Características de Requisitos</h3>
+                    <ul style="text-align: left;">
+                        <li>Necessário</li>
+                        <li>Não ambíguo</li>
+                        <li>Consistente</li>
+                        <li>Verificável</li>
+                        <li>Rastreável</li>
+                        <li>Viável</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Técnicas de Validação</h3>
+                    <ul style="text-align: left;">
+                        <li>Revisões formais</li>
+                        <li>Prototipação</li>
+                        <li>Cenários de teste</li>
+                        <li>Matriz de rastreabilidade</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Estudo de Caso - Sistema de Agendamento</p>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box">
+                    <div class="exercise-title">
+                        <i class="fas fa-notes-medical"></i>
+                        Contexto do Problema
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">Uma clínica médica precisa de um sistema para agendamento de consultas. O agendamento atual é manual e causa erros e lentidão.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Identificação de Stakeholders</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <h3>Stakeholders Chave</h3>
+                    <ul style="text-align: left;">
+                        <li>Pacientes</li>
+                        <li>Recepcionistas</li>
+                        <li>Médicos</li>
+                        <li>Administradores da clínica</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Tarefa em Grupo</p>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box">
+                    <div class="exercise-title">
+                        <i class="fas fa-users"></i>
+                        Exercício de Elicitação e Documentação
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">Em grupos de 3-4 pessoas, discuta e defina:</p>
+                    <ul style="font-size: 1.8rem; text-align: left;">
+                        <li>5 requisitos funcionais</li>
+                        <li>3 requisitos não funcionais</li>
+                        <li>2 histórias de usuário</li>
+                        <li>1 caso de uso principal</li>
+                        <li>Priorização dos requisitos</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Resumo</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <h3>Principais Conceitos Abordados</h3>
+                    <ul style="text-align: left;">
+                        <li>Definição e objetivos de requisitos</li>
+                        <li>Classificação em funcionais e não funcionais</li>
+                        <li>Técnicas de elicitação</li>
+                        <li>Documentação e validação de requisitos</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 2</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Próximos Passos</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-columns">
+                    <div>
+                        <div class="content-card">
+                            <h3>Próxima Aula</h3>
+                            <ul style="text-align: left;">
+                                <li>Análise e Projeto de Software</li>
+                                <li>Diagramas UML</li>
+                                <li>Arquitetura de software</li>
+                                <li>Padrões de projeto</li>
+                                <li>Projeto orientado a objetos</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="content-card">
+                            <h3>Leitura Recomendada</h3>
+                            <ul style="text-align: left;">
+                                <li>Capítulo 4 - Engenharia de Requisitos (Ian Sommerville)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Obrigado pela participação! | Engenharia de Software | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+    </div>
+    <div class="slide-nav">
+        <div class="nav-btn" id="prev-btn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <div class="nav-btn" id="next-btn">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+    </div>
+    <div class="print-btn" id="print-btn">
+        <i class="fas fa-print"></i>
+    </div>
+    <div class="slide-counter">Slide
+        <span id="current-slide">1</span> de
+        <span id="total-slides">18</span>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const printBtn = document.getElementById('print-btn');
+        const currentSlideEl = document.getElementById('current-slide');
+        const totalSlidesEl = document.getElementById('total-slides');
+        const progressBar = document.querySelector('.progress-bar');
+        let currentSlide = 0;
+
+        totalSlidesEl.textContent = slides.length;
+
+        function showSlide(index) {
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else if (index >= slides.length) {
+                currentSlide = 0;
+            } else {
+                currentSlide = index;
+            }
+            slides[currentSlide].classList.add('active');
+            currentSlideEl.textContent = currentSlide + 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            showSlide(currentSlide + 1);
+        });
+
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                showSlide(currentSlide - 1);
+            } else if (e.key === 'ArrowRight') {
+                showSlide(currentSlide + 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+
+</html>

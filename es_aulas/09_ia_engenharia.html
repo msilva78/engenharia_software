@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engenharia de Software - Aula 9</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #FFB642;
+            --background-light: #f9f9fb;
+            --background-dark: #2c3e50;
+            --text-dark: #2A364F;
+            --text-light: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.6rem;
+        }
+
+        .slides-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 5vh 5vw;
+            background: linear-gradient(to bottom right, #f9f9fb, #eceff1);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 100;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 3vh;
+            padding-bottom: 1.5vh;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .slide-title {
+            font-size: 4rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .slide-subtitle {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-content-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5vw;
+            align-items: center;
+        }
+
+        .slide-content-centered {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-footer {
+            text-align: center;
+            padding-top: 2vh;
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .slide-nav {
+            position: fixed;
+            bottom: 3vh;
+            right: 3vw;
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 3vh;
+            left: 3vw;
+            z-index: 1000;
+            background-color: rgba(44, 62, 80, 0.8);
+            color: var(--text-light);
+            padding: 1.5vh 2vw;
+            border-radius: 25px;
+            font-size: 1.2rem;
+        }
+
+        .content-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 3vh 3vw;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .content-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 2vh;
+            font-size: 2rem;
+        }
+
+        .content-card ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 1.5rem;
+        }
+
+        .content-card li {
+            margin-bottom: 1.5vh;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .content-card li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.5em;
+            line-height: 0.8;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4vw;
+            text-align: left;
+        }
+
+        .highlight {
+            background-color: var(--secondary-color);
+            padding: 0.5vh 1vw;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .exercise-box {
+            background-color: #e3f2fd;
+            border-left: 8px solid var(--primary-color);
+            padding: 3vh 3vw;
+            border-radius: 12px;
+            margin: 2vh 0;
+        }
+
+        .exercise-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1vh;
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            font-size: 2rem;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 11vh;
+            right: 3vw;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #1558b0;
+            transform: scale(1.1);
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            z-index: 1001;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+        }
+
+        .step {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 5vh;
+            height: 5vh;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .step-content {
+            flex: 1;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+            margin: 3vh 0;
+            text-align: left;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-start;
+        }
+
+        .timeline-date {
+            min-width: 10vw;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-bottom: 3vh;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 2vw;
+            position: relative;
+        }
+
+        .timeline-content:before {
+            content: "";
+            width: 1.5vh;
+            height: 1.5vh;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            left: -0.75vh;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slides-container">
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">Engenharia de Software</h1>
+                <p class="slide-subtitle">9ª Aula - Inteligência Artificial na ES</p>
+            </div>
+            <div class="slide-content">
+                <div style="font-size: 8rem; color: var(--primary-color);">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h2 style="font-size: 3rem; margin: 3vh 0;">Como a IA está Transformando o Desenvolvimento de Software</h2>
+                <p style="font-size: 1.8rem; max-width: 80vw;">Explore as aplicações práticas da IA em todas as fases do ciclo de vida do software.</p>
+            </div>
+            <div class="slide-footer">
+                <p>Disciplina de Engenharia de Software | Prof. Marcelo Silva | Análise de Desenvolvimento de Sistemas</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 1 - Fundamentos da IA na ES</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <ul style="text-align: left; font-size: 2rem;">
+                        <li>Conceitos de IA aplicada à Engenharia de Software</li>
+                        <li>Evolução histórica: de CASE tools à IA Generativa</li>
+                        <li>Benefícios e desafios da adoção</li>
+                        <li>Panorama atual do mercado</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Roteiro da Aula</h1>
+                <p class="slide-subtitle">Parte 2 - Aplicações Práticas</p>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <ul style="text-align: left; font-size: 2rem;">
+                        <li>IA no desenvolvimento: code generation e review</li>
+                        <li>IA em testes: automação inteligente</li>
+                        <li>IA na manutenção: refactoring e debugging</li>
+                        <li>Atividade Prática: Experimentação com ferramentas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">O que é IA na Engenharia de Software?</h1>
+                <p class="slide-subtitle">Definição e Escopo</p>
+            </div>
+            <div class="slide-content">
+                <p style="font-size: 2.2rem; max-width: 80vw;">Aplicação de técnicas de inteligência artificial para automatizar, melhorar ou auxiliar atividades em todas as fases do ciclo de vida do desenvolvimento de software.</p>
+                <div class="content-card" style="margin-top: 3vh;">
+                    <h3>Áreas de Atuação</h3>
+                    <ul style="text-align: left;">
+                        <li>Geração e compreensão de código</li>
+                        <li>Teste e verificação automática</li>
+                        <li>Manutenção e evolução de sistemas</li>
+                        <li>Gestão de projetos e processos</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Evolução Histórica</h1>
+            </div>
+            <div class="slide-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">1980-90</div>
+                        <div class="timeline-content">
+                            <h3>Ferramentas CASE</h3>
+                            <p>Primeiras tentativas de automação do desenvolvimento</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2000-10</div>
+                        <div class="timeline-content">
+                            <h3>Análise Estática Inteligente</h3>
+                            <p>Ferramentas de análise de código com aprendizado de máquina</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2015-20</div>
+                        <div class="timeline-content">
+                            <h3>IA Generativa Inicial</h3>
+                            <p>Primeiros modelos para geração de código a partir de descrições</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2020+</div>
+                        <div class="timeline-content">
+                            <h3>LLMs e IA Conversacional</h3>
+                            <p>ChatGPT, Copilot e outras ferramentas baseadas em transformers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">IA no Desenvolvimento</h1>
+                <p class="slide-subtitle">Geração e Assistência de Código</p>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Code Generation</h3>
+                    <ul style="text-align: left;">
+                        <li>Geração de código a partir de descrições naturais</li>
+                        <li>Auto-complete inteligente</li>
+                        <li>Conversão entre linguagens</li>
+                        <li>Geração de testes unitários</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Code Review Assistido</h3>
+                    <ul style="text-align: left;">
+                        <li>Análise automática de qualidade</li>
+                        <li>Detecção de vulnerabilidades</li>
+                        <li>Sugestões de melhorias</li>
+                        <li>Identificação de code smells</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Ferramentas Populares</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>GitHub Copilot</h3>
+                    <ul style="text-align: left;">
+                        <li>Assistente de programação baseado em IA</li>
+                        <li>Integrado ao VS Code e outros IDEs</li>
+                        <li>Sugere código em tempo real</li>
+                        <li>Suporte a múltiplas linguagens</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>ChatGPT para Devs</h3>
+                    <ul style="text-align: left;">
+                        <li>Explicação de código complexo</li>
+                        <li>Geração de documentação</li>
+                        <li>Resolução de problemas</li>
+                        <li>Planejamento de arquitetura</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">IA em Testes de Software</h1>
+            </div>
+            <div class="slide-content">
+                <div class="step-container" style="font-size: 1.8rem;">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">Geração Automática de Casos de Teste: Cria testes baseados em especificações</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">Otimização de Suítes de Teste: Identifica testes redundantes</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">Teste de Regressão Inteligente: Detecta impactos de mudanças</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">Análise de Cobertura: Maximiza a eficiência dos testes</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">IA na Manutenção e Evolução</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Refactoring Inteligente</h3>
+                    <ul style="text-align: left;">
+                        <li>Identifica oportunidades de melhoria</li>
+                        <li>Sugere refatorações específicas</li>
+                        <li>Calcula impacto das mudanças</li>
+                        <li>Preserva comportamento existente</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Debugging Assistido</h3>
+                    <ul style="text-align: left;">
+                        <li>Análise de stack traces</li>
+                        <li>Sugestões de correção</li>
+                        <li>Identificação de causas-raiz</li>
+                        <li>Previsão de bugs</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">IA na Gestão de Projetos</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <div class="two-columns">
+                        <div>
+                            <h3>Planejamento e Estimativa</h3>
+                            <ul style="text-align: left;">
+                                <li>Previsão de prazos realistas</li>
+                                <li>Alocação otimizada de recursos</li>
+                                <li>Identificação de riscos</li>
+                                <li>Análise de dependências</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Monitoramento e Controle</h3>
+                            <ul style="text-align: left;">
+                                <li>Detecção de desvios</li>
+                                <li>Recomendações corretivas</li>
+                                <li>Análise de métricas</li>
+                                <li>Previsão de entregas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Benefícios da IA na ES</h1>
+            </div>
+            <div class="slide-content-grid">
+                <div class="content-card">
+                    <h3>Para Desenvolvedores</h3>
+                    <ul style="text-align: left;">
+                        <li>Aumento de produtividade</li>
+                        <li>Redução de erros</li>
+                        <li>Aprendizado contínuo</li>
+                        <li>Foco em tarefas complexas</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>Para Organizações</h3>
+                    <ul style="text-align: left;">
+                        <li>Redução de custos</li>
+                        <li>Melhoria da qualidade</li>
+                        <li>Entrega mais rápida</li>
+                        <li>Melhor previsibilidade</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Desafios e Limitações</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <div class="two-columns">
+                        <div>
+                            <h3>Desafios Técnicos</h3>
+                            <ul style="text-align: left;">
+                                <li>Qualidade do código gerado</li>
+                                <li>Segurança e vulnerabilidades</li>
+                                <li>Dependência de dados de treinamento</li>
+                                <li>Interpretabilidade das decisões</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Desafios Éticos/Profissionais</h3>
+                            <ul style="text-align: left;">
+                                <li>Privacidade de código</li>
+                                <li>Impacto no mercado de trabalho</li>
+                                <li>Responsabilidade por bugs</li>
+                                <li>Viés nos algoritmos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Para Reflexão</h1>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box">
+                    <div class="exercise-title">
+                        <i class="fas fa-brain"></i>
+                        Perguntas para discussão
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">A IA substituirá desenvolvedores ou os tornará mais eficientes? Como equilibrar automação e criatividade no desenvolvimento de software?</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Experimentação com IA Generativa</p>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box" style="max-width: 80vw;">
+                    <div class="exercise-title">
+                        <i class="fas fa-flask"></i>
+                        Cenário de Desenvolvimento
+                    </div>
+                    <p style="font-size: 1.5rem; text-align: left;">Desenvolver uma API REST para gerenciamento de usuários com as operações CRUD básicas, validações e documentação.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Atividade Prática</h1>
+                <p class="slide-subtitle">Tarefa em Grupo</p>
+            </div>
+            <div class="slide-content">
+                <div class="exercise-box" style="max-width: 80vw;">
+                    <div class="exercise-title">
+                        <i class="fas fa-users"></i>
+                        Comparação de Abordagens
+                    </div>
+                    <p style="font-size: 1.8rem; text-align: left;">Em grupos de 3-4 pessoas, utilizando ferramentas de IA:</p>
+                    <ul style="font-size: 1.8rem; text-align: left;">
+                        <li>Gerem o código da API usando prompts</li>
+                        <li>Criem testes unitários automaticamente</li>
+                        <li>Documentem a API com IA</li>
+                        <li>Avaliem a qualidade do código gerado</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Futuro da IA na Engenharia de Software</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <h3>Tendências Emergentes</h3>
+                    <ul style="text-align: left;">
+                        <li>Desenvolvimento baseado em linguagem natural</li>
+                        <li>Assistentes de código mais contextuais</li>
+                        <li>Automação completa de pipelines DevOps</li>
+                        <li>Desenvolvimento de software autônomo</li>
+                        <li>Personalização baseada em estilo de codificação</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Resumo da Disciplina</h1>
+            </div>
+            <div class="slide-content">
+                <div class="content-card">
+                    <h3>Jornada de Aprendizado</h3>
+                    <ul style="text-align: left;">
+                        <li>Fundamentos da Engenharia de Software</li>
+                        <li>Processos e Metodologias</li>
+                        <li>Gestão de Projetos e Qualidade</li>
+                        <li>Arquitetura e Padrões</li>
+                        <li>Processos Ágeis e Inovação</li>
+                        <li>IA como Catalisador de Transformação</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Aula 9 | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Encerramento</h1>
+            </div>
+            <div class="slide-content">
+                <div style="font-size: 8rem; color: var(--primary-color); margin-bottom: 3vh;">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2 style="font-size: 2.5rem; margin-bottom: 2vh;">Obrigado pela Jornada!</h2>
+                <p style="font-size: 1.8rem; max-width: 80vw;">Continue explorando e inovando na Engenharia de Software</p>
+                
+                <div class="content-card" style="margin-top: 3vh;">
+                    <h3>Próximos Passos Recomendados</h3>
+                    <ul style="text-align: left;">
+                        <li>Pratique com projetos reais</li>
+                        <li>Mantenha-se atualizado com as tendências</li>
+                        <li>Experimente novas ferramentas e técnicas</li>
+                        <li>Participe de comunidades de desenvolvimento</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <p>Engenharia de Software - Curso Completo | Prof. Marcelo Silva</p>
+            </div>
+        </div>
+    </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+    </div>
+    <div class="slide-nav">
+        <div class="nav-btn" id="prev-btn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <div class="nav-btn" id="next-btn">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+    </div>
+    <div class="print-btn" id="print-btn">
+        <i class="fas fa-print"></i>
+    </div>
+    <div class="slide-counter">Slide
+        <span id="current-slide">1</span> de
+        <span id="total-slides">18</span>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const printBtn = document.getElementById('print-btn');
+        const currentSlideEl = document.getElementById('current-slide');
+        const totalSlidesEl = document.getElementById('total-slides');
+        const progressBar = document.querySelector('.progress-bar');
+        let currentSlide = 0;
+
+        totalSlidesEl.textContent = slides.length;
+
+        function showSlide(index) {
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else if (index >= slides.length) {
+                currentSlide = 0;
+            } else {
+                currentSlide = index;
+            }
+            slides[currentSlide].classList.add('active');
+            currentSlideEl.textContent = currentSlide + 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            showSlide(currentSlide - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            showSlide(currentSlide + 1);
+        });
+
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                showSlide(currentSlide - 1);
+            } else if (e.key === 'ArrowRight') {
+                showSlide(currentSlide + 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+
+</html>
