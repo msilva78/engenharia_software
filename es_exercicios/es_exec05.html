@@ -5,7 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exercício de Fixação - Manutenção de Software</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+    <script>
+	// Verificação de segurança
+	(function() {
+		const urlParams = new URLSearchParams(window.location.search);
+		const token = urlParams.get('token');
+		const tipo = urlParams.get('tipo');
+		const id = parseInt(urlParams.get(tipo === 'aula' ? 'aulaId' : 'exercicioId'));
+		
+		// Verificar se veio pelo portal
+		if (!token || !tipo || !id) {
+			document.body.innerHTML = `
+				<div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; background: #2c3e50; color: white;">
+					<h1 style="color: #e74c3c;">Acesso Negado</h1>
+					<p>Esta página só pode ser acessada através do portal oficial.</p>
+					<a href="index.html" style="color: #3498db; margin-top: 20px;">Voltar ao Portal</a>
+				</div>
+			`;
+			return;
+		}
+		
+		// Verificar token de sessão
+		const savedToken = localStorage.getItem('sessionToken');
+		if (token !== savedToken) {
+			document.body.innerHTML = `
+				<div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; background: #2c3e50; color: white;">
+					<h1 style="color: #e74c3c;">Sessão Expirada</h1>
+					<p>Faça login novamente no portal.</p>
+					<a href="index.html" style="color: #3498db; margin-top: 20px;">Voltar ao Portal</a>
+				</div>
+			`;
+			return;
+		}
+		
+		// Verificar se o conteúdo está liberado
+		const aulasLiberadas = parseInt(localStorage.getItem('aulasLiberadas') || '1');
+		const exerciciosLiberados = parseInt(localStorage.getItem('exerciciosLiberados') || '1');
+		
+		if (tipo === 'aula' && id > aulasLiberadas) {
+			document.body.innerHTML = `
+				<div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; background: #2c3e50; color: white;">
+					<h1 style="color: #e74c3c;">Conteúdo Bloqueado</h1>
+					<p>Esta aula ainda não foi liberada pelo professor.</p>
+					<a href="index.html" style="color: #3498db; margin-top: 20px;">Voltar ao Portal</a>
+				</div>
+			`;
+			return;
+		}
+		
+		if (tipo === 'exercicio' && id > exerciciosLiberados) {
+			document.body.innerHTML = `
+				<div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; background: #2c3e50; color: white;">
+					<h1 style="color: #e74c3c;">Conteúdo Bloqueado</h1>
+					<p>Este exercício ainda não foi liberado pelo professor.</p>
+					<a href="index.html" style="color: #3498db; margin-top: 20px;">Voltar ao Portal</a>
+				</div>
+			`;
+			return;
+		}
+		
+		// Se passou por todas as verificações, permitir acesso ao conteúdo
+	})();
+	</script>
+	<style>
         * {
             margin: 0;
             padding: 0;
