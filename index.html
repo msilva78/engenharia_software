@@ -15,6 +15,9 @@
             --text-dark: #2A364F;
             --text-light: #ffffff;
             --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --locked-color: #95a5a6;
         }
 
         * {
@@ -45,6 +48,7 @@
             border-radius: 15px;
             color: white;
             box-shadow: var(--card-shadow);
+            position: relative;
         }
 
         h1 {
@@ -56,6 +60,18 @@
         .subtitle {
             font-size: 1.4rem;
             opacity: 0.9;
+        }
+
+        .admin-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--secondary-color);
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
         }
 
         .portal-description {
@@ -125,6 +141,11 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            position: relative;
+        }
+
+        .card.locked {
+            opacity: 0.7;
         }
 
         .card:hover {
@@ -132,11 +153,21 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
+        .card.locked:hover {
+            transform: none;
+            box-shadow: var(--card-shadow);
+        }
+
         .card-header {
             padding: 1.5rem;
             background: var(--primary-color);
             color: white;
             text-align: center;
+            position: relative;
+        }
+
+        .card.locked .card-header {
+            background: var(--locked-color);
         }
 
         .card-number {
@@ -181,6 +212,8 @@
             transition: all 0.3s;
             flex: 1;
             text-align: center;
+            border: none;
+            cursor: pointer;
         }
 
         .btn-primary {
@@ -193,9 +226,107 @@
             color: var(--text-dark);
         }
 
+        .btn-locked {
+            background-color: var(--locked-color);
+            color: white;
+            cursor: not-allowed;
+        }
+
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-locked:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .lock-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 5rem auto;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .admin-title {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .admin-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .control-group select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
         }
 
         footer {
@@ -204,6 +335,24 @@
             padding: 2rem;
             color: rgba(255, 255, 255, 0.7);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 1rem;
         }
 
         @media (max-width: 768px) {
@@ -228,18 +377,95 @@
                 border-radius: 10px;
                 margin-bottom: 0.5rem;
             }
+            
+            .admin-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Tela de Login -->
+    <div id="login-screen" class="login-container">
+        <h2 class="login-title">Acesso ao Portal</h2>
+        <div class="form-group">
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" placeholder="Digite seu usuário">
+        </div>
+        <div class="form-group">
+            <label for="password">Senha:</label>
+            <input type="password" id="password" placeholder="Digite sua senha">
+        </div>
+        <button id="login-btn" class="btn btn-primary" style="width: 100%;">Entrar</button>
+        <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem;">
+            <p><strong>Dicas de login:</strong></p>
+            <p>Aluno: usuario / senha123</p>
+            <p>Admin: admin / admin123</p>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal (inicialmente oculto) -->
+    <div id="main-content" class="container" style="display: none;">
         <header>
+            <div class="user-info">
+                Logado como: <span id="user-role">Usuário</span>
+                <button id="logout-btn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
             <h1>Portal de Engenharia de Software</h1>
             <p class="subtitle">Prof. Marcelo Silva | Análise de Desenvolvimento de Sistemas</p>
+            <div id="admin-badge" class="admin-badge" style="display: none;">
+                <i class="fas fa-cog"></i> Modo Administrador
+            </div>
         </header>
         
         <div class="portal-description">
             <p>Explore as 10 aulas do curso de Engenharia de Software e teste seus conhecimentos com os exercícios de fixação. Cada aula aborda um tópico fundamental para a formação de um profissional completo na área.</p>
+        </div>
+        
+        <!-- Painel de Administração (visível apenas para admin) -->
+        <div id="admin-panel" class="admin-panel" style="display: none;">
+            <h2 class="admin-title">Painel de Controle de Acesso</h2>
+            <div class="admin-controls">
+                <div class="control-group">
+                    <label for="aulas-liberadas">Aulas Liberadas:</label>
+                    <select id="aulas-liberadas">
+                        <option value="1">1 aula</option>
+                        <option value="2">2 aulas</option>
+                        <option value="3">3 aulas</option>
+                        <option value="4">4 aulas</option>
+                        <option value="5">5 aulas</option>
+                        <option value="6">6 aulas</option>
+                        <option value="7">7 aulas</option>
+                        <option value="8">8 aulas</option>
+                        <option value="9">9 aulas</option>
+                        <option value="10" selected>10 aulas (todas)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="exercicios-liberados">Exercícios Liberados:</label>
+                    <select id="exercicios-liberados">
+                        <option value="1">1 exercício</option>
+                        <option value="2">2 exercícios</option>
+                        <option value="3">3 exercícios</option>
+                        <option value="4">4 exercícios</option>
+                        <option value="5">5 exercícios</option>
+                        <option value="6">6 exercícios</option>
+                        <option value="7">7 exercícios</option>
+                        <option value="8">8 exercícios</option>
+                        <option value="9">9 exercícios</option>
+                        <option value="10" selected>10 exercícios (todos)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="admin-actions">
+                <button id="aplicar-config" class="btn btn-primary">Aplicar Configurações</button>
+                <button id="liberar-tudo" class="btn btn-secondary">Liberar Tudo</button>
+                <button id="bloquear-tudo" class="btn btn-locked">Bloquear Tudo</button>
+            </div>
         </div>
         
         <div class="tabs">
@@ -248,370 +474,14 @@
         </div>
         
         <div class="content-section active" id="aulas-section">
-            <div class="grid">
-                <!-- Aula 1 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">01</div>
-                        <div class="card-title">Engenharia de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Introdução aos conceitos básicos da Engenharia de Software, ciclo de vida do desenvolvimento e importância da disciplina.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/01_engenharia_software.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 2 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">02</div>
-                        <div class="card-title">Engenharia de Requisitos</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Estudo dos processos de elicitação, análise, especificação e validação de requisitos de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/02_engenharia_requisitos.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 3 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">03</div>
-                        <div class="card-title">Modelagem e Arquitetura</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Princípios de modelagem de software, padrões arquiteturais e técnicas de design de sistemas.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/03_modelagem_arquitetura.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 4 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">04</div>
-                        <div class="card-title">Teste de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Estratégias, técnicas e ferramentas para teste de software, garantindo qualidade e confiabilidade.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/04_teste_software.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 5 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">05</div>
-                        <div class="card-title">Manutenção de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Processos e técnicas para manutenção e evolução de sistemas de software existentes.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/05_manutencao_software.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 6 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">06</div>
-                        <div class="card-title">Gestão de Projeto</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Planejamento, estimativa, acompanhamento e controle de projetos de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/06_gestao_projeto.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 7 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">07</div>
-                        <div class="card-title">Qualidade de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Métricas, padrões e processos para garantir a qualidade em produtos de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/07_qualidade_software.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 8 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">08</div>
-                        <div class="card-title">Processos Ágeis</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Metodologias ágeis como Scrum, Kanban e XP para desenvolvimento iterativo e incremental.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/08_processos_ageis.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 9 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">09</div>
-                        <div class="card-title">IA na Engenharia de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Aplicações de inteligência artificial no desenvolvimento, testes e manutenção de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/09_ia_engenharia.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aula 10 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">10</div>
-                        <div class="card-title">Futuro da Engenharia de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Tendências emergentes e o futuro da profissão de engenheiro de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_aulas/10_futuro_engenharia.html" class="btn btn-primary">
-                                <i class="fas fa-play-circle"></i> Assistir Aula
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid" id="aulas-grid">
+                <!-- As aulas serão carregadas dinamicamente via JavaScript -->
             </div>
         </div>
         
         <div class="content-section" id="exercicios-section">
-            <div class="grid">
-                <!-- Exercício 1 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">01</div>
-                        <div class="card-title">Exercícios - Engenharia de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Teste seus conhecimentos sobre os conceitos fundamentais da Engenharia de Software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec01.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 2 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">02</div>
-                        <div class="card-title">Exercícios - Engenharia de Requisitos</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Avalie seu entendimento sobre processos de elicitação e especificação de requisitos.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec02.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 3 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">03</div>
-                        <div class="card-title">Exercícios - Modelagem e Arquitetura</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Pratique conceitos de modelagem de software e padrões arquiteturais.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec03.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 4 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">04</div>
-                        <div class="card-title">Exercícios - Teste de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Teste seus conhecimentos sobre estratégias e técnicas de teste de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec04.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 5 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">05</div>
-                        <div class="card-title">Exercícios - Manutenção de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Avalie seu domínio sobre processos de manutenção e evolução de sistemas.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec05.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 6 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">06</div>
-                        <div class="card-title">Exercícios - Gestão de Projeto</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Pratique conceitos de planejamento e controle de projetos de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec06.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 7 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">07</div>
-                        <div class="card-title">Exercícios - Qualidade de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Teste seus conhecimentos sobre métricas e processos de qualidade de software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec07.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 8 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">08</div>
-                        <div class="card-title">Exercícios - Processos Ágeis</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Avalie seu entendimento sobre metodologias ágeis de desenvolvimento.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec08.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 9 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">09</div>
-                        <div class="card-title">Exercícios - IA na Engenharia de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Teste seus conhecimentos sobre aplicações de IA na Engenharia de Software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec09.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Exercício 10 -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-number">10</div>
-                        <div class="card-title">Exercícios - Futuro da Engenharia de Software</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>Avalie sua compreensão sobre as tendências futuras da Engenharia de Software.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="es_exercicios/es_exec10.html" class="btn btn-secondary">
-                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid" id="exercicios-grid">
+                <!-- Os exercícios serão carregados dinamicamente via JavaScript -->
             </div>
         </div>
         
@@ -622,6 +492,248 @@
     </div>
 
     <script>
+        // Dados das aulas e exercícios
+        const aulas = [
+            { id: 1, title: "Engenharia de Software", file: "01_engenharia_software.html", description: "Introdução aos conceitos básicos da Engenharia de Software, ciclo de vida do desenvolvimento e importância da disciplina." },
+            { id: 2, title: "Engenharia de Requisitos", file: "02_engenharia_requisitos.html", description: "Estudo dos processos de elicitação, análise, especificação e validação de requisitos de software." },
+            { id: 3, title: "Modelagem e Arquitetura", file: "03_modelagem_arquitetura.html", description: "Princípios de modelagem de software, padrões arquiteturais e técnicas de design de sistemas." },
+            { id: 4, title: "Teste de Software", file: "04_teste_software.html", description: "Estratégias, técnicas e ferramentas para teste de software, garantindo qualidade e confiabilidade." },
+            { id: 5, title: "Manutenção de Software", file: "05_manutencao_software.html", description: "Processos e técnicas para manutenção e evolução de sistemas de software existentes." },
+            { id: 6, title: "Gestão de Projeto", file: "06_gestao_projeto.html", description: "Planejamento, estimativa, acompanhamento e controle de projetos de software." },
+            { id: 7, title: "Qualidade de Software", file: "07_qualidade_software.html", description: "Métricas, padrões e processos para garantir a qualidade em produtos de software." },
+            { id: 8, title: "Processos Ágeis", file: "08_processos_ageis.html", description: "Metodologias ágeis como Scrum, Kanban e XP para desenvolvimento iterativo e incremental." },
+            { id: 9, title: "IA na Engenharia de Software", file: "09_ia_engenharia.html", description: "Aplicações de inteligência artificial no desenvolvimento, testes e manutenção de software." },
+            { id: 10, title: "Futuro da Engenharia de Software", file: "10_futuro_engenharia.html", description: "Tendências emergentes e o futuro da profissão de engenheiro de software." }
+        ];
+
+        const exercicios = [
+            { id: 1, title: "Exercícios - Engenharia de Software", file: "es_exec01.html", description: "Teste seus conhecimentos sobre os conceitos fundamentais da Engenharia de Software." },
+            { id: 2, title: "Exercícios - Engenharia de Requisitos", file: "es_exec02.html", description: "Avalie seu entendimento sobre processos de elicitação e especificação de requisitos." },
+            { id: 3, title: "Exercícios - Modelagem e Arquitetura", file: "es_exec03.html", description: "Pratique conceitos de modelagem de software e padrões arquiteturais." },
+            { id: 4, title: "Exercícios - Teste de Software", file: "es_exec04.html", description: "Teste seus conhecimentos sobre estratégias e técnicas de teste de software." },
+            { id: 5, title: "Exercícios - Manutenção de Software", file: "es_exec05.html", description: "Avalie seu domínio sobre processos de manutenção e evolução de sistemas." },
+            { id: 6, title: "Exercícios - Gestão de Projeto", file: "es_exec06.html", description: "Pratique conceitos de planejamento e controle de projetos de software." },
+            { id: 7, title: "Exercícios - Qualidade de Software", file: "es_exec07.html", description: "Teste seus conhecimentos sobre métricas e processos de qualidade de software." },
+            { id: 8, title: "Exercícios - Processos Ágeis", file: "es_exec08.html", description: "Avalie seu entendimento sobre metodologias ágeis de desenvolvimento." },
+            { id: 9, title: "Exercícios - IA na Engenharia de Software", file: "es_exec09.html", description: "Teste seus conhecimentos sobre aplicações de IA na Engenharia de Software." },
+            { id: 10, title: "Exercícios - Futuro da Engenharia de Software", file: "es_exec10.html", description: "Avalie sua compreensão sobre as tendências futuras da Engenharia de Software." }
+        ];
+
+        // Estado da aplicação
+        let currentUser = null;
+        let aulasLiberadas = 1; // Padrão: apenas a primeira aula liberada
+        let exerciciosLiberados = 1; // Padrão: apenas o primeiro exercício liberado
+
+        // Elementos DOM
+        const loginScreen = document.getElementById('login-screen');
+        const mainContent = document.getElementById('main-content');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userRoleSpan = document.getElementById('user-role');
+        const adminBadge = document.getElementById('admin-badge');
+        const adminPanel = document.getElementById('admin-panel');
+        const aulasLiberadasSelect = document.getElementById('aulas-liberadas');
+        const exerciciosLiberadosSelect = document.getElementById('exercicios-liberados');
+        const aplicarConfigBtn = document.getElementById('aplicar-config');
+        const liberarTudoBtn = document.getElementById('liberar-tudo');
+        const bloquearTudoBtn = document.getElementById('bloquear-tudo');
+        const aulasGrid = document.getElementById('aulas-grid');
+        const exerciciosGrid = document.getElementById('exercicios-grid');
+
+        // Sistema de login
+        loginBtn.addEventListener('click', function() {
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            
+            // Verificação simples de login (em um sistema real, isso seria feito no servidor)
+            if (username === 'admin' && password === 'admin123') {
+                currentUser = { username: 'admin', role: 'admin' };
+                showMainContent();
+            } else if (username === 'usuario' && password === 'senha123') {
+                currentUser = { username: 'usuario', role: 'aluno' };
+                showMainContent();
+            } else {
+                alert('Usuário ou senha incorretos! Tente novamente.');
+            }
+        });
+
+        // Também permitir login com Enter
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', function() {
+            currentUser = null;
+            showLoginScreen();
+        });
+
+        function showLoginScreen() {
+            loginScreen.style.display = 'block';
+            mainContent.style.display = 'none';
+            usernameInput.value = '';
+            passwordInput.value = '';
+        }
+
+        function showMainContent() {
+            loginScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+            
+            // Atualizar interface baseada no tipo de usuário
+            if (currentUser.role === 'admin') {
+                userRoleSpan.textContent = 'Administrador';
+                adminBadge.style.display = 'block';
+                adminPanel.style.display = 'block';
+                
+                // Carregar configurações salvas (se houver)
+                const savedAulas = localStorage.getItem('aulasLiberadas');
+                const savedExercicios = localStorage.getItem('exerciciosLiberados');
+                
+                if (savedAulas) aulasLiberadas = parseInt(savedAulas);
+                if (savedExercicios) exerciciosLiberados = parseInt(savedExercicios);
+                
+                aulasLiberadasSelect.value = aulasLiberadas;
+                exerciciosLiberadosSelect.value = exerciciosLiberados;
+            } else {
+                userRoleSpan.textContent = 'Aluno';
+                adminBadge.style.display = 'none';
+                adminPanel.style.display = 'none';
+                
+                // Carregar configurações para alunos
+                const savedAulas = localStorage.getItem('aulasLiberadas');
+                const savedExercicios = localStorage.getItem('exerciciosLiberados');
+                
+                if (savedAulas) aulasLiberadas = parseInt(savedAulas);
+                if (savedExercicios) exerciciosLiberados = parseInt(savedExercicios);
+            }
+            
+            // Carregar conteúdo
+            carregarAulas();
+            carregarExercicios();
+        }
+
+        // Controles administrativos
+        aplicarConfigBtn.addEventListener('click', function() {
+            aulasLiberadas = parseInt(aulasLiberadasSelect.value);
+            exerciciosLiberados = parseInt(exerciciosLiberadosSelect.value);
+            
+            // Salvar configurações
+            localStorage.setItem('aulasLiberadas', aulasLiberadas);
+            localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
+            
+            // Recarregar conteúdo
+            carregarAulas();
+            carregarExercicios();
+            
+            alert('Configurações aplicadas com sucesso!');
+        });
+
+        liberarTudoBtn.addEventListener('click', function() {
+            aulasLiberadas = 10;
+            exerciciosLiberados = 10;
+            
+            aulasLiberadasSelect.value = aulasLiberadas;
+            exerciciosLiberadosSelect.value = exerciciosLiberados;
+            
+            // Salvar configurações
+            localStorage.setItem('aulasLiberadas', aulasLiberadas);
+            localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
+            
+            // Recarregar conteúdo
+            carregarAulas();
+            carregarExercicios();
+            
+            alert('Todo o conteúdo foi liberado!');
+        });
+
+        bloquearTudoBtn.addEventListener('click', function() {
+            aulasLiberadas = 1;
+            exerciciosLiberados = 1;
+            
+            aulasLiberadasSelect.value = aulasLiberadas;
+            exerciciosLiberadosSelect.value = exerciciosLiberados;
+            
+            // Salvar configurações
+            localStorage.setItem('aulasLiberadas', aulasLiberadas);
+            localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
+            
+            // Recarregar conteúdo
+            carregarAulas();
+            carregarExercicios();
+            
+            alert('Todo o conteúdo foi bloqueado (exceto a primeira aula/exercício)!');
+        });
+
+        // Carregar aulas
+        function carregarAulas() {
+            aulasGrid.innerHTML = '';
+            
+            aulas.forEach(aula => {
+                const isLocked = aula.id > aulasLiberadas;
+                
+                const card = document.createElement('div');
+                card.className = `card ${isLocked ? 'locked' : ''}`;
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-number">${aula.id.toString().padStart(2, '0')}</div>
+                        <div class="card-title">${aula.title}</div>
+                        ${isLocked ? '<div class="lock-icon"><i class="fas fa-lock"></i></div>' : ''}
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>${aula.description}</p>
+                        </div>
+                        <div class="card-actions">
+                            ${isLocked ? 
+                                '<button class="btn btn-locked"><i class="fas fa-lock"></i> Bloqueada</button>' : 
+                                `<a href="${aula.file}" class="btn btn-primary"><i class="fas fa-play-circle"></i> Assistir Aula</a>`
+                            }
+                        </div>
+                    </div>
+                `;
+                
+                aulasGrid.appendChild(card);
+            });
+        }
+
+        // Carregar exercícios
+        function carregarExercicios() {
+            exerciciosGrid.innerHTML = '';
+            
+            exercicios.forEach(exercicio => {
+                const isLocked = exercicio.id > exerciciosLiberados;
+                
+                const card = document.createElement('div');
+                card.className = `card ${isLocked ? 'locked' : ''}`;
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-number">${exercicio.id.toString().padStart(2, '0')}</div>
+                        <div class="card-title">${exercicio.title}</div>
+                        ${isLocked ? '<div class="lock-icon"><i class="fas fa-lock"></i></div>' : ''}
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>${exercicio.description}</p>
+                        </div>
+                        <div class="card-actions">
+                            ${isLocked ? 
+                                '<button class="btn btn-locked"><i class="fas fa-lock"></i> Bloqueado</button>' : 
+                                `<a href="${exercicio.file}" class="btn btn-secondary"><i class="fas fa-pencil-alt"></i> Fazer Exercícios</a>`
+                            }
+                        </div>
+                    </div>
+                `;
+                
+                exerciciosGrid.appendChild(card);
+            });
+        }
+
         // Sistema de abas
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('.tab');
@@ -644,16 +756,12 @@
                     });
                 });
             });
-            
-            // Verificar se há um parâmetro na URL para abrir uma aba específica
-            const urlParams = new URLSearchParams(window.location.search);
-            const tabParam = urlParams.get('tab');
-            if (tabParam && (tabParam === 'aulas' || tabParam === 'exercicios')) {
-                const tabToActivate = document.querySelector(`.tab[data-tab="${tabParam}"]`);
-                if (tabToActivate) {
-                    tabToActivate.click();
-                }
-            }
+        });
+
+        // Verificar se já está logado (para demonstração)
+        window.addEventListener('load', function() {
+            // Por padrão, mostrar a tela de login
+            showLoginScreen();
         });
     </script>
 </body>
