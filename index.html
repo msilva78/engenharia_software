@@ -355,6 +355,15 @@
             margin-left: 1rem;
         }
 
+        .demo-notice {
+            background: var(--warning-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .grid {
                 grid-template-columns: 1fr;
@@ -403,8 +412,7 @@
         <button id="login-btn" class="btn btn-primary" style="width: 100%;">Entrar</button>
         <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem;">
             <p><strong>Dicas de login:</strong></p>
-            <p>Aluno: usuario / senha123</p>
-            <p>Admin: admin / admin123</p>
+            <p>Acesso: aluno / aprender</p>            
         </div>
     </div>
 
@@ -492,37 +500,138 @@
     </div>
 
     <script>
-        // Dados das aulas e exercícios
+        // Dados das aulas e exercícios COM CAMINHOS CORRETOS
         const aulas = [
-            { id: 1, title: "Engenharia de Software", file: "01_engenharia_software.html", description: "Introdução aos conceitos básicos da Engenharia de Software, ciclo de vida do desenvolvimento e importância da disciplina." },
-            { id: 2, title: "Engenharia de Requisitos", file: "02_engenharia_requisitos.html", description: "Estudo dos processos de elicitação, análise, especificação e validação de requisitos de software." },
-            { id: 3, title: "Modelagem e Arquitetura", file: "03_modelagem_arquitetura.html", description: "Princípios de modelagem de software, padrões arquiteturais e técnicas de design de sistemas." },
-            { id: 4, title: "Teste de Software", file: "04_teste_software.html", description: "Estratégias, técnicas e ferramentas para teste de software, garantindo qualidade e confiabilidade." },
-            { id: 5, title: "Manutenção de Software", file: "05_manutencao_software.html", description: "Processos e técnicas para manutenção e evolução de sistemas de software existentes." },
-            { id: 6, title: "Gestão de Projeto", file: "06_gestao_projeto.html", description: "Planejamento, estimativa, acompanhamento e controle de projetos de software." },
-            { id: 7, title: "Qualidade de Software", file: "07_qualidade_software.html", description: "Métricas, padrões e processos para garantir a qualidade em produtos de software." },
-            { id: 8, title: "Processos Ágeis", file: "08_processos_ageis.html", description: "Metodologias ágeis como Scrum, Kanban e XP para desenvolvimento iterativo e incremental." },
-            { id: 9, title: "IA na Engenharia de Software", file: "09_ia_engenharia.html", description: "Aplicações de inteligência artificial no desenvolvimento, testes e manutenção de software." },
-            { id: 10, title: "Futuro da Engenharia de Software", file: "10_futuro_engenharia.html", description: "Tendências emergentes e o futuro da profissão de engenheiro de software." }
+            { 
+                id: 1, 
+                title: "Engenharia de Software", 
+                file: "es_aulas/01_engenharia_software.html", 
+                description: "Introdução aos conceitos básicos da Engenharia de Software, ciclo de vida do desenvolvimento e importância da disciplina."
+            },
+            { 
+                id: 2, 
+                title: "Engenharia de Requisitos", 
+                file: "es_aulas/02_engenharia_requisitos.html", 
+                description: "Estudo dos processos de elicitação, análise, especificação e validação de requisitos de software."
+            },
+            { 
+                id: 3, 
+                title: "Modelagem e Arquitetura", 
+                file: "es_aulas/03_modelagem_arquitetura.html", 
+                description: "Princípios de modelagem de software, padrões arquiteturais e técnicas de design de sistemas."
+            },
+            { 
+                id: 4, 
+                title: "Teste de Software", 
+                file: "es_aulas/04_teste_software.html", 
+                description: "Estratégias, técnicas e ferramentas para teste de software, garantindo qualidade e confiabilidade."
+            },
+            { 
+                id: 5, 
+                title: "Manutenção de Software", 
+                file: "es_aulas/05_manutencao_software.html", 
+                description: "Processos e técnicas para manutenção e evolução de sistemas de software existentes."
+            },
+            { 
+                id: 6, 
+                title: "Gestão de Projeto", 
+                file: "es_aulas/06_gestao_projeto.html", 
+                description: "Planejamento, estimativa, acompanhamento e controle de projetos de software."
+            },
+            { 
+                id: 7, 
+                title: "Qualidade de Software", 
+                file: "es_aulas/07_qualidade_software.html", 
+                description: "Métricas, padrões e processos para garantir a qualidade em produtos de software."
+            },
+            { 
+                id: 8, 
+                title: "Processos Ágeis", 
+                file: "es_aulas/08_processos_ageis.html", 
+                description: "Metodologias ágeis como Scrum, Kanban e XP para desenvolvimento iterativo e incremental."
+            },
+            { 
+                id: 9, 
+                title: "IA na Engenharia de Software", 
+                file: "es_aulas/09_ia_engenharia.html", 
+                description: "Aplicações de inteligência artificial no desenvolvimento, testes e manutenção de software."
+            },
+            { 
+                id: 10, 
+                title: "Futuro da Engenharia de Software", 
+                file: "es_aulas/10_futuro_engenharia.html", 
+                description: "Tendências emergentes e o futuro da profissão de engenheiro de software."
+            }
         ];
 
         const exercicios = [
-            { id: 1, title: "Exercícios - Engenharia de Software", file: "es_exec01.html", description: "Teste seus conhecimentos sobre os conceitos fundamentais da Engenharia de Software." },
-            { id: 2, title: "Exercícios - Engenharia de Requisitos", file: "es_exec02.html", description: "Avalie seu entendimento sobre processos de elicitação e especificação de requisitos." },
-            { id: 3, title: "Exercícios - Modelagem e Arquitetura", file: "es_exec03.html", description: "Pratique conceitos de modelagem de software e padrões arquiteturais." },
-            { id: 4, title: "Exercícios - Teste de Software", file: "es_exec04.html", description: "Teste seus conhecimentos sobre estratégias e técnicas de teste de software." },
-            { id: 5, title: "Exercícios - Manutenção de Software", file: "es_exec05.html", description: "Avalie seu domínio sobre processos de manutenção e evolução de sistemas." },
-            { id: 6, title: "Exercícios - Gestão de Projeto", file: "es_exec06.html", description: "Pratique conceitos de planejamento e controle de projetos de software." },
-            { id: 7, title: "Exercícios - Qualidade de Software", file: "es_exec07.html", description: "Teste seus conhecimentos sobre métricas e processos de qualidade de software." },
-            { id: 8, title: "Exercícios - Processos Ágeis", file: "es_exec08.html", description: "Avalie seu entendimento sobre metodologias ágeis de desenvolvimento." },
-            { id: 9, title: "Exercícios - IA na Engenharia de Software", file: "es_exec09.html", description: "Teste seus conhecimentos sobre aplicações de IA na Engenharia de Software." },
-            { id: 10, title: "Exercícios - Futuro da Engenharia de Software", file: "es_exec10.html", description: "Avalie sua compreensão sobre as tendências futuras da Engenharia de Software." }
+            { 
+                id: 1, 
+                title: "Exercícios - Engenharia de Software", 
+                file: "es_exercicios/es_exec01.html", 
+                description: "Teste seus conhecimentos sobre os conceitos fundamentais da Engenharia de Software."
+            },
+            { 
+                id: 2, 
+                title: "Exercícios - Engenharia de Requisitos", 
+                file: "es_exercicios/es_exec02.html", 
+                description: "Avalie seu entendimento sobre processos de elicitação e especificação de requisitos."
+            },
+            { 
+                id: 3, 
+                title: "Exercícios - Modelagem e Arquitetura", 
+                file: "es_exercicios/es_exec03.html", 
+                description: "Pratique conceitos de modelagem de software e padrões arquiteturais."
+            },
+            { 
+                id: 4, 
+                title: "Exercícios - Teste de Software", 
+                file: "es_exercicios/es_exec04.html", 
+                description: "Teste seus conhecimentos sobre estratégias e técnicas de teste de software."
+            },
+            { 
+                id: 5, 
+                title: "Exercícios - Manutenção de Software", 
+                file: "es_exercicios/es_exec05.html", 
+                description: "Avalie seu domínio sobre processos de manutenção e evolução de sistemas."
+            },
+            { 
+                id: 6, 
+                title: "Exercícios - Gestão de Projeto", 
+                file: "es_exercicios/es_exec06.html", 
+                description: "Pratique conceitos de planejamento e controle de projetos de software."
+            },
+            { 
+                id: 7, 
+                title: "Exercícios - Qualidade de Software", 
+                file: "es_exercicios/es_exec07.html", 
+                description: "Teste seus conhecimentos sobre métricas e processos de qualidade de software."
+            },
+            { 
+                id: 8, 
+                title: "Exercícios - Processos Ágeis", 
+                file: "es_exercicios/es_exec08.html", 
+                description: "Avalie seu entendimento sobre metodologias ágeis de desenvolvimento."
+            },
+            { 
+                id: 9, 
+                title: "Exercícios - IA na Engenharia de Software", 
+                file: "es_exercicios/es_exec09.html", 
+                description: "Teste seus conhecimentos sobre aplicações de IA na Engenharia de Software."
+            },
+            { 
+                id: 10, 
+                title: "Exercícios - Futuro da Engenharia de Software", 
+                file: "es_exercicios/es_exec10.html", 
+                description: "Avalie sua compreensão sobre as tendências futuras da Engenharia de Software."
+            }
         ];
 
         // Estado da aplicação
         let currentUser = null;
-        let aulasLiberadas = 1; // Padrão: apenas a primeira aula liberada
-        let exerciciosLiberados = 1; // Padrão: apenas o primeiro exercício liberado
+        let aulasLiberadas = 1;
+        let exerciciosLiberados = 1;
+        let sessionToken = null;
 
         // Elementos DOM
         const loginScreen = document.getElementById('login-screen');
@@ -542,24 +651,33 @@
         const aulasGrid = document.getElementById('aulas-grid');
         const exerciciosGrid = document.getElementById('exercicios-grid');
 
+        // Gerar token de sessão único
+        function generateSessionToken() {
+            return 'token_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        }
+
         // Sistema de login
         loginBtn.addEventListener('click', function() {
             const username = usernameInput.value;
             const password = passwordInput.value;
             
-            // Verificação simples de login (em um sistema real, isso seria feito no servidor)
-            if (username === 'admin' && password === 'admin123') {
+            if (username === 'admin' && password === 'Ensino#23') {
                 currentUser = { username: 'admin', role: 'admin' };
+                sessionToken = generateSessionToken();
+                localStorage.setItem('sessionToken', sessionToken);
+                localStorage.setItem('userRole', 'admin');
                 showMainContent();
-            } else if (username === 'usuario' && password === 'senha123') {
-                currentUser = { username: 'usuario', role: 'aluno' };
+            } else if (username === 'aluno' && password === 'aprender') {
+                currentUser = { username: 'aluno', role: 'aluno' };
+                sessionToken = generateSessionToken();
+                localStorage.setItem('sessionToken', sessionToken);
+                localStorage.setItem('userRole', 'aluno');
                 showMainContent();
             } else {
                 alert('Usuário ou senha incorretos! Tente novamente.');
             }
         });
 
-        // Também permitir login com Enter
         passwordInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 loginBtn.click();
@@ -569,6 +687,9 @@
         // Logout
         logoutBtn.addEventListener('click', function() {
             currentUser = null;
+            sessionToken = null;
+            localStorage.removeItem('sessionToken');
+            localStorage.removeItem('userRole');
             showLoginScreen();
         });
 
@@ -583,13 +704,23 @@
             loginScreen.style.display = 'none';
             mainContent.style.display = 'block';
             
-            // Atualizar interface baseada no tipo de usuário
+            // Verificar se há sessão válida
+            const savedToken = localStorage.getItem('sessionToken');
+            const savedRole = localStorage.getItem('userRole');
+            
+            if (!savedToken || !savedRole) {
+                showLoginScreen();
+                return;
+            }
+            
+            currentUser = { username: savedRole === 'admin' ? 'admin' : 'usuario', role: savedRole };
+            sessionToken = savedToken;
+            
             if (currentUser.role === 'admin') {
                 userRoleSpan.textContent = 'Administrador';
                 adminBadge.style.display = 'block';
                 adminPanel.style.display = 'block';
                 
-                // Carregar configurações salvas (se houver)
                 const savedAulas = localStorage.getItem('aulasLiberadas');
                 const savedExercicios = localStorage.getItem('exerciciosLiberados');
                 
@@ -603,7 +734,6 @@
                 adminBadge.style.display = 'none';
                 adminPanel.style.display = 'none';
                 
-                // Carregar configurações para alunos
                 const savedAulas = localStorage.getItem('aulasLiberadas');
                 const savedExercicios = localStorage.getItem('exerciciosLiberados');
                 
@@ -611,7 +741,6 @@
                 if (savedExercicios) exerciciosLiberados = parseInt(savedExercicios);
             }
             
-            // Carregar conteúdo
             carregarAulas();
             carregarExercicios();
         }
@@ -621,11 +750,9 @@
             aulasLiberadas = parseInt(aulasLiberadasSelect.value);
             exerciciosLiberados = parseInt(exerciciosLiberadosSelect.value);
             
-            // Salvar configurações
             localStorage.setItem('aulasLiberadas', aulasLiberadas);
             localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
             
-            // Recarregar conteúdo
             carregarAulas();
             carregarExercicios();
             
@@ -639,11 +766,9 @@
             aulasLiberadasSelect.value = aulasLiberadas;
             exerciciosLiberadosSelect.value = exerciciosLiberados;
             
-            // Salvar configurações
             localStorage.setItem('aulasLiberadas', aulasLiberadas);
             localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
             
-            // Recarregar conteúdo
             carregarAulas();
             carregarExercicios();
             
@@ -657,16 +782,52 @@
             aulasLiberadasSelect.value = aulasLiberadas;
             exerciciosLiberadosSelect.value = exerciciosLiberados;
             
-            // Salvar configurações
             localStorage.setItem('aulasLiberadas', aulasLiberadas);
             localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
             
-            // Recarregar conteúdo
             carregarAulas();
             carregarExercicios();
             
             alert('Todo o conteúdo foi bloqueado (exceto a primeira aula/exercício)!');
         });
+
+        // Função para abrir conteúdo com verificação de segurança
+        function abrirConteudo(tipo, id) {
+            // Verificar se o usuário está logado
+            const savedToken = localStorage.getItem('sessionToken');
+            if (!savedToken) {
+                alert('Sessão expirada. Faça login novamente.');
+                showLoginScreen();
+                return;
+            }
+            
+            // Verificar se o conteúdo está liberado
+            if (tipo === 'aula' && id > aulasLiberadas) {
+                alert('Esta aula ainda não foi liberada!');
+                return;
+            }
+            
+            if (tipo === 'exercicio' && id > exerciciosLiberados) {
+                alert('Este exercício ainda não foi liberado!');
+                return;
+            }
+            
+            // Gerar URL segura com token de sessão
+            let url;
+            if (tipo === 'aula') {
+                const aula = aulas.find(a => a.id === id);
+                if (aula) {
+                    url = `${aula.file}?token=${sessionToken}&aulaId=${id}&tipo=aula`;
+                    window.open(url, '_blank');
+                }
+            } else if (tipo === 'exercicio') {
+                const exercicio = exercicios.find(e => e.id === id);
+                if (exercicio) {
+                    url = `${exercicio.file}?token=${sessionToken}&exercicioId=${id}&tipo=exercicio`;
+                    window.open(url, '_blank');
+                }
+            }
+        }
 
         // Carregar aulas
         function carregarAulas() {
@@ -691,7 +852,7 @@
                         <div class="card-actions">
                             ${isLocked ? 
                                 '<button class="btn btn-locked"><i class="fas fa-lock"></i> Bloqueada</button>' : 
-                                `<a href="${aula.file}" class="btn btn-primary"><i class="fas fa-play-circle"></i> Assistir Aula</a>`
+                                `<button class="btn btn-primary" onclick="abrirConteudo('aula', ${aula.id})"><i class="fas fa-play-circle"></i> Assistir Aula</button>`
                             }
                         </div>
                     </div>
@@ -724,7 +885,7 @@
                         <div class="card-actions">
                             ${isLocked ? 
                                 '<button class="btn btn-locked"><i class="fas fa-lock"></i> Bloqueado</button>' : 
-                                `<a href="${exercicio.file}" class="btn btn-secondary"><i class="fas fa-pencil-alt"></i> Fazer Exercícios</a>`
+                                `<button class="btn btn-secondary" onclick="abrirConteudo('exercicio', ${exercicio.id})"><i class="fas fa-pencil-alt"></i> Fazer Exercícios</button>`
                             }
                         </div>
                     </div>
@@ -743,11 +904,9 @@
                 tab.addEventListener('click', function() {
                     const target = this.getAttribute('data-tab');
                     
-                    // Atualizar abas ativas
                     tabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Atualizar seções ativas
                     sections.forEach(section => {
                         section.classList.remove('active');
                         if (section.id === `${target}-section`) {
@@ -756,13 +915,22 @@
                     });
                 });
             });
+            
+            // Verificar se já existe uma sessão ativa
+            const savedToken = localStorage.getItem('sessionToken');
+            const savedRole = localStorage.getItem('userRole');
+            
+            if (savedToken && savedRole) {
+                currentUser = { username: savedRole === 'admin' ? 'admin' : 'usuario', role: savedRole };
+                sessionToken = savedToken;
+                showMainContent();
+            } else {
+                showLoginScreen();
+            }
         });
 
-        // Verificar se já está logado (para demonstração)
-        window.addEventListener('load', function() {
-            // Por padrão, mostrar a tela de login
-            showLoginScreen();
-        });
+        // Tornar a função abrirConteudo global
+        window.abrirConteudo = abrirConteudo;
     </script>
 </body>
 </html>
