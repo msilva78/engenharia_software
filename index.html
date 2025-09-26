@@ -327,6 +327,7 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .link-container {
@@ -355,6 +356,16 @@
             padding: 0.5rem 1rem;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .config-info {
+            background: var(--warning-color);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            text-align: center;
             font-size: 0.9rem;
         }
 
@@ -466,6 +477,12 @@
         <!-- Painel de Administração (visível apenas para admin) -->
         <div id="admin-panel" class="admin-panel" style="display: none;">
             <h2 class="admin-title">Painel de Controle de Acesso</h2>
+            
+            <div class="config-info">
+                <i class="fas fa-info-circle"></i> 
+                Configure as liberações e compartilhe o link gerado com os alunos
+            </div>
+            
             <div class="admin-controls">
                 <div class="control-group">
                     <label for="aulas-liberadas">Aulas Liberadas:</label>
@@ -534,7 +551,7 @@
     </div>
 
     <script>
-        // Dados das aulas e exercícios COM CAMINHOS CORRETOS
+        // Dados das aulas e exercícios
         const aulas = [
             { 
                 id: 1, 
@@ -738,6 +755,7 @@
             passwordInput.value = '';
         }
 
+        // FUNÇÃO PRINCIPAL CORRIGIDA - Agora funciona online!
         function showMainContent() {
             loginScreen.style.display = 'none';
             mainContent.style.display = 'block';
@@ -754,23 +772,25 @@
             currentUser = { username: savedRole === 'admin' ? 'admin' : 'aluno', role: savedRole };
             sessionToken = savedToken;
             
-            // VERIFICAÇÃO DE LIBERAÇÃO VIA URL (NOVA FUNCIONALIDADE)
+            // SISTEMA CORRIGIDO: Agora funciona online via URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const aulasLib = urlParams.get('aulas');
             const exerLib = urlParams.get('exercicios');
+            
+            console.log('URL Parameters:', { aulasLib, exerLib }); // Debug
             
             if (currentUser.role === 'admin') {
                 userRoleSpan.textContent = 'Administrador';
                 adminBadge.style.display = 'block';
                 adminPanel.style.display = 'block';
                 
-                // Prioridade: URL > localStorage > padrão
+                // Admin: URL tem prioridade, depois localStorage
                 if (aulasLib) {
                     aulasLiberadas = parseInt(aulasLib);
                     localStorage.setItem('aulasLiberadas', aulasLiberadas);
                 } else {
                     const savedAulas = localStorage.getItem('aulasLiberadas');
-                    aulasLiberadas = savedAulas ? parseInt(savedAulas) : 1;
+                    aulasLiberadas = savedAulas ? parseInt(savedAulas) : 10; // Padrão: todas liberadas para admin
                 }
                 
                 if (exerLib) {
@@ -778,34 +798,48 @@
                     localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
                 } else {
                     const savedExercicios = localStorage.getItem('exerciciosLiberados');
-                    exerciciosLiberados = savedExercicios ? parseInt(savedExercicios) : 1;
+                    exerciciosLiberados = savedExercicios ? parseInt(savedExercicios) : 10; // Padrão: todos liberados
                 }
                 
                 aulasLiberadasSelect.value = aulasLiberadas;
                 exerciciosLiberadosSelect.value = exerciciosLiberados;
+                
             } else {
+                // ALUNO: Sempre usa os parâmetros da URL (funciona online)
                 userRoleSpan.textContent = 'Aluno';
                 adminBadge.style.display = 'none';
                 adminPanel.style.display = 'none';
                 
-                // Para aluno: URL > localStorage > padrão
                 if (aulasLib) {
                     aulasLiberadas = parseInt(aulasLib);
+                    console.log('Aluno - Aulas liberadas via URL:', aulasLiberadas);
                 } else {
-                    const savedAulas = localStorage.getItem('aulasLiberadas');
-                    aulasLiberadas = savedAulas ? parseInt(savedAulas) : 1;
+                    // Se não há parâmetros na URL, usa valor padrão (mais restritivo)
+                    aulasLiberadas = 1;
+                    console.log('Aluno - Usando valor padrão para aulas:', aulasLiberadas);
                 }
                 
                 if (exerLib) {
                     exerciciosLiberados = parseInt(exerLib);
+                    console.log('Aluno - Exercícios liberados via URL:', exerciciosLiberados);
                 } else {
-                    const savedExercicios = localStorage.getItem('exerciciosLiberados');
-                    exerciciosLiberados = savedExercicios ? parseInt(savedExercicios) : 1;
+                    // Se não há parâmetros na URL, usa valor padrão (mais restritivo)
+                    exerciciosLiberados = 1;
+                    console.log('Aluno - Usando valor padrão para exercícios:', exerciciosLiberados);
                 }
             }
             
             carregarAulas();
             carregarExercicios();
+            
+            // Mostrar informações de debug (útil para testar)
+            if (currentUser.role === 'aluno') {
+                console.log('Configurações finais para aluno:', {
+                    aulasLiberadas,
+                    exerciciosLiberados,
+                    url: window.location.href
+                });
+            }
         }
 
         // Controles administrativos
@@ -822,32 +856,37 @@
             alert('Configurações aplicadas com sucesso!');
         });
 
-        // Gerar link para alunos
+        // GERAR LINK PARA ALUNOS - AGORA FUNCIONA ONLINE
         gerarLinkBtn.addEventListener('click', function() {
             const aulasLib = aulasLiberadasSelect.value;
             const exerLib = exerciciosLiberadosSelect.value;
             
-            // Gera link com as configurações atuais
-            const baseUrl = window.location.href.split('?')[0];
+            // Gera link COM os parâmetros de liberação
+            const baseUrl = 'https://msilva78.github.io/engenharia_software/';
             const linkAlunos = `${baseUrl}?aulas=${aulasLib}&exercicios=${exerLib}`;
             
             generatedLink.textContent = linkAlunos;
             linkContainer.style.display = 'block';
-        });
-
-        // Copiar link para área de transferência
-        copyLinkBtn.addEventListener('click', function() {
-            const linkText = generatedLink.textContent;
-            navigator.clipboard.writeText(linkText).then(function() {
-                alert('Link copiado para a área de transferência! Compartilhe com os alunos.');
+            
+            // Copia automaticamente para facilitar
+            navigator.clipboard.writeText(linkAlunos).then(function() {
+                alert('Link gerado e copiado! Compartilhe este link com os alunos:\n\n' + linkAlunos);
             }).catch(function() {
-                // Fallback para navegadores mais antigos
+                // Fallback
                 const textArea = document.createElement('textarea');
-                textArea.value = linkText;
+                textArea.value = linkAlunos;
                 document.body.appendChild(textArea);
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
+                alert('Link gerado! Compartilhe: ' + linkAlunos);
+            });
+        });
+
+        // Copiar link manualmente
+        copyLinkBtn.addEventListener('click', function() {
+            const linkText = generatedLink.textContent;
+            navigator.clipboard.writeText(linkText).then(function() {
                 alert('Link copiado para a área de transferência!');
             });
         });
@@ -884,7 +923,7 @@
             alert('Todo o conteúdo foi bloqueado (exceto a primeira aula/exercício)!');
         });
 
-        // Função para abrir conteúdo com verificação de segurança
+        // Função para abrir conteúdo
         function abrirConteudo(tipo, id) {
             // Verificar se o usuário está logado
             const savedToken = localStorage.getItem('sessionToken');
@@ -905,18 +944,18 @@
                 return;
             }
             
-            // Gerar URL segura com token de sessão e parâmetros de liberação
+            // Gerar URL segura
             let url;
             if (tipo === 'aula') {
                 const aula = aulas.find(a => a.id === id);
                 if (aula) {
-                    url = `${aula.file}?token=${sessionToken}&aulaId=${id}&tipo=aula&aulas=${aulasLiberadas}&exercicios=${exerciciosLiberados}`;
+                    url = `${aula.file}?token=${sessionToken}&aulaId=${id}&tipo=aula`;
                     window.open(url, '_blank');
                 }
             } else if (tipo === 'exercicio') {
                 const exercicio = exercicios.find(e => e.id === id);
                 if (exercicio) {
-                    url = `${exercicio.file}?token=${sessionToken}&exercicioId=${id}&tipo=exercicio&aulas=${aulasLiberadas}&exercicios=${exerciciosLiberados}`;
+                    url = `${exercicio.file}?token=${sessionToken}&exercicioId=${id}&tipo=exercicio`;
                     window.open(url, '_blank');
                 }
             }
