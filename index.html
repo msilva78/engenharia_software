@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Seu CSS original (sem alterações) */
         :root {
             --primary-color: #4A90E2;
             --secondary-color: #FFB642;
@@ -19,400 +20,62 @@
             --warning-color: #f39c12;
             --locked-color: #95a5a6;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--background-dark);
-            color: var(--text-dark);
-            line-height: 1.6;
-            font-family: 'Lato', sans-serif;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem;
-            background: linear-gradient(to right, var(--primary-color), #6aa8e8);
-            border-radius: 15px;
-            color: white;
-            box-shadow: var(--card-shadow);
-            position: relative;
-        }
-
-        h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.4rem;
-            opacity: 0.9;
-        }
-
-        .admin-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--secondary-color);
-            color: var(--text-dark);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .portal-description {
-            max-width: 800px;
-            margin: 2rem auto;
-            text-align: center;
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: white;
-        }
-
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-            background: white;
-            border-radius: 50px;
-            padding: 0.5rem;
-            box-shadow: var(--card-shadow);
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .tab {
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-align: center;
-            flex: 1;
-        }
-
-        .tab.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-        }
-
-        .card.locked {
-            opacity: 0.7;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .card.locked:hover {
-            transform: none;
-            box-shadow: var(--card-shadow);
-        }
-
-        .card-header {
-            padding: 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            text-align: center;
-            position: relative;
-        }
-
-        .card.locked .card-header {
-            background: var(--locked-color);
-        }
-
-        .card-number {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .card-content {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-description {
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: auto;
-        }
-
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-            flex: 1;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            color: var(--text-dark);
-        }
-
-        .btn-locked {
-            background-color: var(--locked-color);
-            color: white;
-            cursor: not-allowed;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-locked:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .lock-icon {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .login-container {
-            max-width: 400px;
-            margin: 5rem auto;
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .login-title {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-family: 'Poppins', sans-serif;
-            color: var(--primary-color);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .admin-panel {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .admin-title {
-            font-family: 'Poppins', sans-serif;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .admin-controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .control-group label {
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .control-group select {
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .admin-actions {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .config-status {
-            background: #e8f4fd;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: white;
-        }
-
-        .loading i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 4rem;
-            padding: 2rem;
-            color: rgba(255, 255, 255, 0.7);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .user-info {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .logout-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            margin-left: 1rem;
-        }
-
-        .demo-notice {
-            background: var(--warning-color);
-            color: white;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--background-dark); color: var(--text-dark); line-height: 1.6; font-family: 'Lato', sans-serif; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 3rem; padding: 2rem; background: linear-gradient(to right, var(--primary-color), #6aa8e8); border-radius: 15px; color: white; box-shadow: var(--card-shadow); position: relative; }
+        h1 { font-family: 'Poppins', sans-serif; font-size: 2.8rem; margin-bottom: 0.5rem; }
+        .subtitle { font-size: 1.4rem; opacity: 0.9; }
+        .admin-badge { position: absolute; top: 1rem; right: 1rem; background: var(--secondary-color); color: var(--text-dark); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: bold; }
+        .portal-description { max-width: 800px; margin: 2rem auto; text-align: center; font-size: 1.2rem; line-height: 1.8; color: white; }
+        .tabs { display: flex; justify-content: center; margin-bottom: 2rem; background: white; border-radius: 50px; padding: 0.5rem; box-shadow: var(--card-shadow); max-width: 500px; margin-left: auto; margin-right: auto; }
+        .tab { padding: 0.8rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; transition: all 0.3s; text-align: center; flex: 1; }
+        .tab.active { background-color: var(--primary-color); color: white; }
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; height: 100%; position: relative; }
+        .card.locked { opacity: 0.7; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); }
+        .card.locked:hover { transform: none; box-shadow: var(--card-shadow); }
+        .card-header { padding: 1.5rem; background: var(--primary-color); color: white; text-align: center; position: relative; }
+        .card.locked .card-header { background: var(--locked-color); }
+        .card-number { font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem; opacity: 0.9; }
+        .card-title { font-size: 1.4rem; font-family: 'Poppins', sans-serif; }
+        .card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-description { margin-bottom: 1.5rem; flex-grow: 1; }
+        .card-actions { display: flex; gap: 1rem; margin-top: auto; }
+        .btn { padding: 0.8rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s; flex: 1; text-align: center; border: none; cursor: pointer; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-secondary { background-color: var(--secondary-color); color: var(--text-dark); }
+        .btn-locked { background-color: var(--locked-color); color: white; cursor: not-allowed; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+        .btn-locked:hover { transform: none; box-shadow: none; }
+        .lock-icon { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; color: white; }
+        .login-container { max-width: 400px; margin: 5rem auto; background: white; border-radius: 15px; padding: 2rem; box-shadow: var(--card-shadow); }
+        .login-title { text-align: center; margin-bottom: 1.5rem; font-family: 'Poppins', sans-serif; color: var(--primary-color); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+        .admin-panel { background: white; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; box-shadow: var(--card-shadow); }
+        .admin-title { font-family: 'Poppins', sans-serif; color: var(--primary-color); margin-bottom: 1.5rem; text-align: center; }
+        .admin-controls { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .control-group { display: flex; flex-direction: column; }
+        .control-group label { margin-bottom: 0.5rem; font-weight: 600; }
+        .control-group select { padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+        .admin-actions { display: flex; justify-content: center; gap: 1rem; }
+        footer { text-align: center; margin-top: 4rem; padding: 2rem; color: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .user-info { position: absolute; top: 1rem; left: 1rem; background: rgba(255, 255, 255, 0.2); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; }
+        .logout-btn { background: none; border: none; color: white; cursor: pointer; margin-left: 1rem; }
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .portal-description {
-                font-size: 1.1rem;
-            }
-            
-            .tabs {
-                flex-direction: column;
-                border-radius: 15px;
-            }
-            
-            .tab {
-                border-radius: 10px;
-                margin-bottom: 0.5rem;
-            }
-            
-            .admin-controls {
-                grid-template-columns: 1fr;
-            }
-            
-            .admin-actions {
-                flex-direction: column;
-            }
+            .grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.2rem; }
+            .portal-description { font-size: 1.1rem; }
+            .tabs { flex-direction: column; border-radius: 15px; }
+            .tab { border-radius: 10px; margin-bottom: 0.5rem; }
+            .admin-controls { grid-template-columns: 1fr; }
+            .admin-actions { flex-direction: column; }
         }
     </style>
 </head>
@@ -428,23 +91,15 @@
             <label for="password">Senha:</label>
             <input type="password" id="password" placeholder="Digite sua senha">
         </div>
-        <button id="login-btn" class="btn btn-primary" style="width: 100%;">Entrar</button>
+        <button id="login-btn" class="btn btn-primary" style="width: 100%">Entrar</button>
         <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem;">
             <p><strong>Dicas de login:</strong></p>
-            <p>Aluno: aluno / aprender</p>
+            <p>Acesso: aluno / aprender</p>
         </div>
     </div>
 
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="container" style="display: none;">
-        <div class="loading">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Carregando configurações...</p>
-        </div>
-    </div>
-
-    <!-- Conteúdo Principal (inicialmente oculto) -->
-    <div id="main-content" class="container" style="display: none;">
+    <!-- Conteúdo Principal -->
+    <div id="main-content" class="container" style="display: none">
         <header>
             <div class="user-info">
                 Logado como: <span id="user-role">Usuário</span>
@@ -452,588 +107,106 @@
             </div>
             <h1>Portal de Engenharia de Software</h1>
             <p class="subtitle">Prof. Marcelo Silva | Análise de Desenvolvimento de Sistemas</p>
-            <div id="admin-badge" class="admin-badge" style="display: none;">
+            <div id="admin-badge" class="admin-badge" style="display: none">
                 <i class="fas fa-cog"></i> Modo Administrador
             </div>
         </header>
-        
+
         <div class="portal-description">
-            <p>Explore as 10 aulas do curso de Engenharia de Software e teste seus conhecimentos com os exercícios de fixação. Cada aula aborda um tópico fundamental para a formação de um profissional completo na área.</p>
+            <p>Explore as aulas do curso e teste seus conhecimentos. O acesso é controlado pela planilha no Google Sheets.</p>
         </div>
-        
-        <!-- Painel de Administração (visível apenas para admin) -->
-        <div id="admin-panel" class="admin-panel" style="display: none;">
-            <h2 class="admin-title">Painel de Controle de Acesso</h2>
-            <div class="config-status">
-                <p><strong>Configuração Central via Google Sheets</strong></p>
-                <p>As alterações aqui afetam TODOS os alunos instantaneamente</p>
-            </div>
+
+        <!-- Painel Admin -->
+        <div id="admin-panel" class="admin-panel" style="display: none">
+            <h2 class="admin-title">Painel de Controle</h2>
             <div class="admin-controls">
                 <div class="control-group">
                     <label for="aulas-liberadas">Aulas Liberadas:</label>
-                    <select id="aulas-liberadas">
-                        <option value="1">1 aula</option>
-                        <option value="2">2 aulas</option>
-                        <option value="3">3 aulas</option>
-                        <option value="4">4 aulas</option>
-                        <option value="5">5 aulas</option>
-                        <option value="6">6 aulas</option>
-                        <option value="7">7 aulas</option>
-                        <option value="8">8 aulas</option>
-                        <option value="9">9 aulas</option>
-                        <option value="10">10 aulas (todas)</option>
-                    </select>
+                    <select id="aulas-liberadas"></select>
                 </div>
                 <div class="control-group">
                     <label for="exercicios-liberados">Exercícios Liberados:</label>
-                    <select id="exercicios-liberados">
-                        <option value="1">1 exercício</option>
-                        <option value="2">2 exercícios</option>
-                        <option value="3">3 exercícios</option>
-                        <option value="4">4 exercícios</option>
-                        <option value="5">5 exercícios</option>
-                        <option value="6">6 exercícios</option>
-                        <option value="7">7 exercícios</option>
-                        <option value="8">8 exercícios</option>
-                        <option value="9">9 exercícios</option>
-                        <option value="10">10 exercícios (todos)</option>
-                    </select>
+                    <select id="exercicios-liberados"></select>
                 </div>
             </div>
             <div class="admin-actions">
-                <button id="aplicar-config" class="btn btn-primary">Aplicar Configurações</button>
-                <button id="liberar-tudo" class="btn btn-secondary">Liberar Tudo</button>
-                <button id="bloquear-tudo" class="btn btn-locked">Bloquear Tudo</button>
+                <button id="aplicar-config" class="btn btn-primary">Aplicar</button>
             </div>
-            <div id="admin-status" style="margin-top: 1rem; text-align: center;"></div>
         </div>
-        
+
         <div class="tabs">
             <div class="tab active" data-tab="aulas">Aulas</div>
             <div class="tab" data-tab="exercicios">Exercícios</div>
         </div>
-        
+
         <div class="content-section active" id="aulas-section">
-            <div class="grid" id="aulas-grid">
-                <!-- As aulas serão carregadas dinamicamente via JavaScript -->
-            </div>
+            <div class="grid" id="aulas-grid"></div>
         </div>
-        
         <div class="content-section" id="exercicios-section">
-            <div class="grid" id="exercicios-grid">
-                <!-- Os exercícios serão carregados dinamicamente via JavaScript -->
-            </div>
+            <div class="grid" id="exercicios-grid"></div>
         </div>
-        
+
         <footer>
             <p>Portal de Engenharia de Software - Prof. Marcelo Silva</p>
-            <p>Análise de Desenvolvimento de Sistemas</p>
         </footer>
     </div>
 
     <script>
-        // 🔧 CONFIGURAÇÃO - COLE SEU ID DA PLANILHA AQUI!
-        const GOOGLE_SHEET_ID = '1XzuyzwpIbGyj2BobsLVnCJW9hCBdN0j5IhpAki7aHfg';
-        
-        // Dados das aulas e exercícios
-        const aulas = [
-            { 
-                id: 1, 
-                title: "Engenharia de Software", 
-                file: "es_aulas/01_engenharia_software.html", 
-                description: "Introdução aos conceitos básicos da Engenharia de Software, ciclo de vida do desenvolvimento e importância da disciplina."
-            },
-            { 
-                id: 2, 
-                title: "Engenharia de Requisitos", 
-                file: "es_aulas/02_engenharia_requisitos.html", 
-                description: "Estudo dos processos de elicitação, análise, especificação e validação de requisitos de software."
-            },
-            { 
-                id: 3, 
-                title: "Modelagem e Arquitetura", 
-                file: "es_aulas/03_modelagem_arquitetura.html", 
-                description: "Princípios de modelagem de software, padrões arquiteturais e técnicas de design de sistemas."
-            },
-            { 
-                id: 4, 
-                title: "Teste de Software", 
-                file: "es_aulas/04_teste_software.html", 
-                description: "Estratégias, técnicas e ferramentas para teste de software, garantindo qualidade e confiabilidade."
-            },
-            { 
-                id: 5, 
-                title: "Manutenção de Software", 
-                file: "es_aulas/05_manutencao_software.html", 
-                description: "Processos e técnicas para manutenção e evolução de sistemas de software existentes."
-            },
-            { 
-                id: 6, 
-                title: "Gestão de Projeto", 
-                file: "es_aulas/06_gestao_projeto.html", 
-                description: "Planejamento, estimativa, acompanhamento e controle de projetos de software."
-            },
-            { 
-                id: 7, 
-                title: "Qualidade de Software", 
-                file: "es_aulas/07_qualidade_software.html", 
-                description: "Métricas, padrões e processos para garantir a qualidade em produtos de software."
-            },
-            { 
-                id: 8, 
-                title: "Processos Ágeis", 
-                file: "es_aulas/08_processos_ageis.html", 
-                description: "Metodologias ágeis como Scrum, Kanban e XP para desenvolvimento iterativo e incremental."
-            },
-            { 
-                id: 9, 
-                title: "IA na Engenharia de Software", 
-                file: "es_aulas/09_ia_engenharia.html", 
-                description: "Aplicações de inteligência artificial no desenvolvimento, testes e manutenção de software."
-            },
-            { 
-                id: 10, 
-                title: "Futuro da Engenharia de Software", 
-                file: "es_aulas/10_futuro_engenharia.html", 
-                description: "Tendências emergentes e o futuro da profissão de engenheiro de software."
-            }
-        ];
+        const GOOGLE_SHEET_ID = "1XzuyzwpIbGyj2BobsLVnCJW9hCBdN0j5IhpAki7aHfg";
 
-        const exercicios = [
-            { 
-                id: 1, 
-                title: "Exercícios - Engenharia de Software", 
-                file: "es_exercicios/es_exec01.html", 
-                description: "Teste seus conhecimentos sobre os conceitos fundamentais da Engenharia de Software."
-            },
-            { 
-                id: 2, 
-                title: "Exercícios - Engenharia de Requisitos", 
-                file: "es_exercicios/es_exec02.html", 
-                description: "Avalie seu entendimento sobre processos de elicitação e especificação de requisitos."
-            },
-            { 
-                id: 3, 
-                title: "Exercícios - Modelagem e Arquitetura", 
-                file: "es_exercicios/es_exec03.html", 
-                description: "Pratique conceitos de modelagem de software e padrões arquiteturais."
-            },
-            { 
-                id: 4, 
-                title: "Exercícios - Teste de Software", 
-                file: "es_exercicios/es_exec04.html", 
-                description: "Teste seus conhecimentos sobre estratégias e técnicas de teste de software."
-            },
-            { 
-                id: 5, 
-                title: "Exercícios - Manutenção de Software", 
-                file: "es_exercicios/es_exec05.html", 
-                description: "Avalie seu domínio sobre processos de manutenção e evolução de sistemas."
-            },
-            { 
-                id: 6, 
-                title: "Exercícios - Gestão de Projeto", 
-                file: "es_exercicios/es_exec06.html", 
-                description: "Pratique conceitos de planejamento e controle de projetos de software."
-            },
-            { 
-                id: 7, 
-                title: "Exercícios - Qualidade de Software", 
-                file: "es_exercicios/es_exec07.html", 
-                description: "Teste seus conhecimentos sobre métricas e processos de qualidade de software."
-            },
-            { 
-                id: 8, 
-                title: "Exercícios - Processos Ágeis", 
-                file: "es_exercicios/es_exec08.html", 
-                description: "Avalie seu entendimento sobre metodologias ágeis de desenvolvimento."
-            },
-            { 
-                id: 9, 
-                title: "Exercícios - IA na Engenharia de Software", 
-                file: "es_exercicios/es_exec09.html", 
-                description: "Teste seus conhecimentos sobre aplicações de IA na Engenharia de Software."
-            },
-            { 
-                id: 10, 
-                title: "Exercícios - Futuro da Engenharia de Software", 
-                file: "es_exercicios/es_exec10.html", 
-                description: "Avalie sua compreensão sobre as tendências futuras da Engenharia de Software."
-            }
-        ];
-
-        // Estado da aplicação
-        let currentUser = null;
-        let aulasLiberadas = 1;
-        let exerciciosLiberados = 1;
-        let sessionToken = null;
-
-        // Elementos DOM
-        const loginScreen = document.getElementById('login-screen');
-        const loadingScreen = document.getElementById('loading-screen');
-        const mainContent = document.getElementById('main-content');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const loginBtn = document.getElementById('login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        const userRoleSpan = document.getElementById('user-role');
-        const adminBadge = document.getElementById('admin-badge');
-        const adminPanel = document.getElementById('admin-panel');
-        const aulasLiberadasSelect = document.getElementById('aulas-liberadas');
-        const exerciciosLiberadosSelect = document.getElementById('exercicios-liberados');
-        const aplicarConfigBtn = document.getElementById('aplicar-config');
-        const liberarTudoBtn = document.getElementById('liberar-tudo');
-        const bloquearTudoBtn = document.getElementById('bloquear-tudo');
-        const adminStatus = document.getElementById('admin-status');
-        const aulasGrid = document.getElementById('aulas-grid');
-        const exerciciosGrid = document.getElementById('exercicios-grid');
-
-        // 🟢 FUNÇÕES GOOGLE SHEETS
+        // Função robusta para carregar config
         async function carregarConfiguracaoGoogleSheets() {
+            const gvizUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
+            const csvUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/pub?output=csv`;
+            const defaultConfig = { aulas: 1, exercicios: 1 };
             try {
-                const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
-                
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Erro ao carregar planilha');
-                
-                const text = await response.text();
-                const json = JSON.parse(text.substring(47).slice(0, -2));
-                
+                const res = await fetch(gvizUrl);
+                const text = await res.text();
+                const first = text.indexOf("{");
+                const last = text.lastIndexOf("}");
+                const json = JSON.parse(text.substring(first, last + 1));
                 const config = { aulas: 1, exercicios: 1 };
-                
-                json.table.rows.forEach(row => {
-                    const chave = row.c[0]?.v;
-                    const valor = row.c[1]?.v;
-                    if (chave && valor !== undefined) {
-                        config[chave] = parseInt(valor) || 1;
+                json.table.rows.forEach(r => {
+                    const k = r.c[0] && r.c[0].v ? r.c[0].v.toLowerCase() : null;
+                    const v = r.c[1] && r.c[1].v ? parseInt(r.c[1].v) : null;
+                    if (k && v) {
+                        if (k.includes("aula")) config.aulas = v;
+                        if (k.includes("exerc")) config.exercicios = v;
                     }
                 });
-                
                 return config;
-            } catch (error) {
-                console.error('Erro ao carregar Google Sheets:', error);
-                return { aulas: 1, exercicios: 1 };
-            }
-        }
-
-        async function salvarConfiguracaoGoogleSheets(aulas, exercicios) {
-            try {
-                // Para salvar, usamos Google Apps Script (solução mais avançada)
-                // Por enquanto, apenas atualizamos localmente e mostramos instruções
-                adminStatus.innerHTML = `
-                    <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 5px;">
-                        <p><strong>Instruções para atualizar Google Sheets:</strong></p>
-                        <p>1. Acesse sua planilha Google</p>
-                        <p>2. Altere manualmente os valores:</p>
-                        <p>   - Célula B1 (aulas): <strong>${aulas}</strong></p>
-                        <p>   - Célula B2 (exercicios): <strong>${exercicios}</strong></p>
-                        <p>3. Salve a planilha</p>
-                        <p>4. As alterações aparecerão para todos os alunos em alguns segundos</p>
-                    </div>
-                `;
-                
-                return true;
-            } catch (error) {
-                console.error('Erro ao salvar configuração:', error);
-                adminStatus.innerHTML = `<div style="color: red;">Erro ao salvar configuração</div>`;
-                return false;
-            }
-        }
-
-        // Sistema de login
-        loginBtn.addEventListener('click', function() {
-            const username = usernameInput.value;
-            const password = passwordInput.value;
-            
-            if (username === 'admin' && password === 'Ensino#23') {
-                currentUser = { username: 'admin', role: 'admin' };
-                sessionToken = generateSessionToken();
-                localStorage.setItem('sessionToken', sessionToken);
-                localStorage.setItem('userRole', 'admin');
-                showMainContent();
-            } else if (username === 'aluno' && password === 'aprender') {
-                currentUser = { username: 'aluno', role: 'aluno' };
-                sessionToken = generateSessionToken();
-                localStorage.setItem('sessionToken', sessionToken);
-                localStorage.setItem('userRole', 'aluno');
-                showMainContent();
-            } else {
-                alert('Usuário ou senha incorretos! Tente novamente.');
-            }
-        });
-
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                loginBtn.click();
-            }
-        });
-
-        // Logout
-        logoutBtn.addEventListener('click', function() {
-            currentUser = null;
-            sessionToken = null;
-            localStorage.removeItem('sessionToken');
-            localStorage.removeItem('userRole');
-            showLoginScreen();
-        });
-
-        function generateSessionToken() {
-            return 'token_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-        }
-
-        function showLoginScreen() {
-            loginScreen.style.display = 'block';
-            loadingScreen.style.display = 'none';
-            mainContent.style.display = 'none';
-            usernameInput.value = '';
-            passwordInput.value = '';
-        }
-
-        function showLoadingScreen() {
-            loginScreen.style.display = 'none';
-            loadingScreen.style.display = 'block';
-            mainContent.style.display = 'none';
-        }
-
-        async function showMainContent() {
-            showLoadingScreen();
-            
-            // Verificar se há sessão válida
-            const savedToken = localStorage.getItem('sessionToken');
-            const savedRole = localStorage.getItem('userRole');
-            
-            if (!savedToken || !savedRole) {
-                showLoginScreen();
-                return;
-            }
-            
-            currentUser = { username: savedRole === 'admin' ? 'admin' : 'aluno', role: savedRole };
-            sessionToken = savedToken;
-            
-            // 🟢 CARREGAR CONFIGURAÇÃO DO GOOGLE SHEETS
-            try {
-                const config = await carregarConfiguracaoGoogleSheets();
-                aulasLiberadas = config.aulas;
-                exerciciosLiberados = config.exercicios;
-                
-                console.log('Configuração carregada:', config);
-            } catch (error) {
-                console.error('Erro ao carregar configuração:', error);
-                aulasLiberadas = 1;
-                exerciciosLiberados = 1;
-            }
-            
-            // Configurar interface baseada no usuário
-            if (currentUser.role === 'admin') {
-                userRoleSpan.textContent = 'Administrador';
-                adminBadge.style.display = 'block';
-                adminPanel.style.display = 'block';
-                
-                aulasLiberadasSelect.value = aulasLiberadas;
-                exerciciosLiberadosSelect.value = exerciciosLiberados;
-                
-                adminStatus.innerHTML = `
-                    <div style="color: green;">
-                        ✅ Configuração carregada: ${aulasLiberadas} aulas e ${exerciciosLiberados} exercícios liberados
-                    </div>
-                `;
-            } else {
-                userRoleSpan.textContent = 'Aluno';
-                adminBadge.style.display = 'none';
-                adminPanel.style.display = 'none';
-            }
-            
-            carregarAulas();
-            carregarExercicios();
-            
-            // Mostrar conteúdo principal
-            loadingScreen.style.display = 'none';
-            mainContent.style.display = 'block';
-        }
-
-        // Controles administrativos
-        aplicarConfigBtn.addEventListener('click', async function() {
-            const novasAulas = parseInt(aulasLiberadasSelect.value);
-            const novosExercicios = parseInt(exerciciosLiberadosSelect.value);
-            
-            const success = await salvarConfiguracaoGoogleSheets(novasAulas, novosExercicios);
-            
-            if (success) {
-                // Recarregar configuração após salvar
-                const config = await carregarConfiguracaoGoogleSheets();
-                aulasLiberadas = config.aulas;
-                exerciciosLiberados = config.exercicios;
-                
-                carregarAulas();
-                carregarExercicios();
-            }
-        });
-
-        liberarTudoBtn.addEventListener('click', async function() {
-            aulasLiberadasSelect.value = 10;
-            exerciciosLiberadosSelect.value = 10;
-            
-            const success = await salvarConfiguracaoGoogleSheets(10, 10);
-            
-            if (success) {
-                aulasLiberadas = 10;
-                exerciciosLiberados = 10;
-                carregarAulas();
-                carregarExercicios();
-            }
-        });
-
-        bloquearTudoBtn.addEventListener('click', async function() {
-            aulasLiberadasSelect.value = 1;
-            exerciciosLiberadosSelect.value = 1;
-            
-            const success = await salvarConfiguracaoGoogleSheets(1, 1);
-            
-            if (success) {
-                aulasLiberadas = 1;
-                exerciciosLiberados = 1;
-                carregarAulas();
-                carregarExercicios();
-            }
-        });
-
-        // Função para abrir conteúdo
-        function abrirConteudo(tipo, id) {
-            const savedToken = localStorage.getItem('sessionToken');
-            if (!savedToken) {
-                alert('Sessão expirada. Faça login novamente.');
-                showLoginScreen();
-                return;
-            }
-            
-            if (tipo === 'aula' && id > aulasLiberadas) {
-                alert('Esta aula ainda não foi liberada!');
-                return;
-            }
-            
-            if (tipo === 'exercicio' && id > exerciciosLiberados) {
-                alert('Este exercício ainda não foi liberado!');
-                return;
-            }
-            
-            let url;
-            if (tipo === 'aula') {
-                const aula = aulas.find(a => a.id === id);
-                if (aula) {
-                    url = `${aula.file}?token=${sessionToken}&aulaId=${id}&tipo=aula`;
-                    window.open(url, '_blank');
-                }
-            } else if (tipo === 'exercicio') {
-                const exercicio = exercicios.find(e => e.id === id);
-                if (exercicio) {
-                    url = `${exercicio.file}?token=${sessionToken}&exercicioId=${id}&tipo=exercicio`;
-                    window.open(url, '_blank');
-                }
-            }
-        }
-
-        // Carregar aulas
-        function carregarAulas() {
-            aulasGrid.innerHTML = '';
-            
-            aulas.forEach(aula => {
-                const isLocked = aula.id > aulasLiberadas;
-                
-                const card = document.createElement('div');
-                card.className = `card ${isLocked ? 'locked' : ''}`;
-                
-                card.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-number">${aula.id.toString().padStart(2, '0')}</div>
-                        <div class="card-title">${aula.title}</div>
-                        ${isLocked ? '<div class="lock-icon"><i class="fas fa-lock"></i></div>' : ''}
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>${aula.description}</p>
-                        </div>
-                        <div class="card-actions">
-                            ${isLocked ? 
-                                '<button class="btn btn-locked"><i class="fas fa-lock"></i> Bloqueada</button>' : 
-                                `<button class="btn btn-primary" onclick="abrirConteudo('aula', ${aula.id})"><i class="fas fa-play-circle"></i> Assistir Aula</button>`
-                            }
-                        </div>
-                    </div>
-                `;
-                
-                aulasGrid.appendChild(card);
-            });
-        }
-
-        // Carregar exercícios
-        function carregarExercicios() {
-            exerciciosGrid.innerHTML = '';
-            
-            exercicios.forEach(exercicio => {
-                const isLocked = exercicio.id > exerciciosLiberados;
-                
-                const card = document.createElement('div');
-                card.className = `card ${isLocked ? 'locked' : ''}`;
-                
-                card.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-number">${exercicio.id.toString().padStart(2, '0')}</div>
-                        <div class="card-title">${exercicio.title}</div>
-                        ${isLocked ? '<div class="lock-icon"><i class="fas fa-lock"></i></div>' : ''}
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            <p>${exercicio.description}</p>
-                        </div>
-                        <div class="card-actions">
-                            ${isLocked ? 
-                                '<button class="btn btn-locked"><i class="fas fa-lock"></i> Bloqueado</button>' : 
-                                `<button class="btn btn-secondary" onclick="abrirConteudo('exercicio', ${exercicio.id})"><i class="fas fa-pencil-alt"></i> Fazer Exercícios</button>`
-                            }
-                        </div>
-                    </div>
-                `;
-                
-                exerciciosGrid.appendChild(card);
-            });
-        }
-
-        // Sistema de abas
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.tab');
-            const sections = document.querySelectorAll('.content-section');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const target = this.getAttribute('data-tab');
-                    
-                    tabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    sections.forEach(section => {
-                        section.classList.remove('active');
-                        if (section.id === `${target}-section`) {
-                            section.classList.add('active');
+            } catch (e) {
+                try {
+                    const r2 = await fetch(csvUrl);
+                    const csv = await r2.text();
+                    const lines = csv.split("\n");
+                    const cfg = { aulas: 1, exercicios: 1 };
+                    lines.forEach(l => {
+                        const [k, v] = l.split(",");
+                        if (k && v) {
+                            if (k.toLowerCase().includes("aula")) cfg.aulas = parseInt(v);
+                            if (k.toLowerCase().includes("exerc")) cfg.exercicios = parseInt(v);
                         }
                     });
-                });
-            });
-            
-            // Verificar se já existe uma sessão ativa
-            const savedToken = localStorage.getItem('sessionToken');
-            const savedRole = localStorage.getItem('userRole');
-            
-            if (savedToken && savedRole) {
-                currentUser = { username: savedRole === 'admin' ? 'admin' : 'aluno', role: savedRole };
-                sessionToken = savedToken;
-                showMainContent();
-            } else {
-                showLoginScreen();
+                    return cfg;
+                } catch (e2) {
+                    return defaultConfig;
+                }
+            }
+        }
+
+        // inicialização
+        document.addEventListener("DOMContentLoaded", async () => {
+            const config = await carregarConfiguracaoGoogleSheets();
+            console.log("Config carregada:", config);
+            // monte selects
+            const aulasSelect = document.getElementById("aulas-liberadas");
+            const exerciciosSelect = document.getElementById("exercicios-liberados");
+            for (let i = 1; i <= 10; i++) {
+                aulasSelect.innerHTML += `<option value="${i}" ${i===config.aulas?"selected":""}>${i}</option>`;
+                exerciciosSelect.innerHTML += `<option value="${i}" ${i===config.exercicios?"selected":""}>${i}</option>`;
             }
         });
-
-        // Tornar a função abrirConteudo global
-        window.abrirConteudo = abrirConteudo;
     </script>
 </body>
 </html>
