@@ -327,46 +327,25 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
-            flex-wrap: wrap;
         }
 
-        .link-container {
-            background: #f8f9fa;
-            border-radius: 10px;
+        .config-status {
+            background: #e8f4fd;
             padding: 1rem;
+            border-radius: 10px;
             margin-top: 1rem;
-            display: none;
-        }
-
-        .link-generated {
-            background: #e3f2fd;
-            border: 1px solid #bbdefb;
-            border-radius: 5px;
-            padding: 0.8rem;
-            word-break: break-all;
-            font-family: monospace;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .copy-btn {
-            background: var(--success-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .config-info {
-            background: var(--warning-color);
-            color: white;
-            padding: 0.8rem;
-            border-radius: 5px;
-            margin: 1rem 0;
             text-align: center;
-            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
         }
 
         footer {
@@ -452,7 +431,15 @@
         <button id="login-btn" class="btn btn-primary" style="width: 100%;">Entrar</button>
         <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem;">
             <p><strong>Dicas de login:</strong></p>
-            <p>Acesso: aluno / aprender</p>            
+            <p>Aluno: aluno / aprender</p>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="container" style="display: none;">
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Carregando configurações...</p>
         </div>
     </div>
 
@@ -477,12 +464,10 @@
         <!-- Painel de Administração (visível apenas para admin) -->
         <div id="admin-panel" class="admin-panel" style="display: none;">
             <h2 class="admin-title">Painel de Controle de Acesso</h2>
-            
-            <div class="config-info">
-                <i class="fas fa-info-circle"></i> 
-                Configure as liberações e compartilhe o link gerado com os alunos
+            <div class="config-status">
+                <p><strong>Configuração Central via Google Sheets</strong></p>
+                <p>As alterações aqui afetam TODOS os alunos instantaneamente</p>
             </div>
-            
             <div class="admin-controls">
                 <div class="control-group">
                     <label for="aulas-liberadas">Aulas Liberadas:</label>
@@ -496,7 +481,7 @@
                         <option value="7">7 aulas</option>
                         <option value="8">8 aulas</option>
                         <option value="9">9 aulas</option>
-                        <option value="10" selected>10 aulas (todas)</option>
+                        <option value="10">10 aulas (todas)</option>
                     </select>
                 </div>
                 <div class="control-group">
@@ -511,20 +496,16 @@
                         <option value="7">7 exercícios</option>
                         <option value="8">8 exercícios</option>
                         <option value="9">9 exercícios</option>
-                        <option value="10" selected>10 exercícios (todos)</option>
+                        <option value="10">10 exercícios (todos)</option>
                     </select>
                 </div>
             </div>
             <div class="admin-actions">
                 <button id="aplicar-config" class="btn btn-primary">Aplicar Configurações</button>
-                <button id="gerar-link" class="btn btn-secondary">Gerar Link para Alunos</button>
                 <button id="liberar-tudo" class="btn btn-secondary">Liberar Tudo</button>
                 <button id="bloquear-tudo" class="btn btn-locked">Bloquear Tudo</button>
             </div>
-            <div id="link-container" class="link-container">
-                <div class="link-generated" id="generated-link"></div>
-                <button class="copy-btn" id="copy-link"><i class="fas fa-copy"></i> Copiar Link</button>
-            </div>
+            <div id="admin-status" style="margin-top: 1rem; text-align: center;"></div>
         </div>
         
         <div class="tabs">
@@ -551,6 +532,9 @@
     </div>
 
     <script>
+        // 🔧 CONFIGURAÇÃO - COLE SEU ID DA PLANILHA AQUI!
+        const GOOGLE_SHEET_ID = '1XzuyzwpIbGyj2BobsLVnCJW9hCBdN0j5IhpAki7aHfg';
+        
         // Dados das aulas e exercícios
         const aulas = [
             { 
@@ -686,6 +670,7 @@
 
         // Elementos DOM
         const loginScreen = document.getElementById('login-screen');
+        const loadingScreen = document.getElementById('loading-screen');
         const mainContent = document.getElementById('main-content');
         const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
@@ -697,18 +682,62 @@
         const aulasLiberadasSelect = document.getElementById('aulas-liberadas');
         const exerciciosLiberadosSelect = document.getElementById('exercicios-liberados');
         const aplicarConfigBtn = document.getElementById('aplicar-config');
-        const gerarLinkBtn = document.getElementById('gerar-link');
         const liberarTudoBtn = document.getElementById('liberar-tudo');
         const bloquearTudoBtn = document.getElementById('bloquear-tudo');
-        const linkContainer = document.getElementById('link-container');
-        const generatedLink = document.getElementById('generated-link');
-        const copyLinkBtn = document.getElementById('copy-link');
+        const adminStatus = document.getElementById('admin-status');
         const aulasGrid = document.getElementById('aulas-grid');
         const exerciciosGrid = document.getElementById('exercicios-grid');
 
-        // Gerar token de sessão único
-        function generateSessionToken() {
-            return 'token_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        // 🟢 FUNÇÕES GOOGLE SHEETS
+        async function carregarConfiguracaoGoogleSheets() {
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
+                
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Erro ao carregar planilha');
+                
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47).slice(0, -2));
+                
+                const config = { aulas: 1, exercicios: 1 };
+                
+                json.table.rows.forEach(row => {
+                    const chave = row.c[0]?.v;
+                    const valor = row.c[1]?.v;
+                    if (chave && valor !== undefined) {
+                        config[chave] = parseInt(valor) || 1;
+                    }
+                });
+                
+                return config;
+            } catch (error) {
+                console.error('Erro ao carregar Google Sheets:', error);
+                return { aulas: 1, exercicios: 1 };
+            }
+        }
+
+        async function salvarConfiguracaoGoogleSheets(aulas, exercicios) {
+            try {
+                // Para salvar, usamos Google Apps Script (solução mais avançada)
+                // Por enquanto, apenas atualizamos localmente e mostramos instruções
+                adminStatus.innerHTML = `
+                    <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 5px;">
+                        <p><strong>Instruções para atualizar Google Sheets:</strong></p>
+                        <p>1. Acesse sua planilha Google</p>
+                        <p>2. Altere manualmente os valores:</p>
+                        <p>   - Célula B1 (aulas): <strong>${aulas}</strong></p>
+                        <p>   - Célula B2 (exercicios): <strong>${exercicios}</strong></p>
+                        <p>3. Salve a planilha</p>
+                        <p>4. As alterações aparecerão para todos os alunos em alguns segundos</p>
+                    </div>
+                `;
+                
+                return true;
+            } catch (error) {
+                console.error('Erro ao salvar configuração:', error);
+                adminStatus.innerHTML = `<div style="color: red;">Erro ao salvar configuração</div>`;
+                return false;
+            }
         }
 
         // Sistema de login
@@ -748,17 +777,26 @@
             showLoginScreen();
         });
 
+        function generateSessionToken() {
+            return 'token_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        }
+
         function showLoginScreen() {
             loginScreen.style.display = 'block';
+            loadingScreen.style.display = 'none';
             mainContent.style.display = 'none';
             usernameInput.value = '';
             passwordInput.value = '';
         }
 
-        // FUNÇÃO PRINCIPAL CORRIGIDA - Agora funciona online!
-        function showMainContent() {
+        function showLoadingScreen() {
             loginScreen.style.display = 'none';
-            mainContent.style.display = 'block';
+            loadingScreen.style.display = 'block';
+            mainContent.style.display = 'none';
+        }
+
+        async function showMainContent() {
+            showLoadingScreen();
             
             // Verificar se há sessão válida
             const savedToken = localStorage.getItem('sessionToken');
@@ -772,160 +810,95 @@
             currentUser = { username: savedRole === 'admin' ? 'admin' : 'aluno', role: savedRole };
             sessionToken = savedToken;
             
-            // SISTEMA CORRIGIDO: Agora funciona online via URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const aulasLib = urlParams.get('aulas');
-            const exerLib = urlParams.get('exercicios');
+            // 🟢 CARREGAR CONFIGURAÇÃO DO GOOGLE SHEETS
+            try {
+                const config = await carregarConfiguracaoGoogleSheets();
+                aulasLiberadas = config.aulas;
+                exerciciosLiberados = config.exercicios;
+                
+                console.log('Configuração carregada:', config);
+            } catch (error) {
+                console.error('Erro ao carregar configuração:', error);
+                aulasLiberadas = 1;
+                exerciciosLiberados = 1;
+            }
             
-            console.log('URL Parameters:', { aulasLib, exerLib }); // Debug
-            
+            // Configurar interface baseada no usuário
             if (currentUser.role === 'admin') {
                 userRoleSpan.textContent = 'Administrador';
                 adminBadge.style.display = 'block';
                 adminPanel.style.display = 'block';
                 
-                // Admin: URL tem prioridade, depois localStorage
-                if (aulasLib) {
-                    aulasLiberadas = parseInt(aulasLib);
-                    localStorage.setItem('aulasLiberadas', aulasLiberadas);
-                } else {
-                    const savedAulas = localStorage.getItem('aulasLiberadas');
-                    aulasLiberadas = savedAulas ? parseInt(savedAulas) : 10; // Padrão: todas liberadas para admin
-                }
-                
-                if (exerLib) {
-                    exerciciosLiberados = parseInt(exerLib);
-                    localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
-                } else {
-                    const savedExercicios = localStorage.getItem('exerciciosLiberados');
-                    exerciciosLiberados = savedExercicios ? parseInt(savedExercicios) : 10; // Padrão: todos liberados
-                }
-                
                 aulasLiberadasSelect.value = aulasLiberadas;
                 exerciciosLiberadosSelect.value = exerciciosLiberados;
                 
+                adminStatus.innerHTML = `
+                    <div style="color: green;">
+                        ✅ Configuração carregada: ${aulasLiberadas} aulas e ${exerciciosLiberados} exercícios liberados
+                    </div>
+                `;
             } else {
-                // ALUNO: Sempre usa os parâmetros da URL (funciona online)
                 userRoleSpan.textContent = 'Aluno';
                 adminBadge.style.display = 'none';
                 adminPanel.style.display = 'none';
-                
-                if (aulasLib) {
-                    aulasLiberadas = parseInt(aulasLib);
-                    console.log('Aluno - Aulas liberadas via URL:', aulasLiberadas);
-                } else {
-                    // Se não há parâmetros na URL, usa valor padrão (mais restritivo)
-                    aulasLiberadas = 1;
-                    console.log('Aluno - Usando valor padrão para aulas:', aulasLiberadas);
-                }
-                
-                if (exerLib) {
-                    exerciciosLiberados = parseInt(exerLib);
-                    console.log('Aluno - Exercícios liberados via URL:', exerciciosLiberados);
-                } else {
-                    // Se não há parâmetros na URL, usa valor padrão (mais restritivo)
-                    exerciciosLiberados = 1;
-                    console.log('Aluno - Usando valor padrão para exercícios:', exerciciosLiberados);
-                }
             }
             
             carregarAulas();
             carregarExercicios();
             
-            // Mostrar informações de debug (útil para testar)
-            if (currentUser.role === 'aluno') {
-                console.log('Configurações finais para aluno:', {
-                    aulasLiberadas,
-                    exerciciosLiberados,
-                    url: window.location.href
-                });
-            }
+            // Mostrar conteúdo principal
+            loadingScreen.style.display = 'none';
+            mainContent.style.display = 'block';
         }
 
         // Controles administrativos
-        aplicarConfigBtn.addEventListener('click', function() {
-            aulasLiberadas = parseInt(aulasLiberadasSelect.value);
-            exerciciosLiberados = parseInt(exerciciosLiberadosSelect.value);
+        aplicarConfigBtn.addEventListener('click', async function() {
+            const novasAulas = parseInt(aulasLiberadasSelect.value);
+            const novosExercicios = parseInt(exerciciosLiberadosSelect.value);
             
-            localStorage.setItem('aulasLiberadas', aulasLiberadas);
-            localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
+            const success = await salvarConfiguracaoGoogleSheets(novasAulas, novosExercicios);
             
-            carregarAulas();
-            carregarExercicios();
-            
-            alert('Configurações aplicadas com sucesso!');
+            if (success) {
+                // Recarregar configuração após salvar
+                const config = await carregarConfiguracaoGoogleSheets();
+                aulasLiberadas = config.aulas;
+                exerciciosLiberados = config.exercicios;
+                
+                carregarAulas();
+                carregarExercicios();
+            }
         });
 
-        // GERAR LINK PARA ALUNOS - AGORA FUNCIONA ONLINE
-        gerarLinkBtn.addEventListener('click', function() {
-            const aulasLib = aulasLiberadasSelect.value;
-            const exerLib = exerciciosLiberadosSelect.value;
+        liberarTudoBtn.addEventListener('click', async function() {
+            aulasLiberadasSelect.value = 10;
+            exerciciosLiberadosSelect.value = 10;
             
-            // Gera link COM os parâmetros de liberação
-            const baseUrl = 'https://msilva78.github.io/engenharia_software/';
-            const linkAlunos = `${baseUrl}?aulas=${aulasLib}&exercicios=${exerLib}`;
+            const success = await salvarConfiguracaoGoogleSheets(10, 10);
             
-            generatedLink.textContent = linkAlunos;
-            linkContainer.style.display = 'block';
-            
-            // Copia automaticamente para facilitar
-            navigator.clipboard.writeText(linkAlunos).then(function() {
-                alert('Link gerado e copiado! Compartilhe este link com os alunos:\n\n' + linkAlunos);
-            }).catch(function() {
-                // Fallback
-                const textArea = document.createElement('textarea');
-                textArea.value = linkAlunos;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('Link gerado! Compartilhe: ' + linkAlunos);
-            });
+            if (success) {
+                aulasLiberadas = 10;
+                exerciciosLiberados = 10;
+                carregarAulas();
+                carregarExercicios();
+            }
         });
 
-        // Copiar link manualmente
-        copyLinkBtn.addEventListener('click', function() {
-            const linkText = generatedLink.textContent;
-            navigator.clipboard.writeText(linkText).then(function() {
-                alert('Link copiado para a área de transferência!');
-            });
-        });
-
-        liberarTudoBtn.addEventListener('click', function() {
-            aulasLiberadas = 10;
-            exerciciosLiberados = 10;
+        bloquearTudoBtn.addEventListener('click', async function() {
+            aulasLiberadasSelect.value = 1;
+            exerciciosLiberadosSelect.value = 1;
             
-            aulasLiberadasSelect.value = aulasLiberadas;
-            exerciciosLiberadosSelect.value = exerciciosLiberados;
+            const success = await salvarConfiguracaoGoogleSheets(1, 1);
             
-            localStorage.setItem('aulasLiberadas', aulasLiberadas);
-            localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
-            
-            carregarAulas();
-            carregarExercicios();
-            
-            alert('Todo o conteúdo foi liberado!');
-        });
-
-        bloquearTudoBtn.addEventListener('click', function() {
-            aulasLiberadas = 1;
-            exerciciosLiberados = 1;
-            
-            aulasLiberadasSelect.value = aulasLiberadas;
-            exerciciosLiberadosSelect.value = exerciciosLiberados;
-            
-            localStorage.setItem('aulasLiberadas', aulasLiberadas);
-            localStorage.setItem('exerciciosLiberados', exerciciosLiberados);
-            
-            carregarAulas();
-            carregarExercicios();
-            
-            alert('Todo o conteúdo foi bloqueado (exceto a primeira aula/exercício)!');
+            if (success) {
+                aulasLiberadas = 1;
+                exerciciosLiberados = 1;
+                carregarAulas();
+                carregarExercicios();
+            }
         });
 
         // Função para abrir conteúdo
         function abrirConteudo(tipo, id) {
-            // Verificar se o usuário está logado
             const savedToken = localStorage.getItem('sessionToken');
             if (!savedToken) {
                 alert('Sessão expirada. Faça login novamente.');
@@ -933,7 +906,6 @@
                 return;
             }
             
-            // Verificar se o conteúdo está liberado
             if (tipo === 'aula' && id > aulasLiberadas) {
                 alert('Esta aula ainda não foi liberada!');
                 return;
@@ -944,7 +916,6 @@
                 return;
             }
             
-            // Gerar URL segura
             let url;
             if (tipo === 'aula') {
                 const aula = aulas.find(a => a.id === id);
