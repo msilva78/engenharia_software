@@ -7,206 +7,598 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Seu CSS original (sem alterações) */
         :root {
             --primary-color: #4A90E2;
             --secondary-color: #FFB642;
-            --background-light: #f9f9fb;
             --background-dark: #2c3e50;
             --text-dark: #2A364F;
             --text-light: #ffffff;
             --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
             --locked-color: #95a5a6;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--background-dark); color: var(--text-dark); line-height: 1.6; font-family: 'Lato', sans-serif; min-height: 100vh; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; margin-bottom: 3rem; padding: 2rem; background: linear-gradient(to right, var(--primary-color), #6aa8e8); border-radius: 15px; color: white; box-shadow: var(--card-shadow); position: relative; }
-        h1 { font-family: 'Poppins', sans-serif; font-size: 2.8rem; margin-bottom: 0.5rem; }
-        .subtitle { font-size: 1.4rem; opacity: 0.9; }
-        .admin-badge { position: absolute; top: 1rem; right: 1rem; background: var(--secondary-color); color: var(--text-dark); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: bold; }
-        .portal-description { max-width: 800px; margin: 2rem auto; text-align: center; font-size: 1.2rem; line-height: 1.8; color: white; }
-        .tabs { display: flex; justify-content: center; margin-bottom: 2rem; background: white; border-radius: 50px; padding: 0.5rem; box-shadow: var(--card-shadow); max-width: 500px; margin-left: auto; margin-right: auto; }
-        .tab { padding: 0.8rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; transition: all 0.3s; text-align: center; flex: 1; }
-        .tab.active { background-color: var(--primary-color); color: white; }
-        .content-section { display: none; }
-        .content-section.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; height: 100%; position: relative; }
-        .card.locked { opacity: 0.7; }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); }
-        .card.locked:hover { transform: none; box-shadow: var(--card-shadow); }
-        .card-header { padding: 1.5rem; background: var(--primary-color); color: white; text-align: center; position: relative; }
-        .card.locked .card-header { background: var(--locked-color); }
-        .card-number { font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem; opacity: 0.9; }
-        .card-title { font-size: 1.4rem; font-family: 'Poppins', sans-serif; }
-        .card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-description { margin-bottom: 1.5rem; flex-grow: 1; }
-        .card-actions { display: flex; gap: 1rem; margin-top: auto; }
-        .btn { padding: 0.8rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s; flex: 1; text-align: center; border: none; cursor: pointer; }
-        .btn-primary { background-color: var(--primary-color); color: white; }
-        .btn-secondary { background-color: var(--secondary-color); color: var(--text-dark); }
-        .btn-locked { background-color: var(--locked-color); color: white; cursor: not-allowed; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
-        .btn-locked:hover { transform: none; box-shadow: none; }
-        .lock-icon { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; color: white; }
-        .login-container { max-width: 400px; margin: 5rem auto; background: white; border-radius: 15px; padding: 2rem; box-shadow: var(--card-shadow); }
-        .login-title { text-align: center; margin-bottom: 1.5rem; font-family: 'Poppins', sans-serif; color: var(--primary-color); }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-        .form-group input { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
-        .admin-panel { background: white; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; box-shadow: var(--card-shadow); }
-        .admin-title { font-family: 'Poppins', sans-serif; color: var(--primary-color); margin-bottom: 1.5rem; text-align: center; }
-        .admin-controls { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .control-group { display: flex; flex-direction: column; }
-        .control-group label { margin-bottom: 0.5rem; font-weight: 600; }
-        .control-group select { padding: 0.8rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
-        .admin-actions { display: flex; justify-content: center; gap: 1rem; }
-        footer { text-align: center; margin-top: 4rem; padding: 2rem; color: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(255, 255, 255, 0.1); }
-        .user-info { position: absolute; top: 1rem; left: 1rem; background: rgba(255, 255, 255, 0.2); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; }
-        .logout-btn { background: none; border: none; color: white; cursor: pointer; margin-left: 1rem; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-family: 'Lato', sans-serif;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(to right, var(--primary-color), #6aa8e8);
+            border-radius: 15px;
+            color: white;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .portal-description {
+            max-width: 800px;
+            margin: 2rem auto;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: white;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: var(--card-shadow);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            flex: 1;
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+        }
+
+        .card-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-description {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .coming-soon {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .coming-soon-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .coming-soon h3 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .coming-soon p {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .access-info {
+            background: var(--secondary-color);
+            color: var(--text-dark);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem auto;
+            max-width: 600px;
+            text-align: center;
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            h1 { font-size: 2.2rem; }
-            .portal-description { font-size: 1.1rem; }
-            .tabs { flex-direction: column; border-radius: 15px; }
-            .tab { border-radius: 10px; margin-bottom: 0.5rem; }
-            .admin-controls { grid-template-columns: 1fr; }
-            .admin-actions { flex-direction: column; }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .portal-description {
+                font-size: 1.1rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+            
+            .tab {
+                border-radius: 10px;
+                margin-bottom: 0.5rem;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Tela de Login -->
-    <div id="login-screen" class="login-container">
-        <h2 class="login-title">Acesso ao Portal</h2>
-        <div class="form-group">
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" placeholder="Digite seu usuário">
-        </div>
-        <div class="form-group">
-            <label for="password">Senha:</label>
-            <input type="password" id="password" placeholder="Digite sua senha">
-        </div>
-        <button id="login-btn" class="btn btn-primary" style="width: 100%">Entrar</button>
-        <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem;">
-            <p><strong>Dicas de login:</strong></p>
-            <p>Acesso: aluno / aprender</p>
-        </div>
-    </div>
-
-    <!-- Conteúdo Principal -->
-    <div id="main-content" class="container" style="display: none">
+    <div class="container">
         <header>
-            <div class="user-info">
-                Logado como: <span id="user-role">Usuário</span>
-                <button id="logout-btn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</button>
-            </div>
             <h1>Portal de Engenharia de Software</h1>
             <p class="subtitle">Prof. Marcelo Silva | Análise de Desenvolvimento de Sistemas</p>
-            <div id="admin-badge" class="admin-badge" style="display: none">
-                <i class="fas fa-cog"></i> Modo Administrador
-            </div>
+            
         </header>
-
+        
         <div class="portal-description">
-            <p>Explore as aulas do curso e teste seus conhecimentos. O acesso é controlado pela planilha no Google Sheets.</p>
+            <p>Explore as aulas fundamentais de Engenharia de Software e teste seus conhecimentos com exercícios práticos. Conteúdo desenvolvido para formação de profissionais completos na área.</p>
         </div>
-
-        <!-- Painel Admin -->
-        <div id="admin-panel" class="admin-panel" style="display: none">
-            <h2 class="admin-title">Painel de Controle</h2>
-            <div class="admin-controls">
-                <div class="control-group">
-                    <label for="aulas-liberadas">Aulas Liberadas:</label>
-                    <select id="aulas-liberadas"></select>
-                </div>
-                <div class="control-group">
-                    <label for="exercicios-liberados">Exercícios Liberados:</label>
-                    <select id="exercicios-liberados"></select>
-                </div>
-            </div>
-            <div class="admin-actions">
-                <button id="aplicar-config" class="btn btn-primary">Aplicar</button>
-            </div>
-        </div>
-
+           
         <div class="tabs">
             <div class="tab active" data-tab="aulas">Aulas</div>
             <div class="tab" data-tab="exercicios">Exercícios</div>
         </div>
-
+        
         <div class="content-section active" id="aulas-section">
-            <div class="grid" id="aulas-grid"></div>
+            <div class="grid" id="aulas-grid">
+                <!-- Aulas 1-5 serão carregadas aqui -->
+            </div>
+            
+            <div class="coming-soon">
+                <div class="coming-soon-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>Mais Conteúdo em Breve!</h3>
+                <p>As aulas 6 à 10 estarão disponíveis em breve com conteúdos avançados sobre Gestão de Projetos, Qualidade de Software, Processos Ágeis, IA na Engenharia e o Futuro da Profissão.</p>
+                <p><strong>Fique ligado para novas atualizações!</strong></p>
+            </div>
         </div>
+        
         <div class="content-section" id="exercicios-section">
-            <div class="grid" id="exercicios-grid"></div>
+            <div class="grid" id="exercicios-grid">
+                <!-- Exercícios 1-5 serão carregados aqui -->
+            </div>
+            
+            <div class="coming-soon">
+                <div class="coming-soon-icon">
+                    <i class="fas fa-puzzle-piece"></i>
+                </div>
+                <h3>Mais Exercícios em Breve!</h3>
+                <p>Os exercícios 6 à 10 com desafios práticos sobre Gestão de Projetos, Métricas de Qualidade, Metodologias Ágeis, IA aplicada e Tendências Futuras estarão disponíveis em breve.</p>
+                <p><strong>Continue praticando!</strong></p>
+            </div>
         </div>
-
+        
         <footer>
             <p>Portal de Engenharia de Software - Prof. Marcelo Silva</p>
+            <p>Análise de Desenvolvimento de Sistemas</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                <i class="fas fa-graduation-cap"></i> Conteúdo Educacional - Acesso Livre
+            </p>
         </footer>
     </div>
 
     <script>
-        const GOOGLE_SHEET_ID = "1XzuyzwpIbGyj2BobsLVnCJW9hCBdN0j5IhpAki7aHfg";
-
-        // Função robusta para carregar config
-        async function carregarConfiguracaoGoogleSheets() {
-            const gvizUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&t=${Date.now()}`;
-            const csvUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/pub?output=csv`;
-            const defaultConfig = { aulas: 1, exercicios: 1 };
-            try {
-                const res = await fetch(gvizUrl);
-                const text = await res.text();
-                const first = text.indexOf("{");
-                const last = text.lastIndexOf("}");
-                const json = JSON.parse(text.substring(first, last + 1));
-                const config = { aulas: 1, exercicios: 1 };
-                json.table.rows.forEach(r => {
-                    const k = r.c[0] && r.c[0].v ? r.c[0].v.toLowerCase() : null;
-                    const v = r.c[1] && r.c[1].v ? parseInt(r.c[1].v) : null;
-                    if (k && v) {
-                        if (k.includes("aula")) config.aulas = v;
-                        if (k.includes("exerc")) config.exercicios = v;
-                    }
-                });
-                return config;
-            } catch (e) {
-                try {
-                    const r2 = await fetch(csvUrl);
-                    const csv = await r2.text();
-                    const lines = csv.split("\n");
-                    const cfg = { aulas: 1, exercicios: 1 };
-                    lines.forEach(l => {
-                        const [k, v] = l.split(",");
-                        if (k && v) {
-                            if (k.toLowerCase().includes("aula")) cfg.aulas = parseInt(v);
-                            if (k.toLowerCase().includes("exerc")) cfg.exercicios = parseInt(v);
-                        }
-                    });
-                    return cfg;
-                } catch (e2) {
-                    return defaultConfig;
-                }
+        // Dados das aulas (apenas primeiras 5 liberadas)
+        const aulas = [
+            { 
+                id: 1, 
+                title: "Engenharia de Software", 
+                file: "es_aulas/01_engenharia_software.html", 
+                description: "Introdução aos conceitos básicos da Engenharia de Software, ciclo de vida do desenvolvimento e importância da disciplina.",
+                status: "liberada"
+            },
+            { 
+                id: 2, 
+                title: "Engenharia de Requisitos", 
+                file: "es_aulas/02_engenharia_requisitos.html", 
+                description: "Estudo dos processos de elicitação, análise, especificação e validação de requisitos de software.",
+                status: "liberada"
+            },
+            { 
+                id: 3, 
+                title: "Modelagem e Arquitetura", 
+                file: "es_aulas/03_modelagem_arquitetura.html", 
+                description: "Princípios de modelagem de software, padrões arquiteturais e técnicas de design de sistemas.",
+                status: "liberada"
+            },
+            { 
+                id: 4, 
+                title: "Teste de Software", 
+                file: "es_aulas/04_teste_software.html", 
+                description: "Estratégias, técnicas e ferramentas para teste de software, garantindo qualidade e confiabilidade.",
+                status: "liberada"
+            },
+            { 
+                id: 5, 
+                title: "Manutenção de Software", 
+                file: "es_aulas/05_manutencao_software.html", 
+                description: "Processos e técnicas para manutenção e evolução de sistemas de software existentes.",
+                status: "liberada"
+            },
+            { 
+                id: 6, 
+                title: "Gestão de Projeto", 
+                file: "#", 
+                description: "Planejamento, estimativa, acompanhamento e controle de projetos de software.",
+                status: "bloqueada"
+            },
+            { 
+                id: 7, 
+                title: "Qualidade de Software", 
+                file: "#", 
+                description: "Métricas, padrões e processos para garantir a qualidade em produtos de software.",
+                status: "bloqueada"
+            },
+            { 
+                id: 8, 
+                title: "Processos Ágeis", 
+                file: "#", 
+                description: "Metodologias ágeis como Scrum, Kanban e XP para desenvolvimento iterativo e incremental.",
+                status: "bloqueada"
+            },
+            { 
+                id: 9, 
+                title: "IA na Engenharia de Software", 
+                file: "#", 
+                description: "Aplicações de inteligência artificial no desenvolvimento, testes e manutenção de software.",
+                status: "bloqueada"
+            },
+            { 
+                id: 10, 
+                title: "Futuro da Engenharia de Software", 
+                file: "#", 
+                description: "Tendências emergentes e o futuro da profissão de engenheiro de software.",
+                status: "bloqueada"
             }
+        ];
+
+        // Dados dos exercícios (apenas primeiros 5 liberados)
+        const exercicios = [
+            { 
+                id: 1, 
+                title: "Exercícios - Engenharia de Software", 
+                file: "es_exercicios/es_exec01.html", 
+                description: "Teste seus conhecimentos sobre os conceitos fundamentais da Engenharia de Software.",
+                status: "liberada"
+            },
+            { 
+                id: 2, 
+                title: "Exercícios - Engenharia de Requisitos", 
+                file: "es_exercicios/es_exec02.html", 
+                description: "Avalie seu entendimento sobre processos de elicitação e especificação de requisitos.",
+                status: "liberada"
+            },
+            { 
+                id: 3, 
+                title: "Exercícios - Modelagem e Arquitetura", 
+                file: "es_exercicios/es_exec03.html", 
+                description: "Pratique conceitos de modelagem de software e padrões arquiteturais.",
+                status: "liberada"
+            },
+            { 
+                id: 4, 
+                title: "Exercícios - Teste de Software", 
+                file: "es_exercicios/es_exec04.html", 
+                description: "Teste seus conhecimentos sobre estratégias e técnicas de teste de software.",
+                status: "liberada"
+            },
+            { 
+                id: 5, 
+                title: "Exercícios - Manutenção de Software", 
+                file: "es_exercicios/es_exec05.html", 
+                description: "Avalie seu domínio sobre processos de manutenção e evolução de sistemas.",
+                status: "liberada"
+            },
+            { 
+                id: 6, 
+                title: "Exercícios - Gestão de Projeto", 
+                file: "#", 
+                description: "Pratique conceitos de planejamento e controle de projetos de software.",
+                status: "bloqueada"
+            },
+            { 
+                id: 7, 
+                title: "Exercícios - Qualidade de Software", 
+                file: "#", 
+                description: "Teste seus conhecimentos sobre métricas e processos de qualidade de software.",
+                status: "bloqueada"
+            },
+            { 
+                id: 8, 
+                title: "Exercícios - Processos Ágeis", 
+                file: "#", 
+                description: "Avalie seu entendimento sobre metodologias ágeis de desenvolvimento.",
+                status: "bloqueada"
+            },
+            { 
+                id: 9, 
+                title: "Exercícios - IA na Engenharia de Software", 
+                file: "#", 
+                description: "Teste seus conhecimentos sobre aplicações de IA na Engenharia de Software.",
+                status: "bloqueada"
+            },
+            { 
+                id: 10, 
+                title: "Exercícios - Futuro da Engenharia de Software", 
+                file: "#", 
+                description: "Avalie sua compreensão sobre as tendências futuras da Engenharia de Software.",
+                status: "bloqueada"
+            }
+        ];
+
+        // Elementos DOM
+        const aulasGrid = document.getElementById('aulas-grid');
+        const exerciciosGrid = document.getElementById('exercicios-grid');
+
+        // Função para abrir conteúdo
+        function abrirConteudo(tipo, id, file) {
+            if (file === "#") {
+                alert("Este conteúdo estará disponível em breve!");
+                return;
+            }
+            
+            // Abre o conteúdo em nova aba
+            window.open(file, '_blank');
         }
 
-        // inicialização
-        document.addEventListener("DOMContentLoaded", async () => {
-            const config = await carregarConfiguracaoGoogleSheets();
-            console.log("Config carregada:", config);
-            // monte selects
-            const aulasSelect = document.getElementById("aulas-liberadas");
-            const exerciciosSelect = document.getElementById("exercicios-liberados");
-            for (let i = 1; i <= 10; i++) {
-                aulasSelect.innerHTML += `<option value="${i}" ${i===config.aulas?"selected":""}>${i}</option>`;
-                exerciciosSelect.innerHTML += `<option value="${i}" ${i===config.exercicios?"selected":""}>${i}</option>`;
-            }
+        // Carregar aulas (apenas primeiras 5)
+        function carregarAulas() {
+            aulasGrid.innerHTML = '';
+            
+            // Filtra apenas as aulas liberadas (1-5)
+            const aulasLiberadas = aulas.filter(aula => aula.status === "liberada");
+            
+            aulasLiberadas.forEach(aula => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-number">${aula.id.toString().padStart(2, '0')}</div>
+                        <div class="card-title">${aula.title}</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>${aula.description}</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="abrirConteudo('aula', ${aula.id}, '${aula.file}')">
+                                <i class="fas fa-play-circle"></i> Assistir Aula
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                aulasGrid.appendChild(card);
+            });
+        }
+
+        // Carregar exercícios (apenas primeiros 5)
+        function carregarExercicios() {
+            exerciciosGrid.innerHTML = '';
+            
+            // Filtra apenas os exercícios liberados (1-5)
+            const exerciciosLiberados = exercicios.filter(exercicio => exercicio.status === "liberada");
+            
+            exerciciosLiberados.forEach(exercicio => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-number">${exercicio.id.toString().padStart(2, '0')}</div>
+                        <div class="card-title">${exercicio.title}</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            <p>${exercicio.description}</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary" onclick="abrirConteudo('exercicio', ${exercicio.id}, '${exercicio.file}')">
+                                <i class="fas fa-pencil-alt"></i> Fazer Exercícios
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                exerciciosGrid.appendChild(card);
+            });
+        }
+
+        // Sistema de abas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.content-section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === `${target}-section`) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Carregar conteúdo inicial
+            carregarAulas();
+            carregarExercicios();
         });
+
+        // Tornar a função abrirConteudo global
+        window.abrirConteudo = abrirConteudo;
     </script>
 </body>
 </html>
