@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagens - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Sistema de Mensagens */
+        .messaging-container {
+            display: flex;
+            height: calc(100vh - 160px);
+            background-color: var(--branco);
+            border-radius: 10px;
+            box-shadow: var(--sombra);
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        /* Lista de Conversas */
+        .conversations-sidebar {
+            width: 350px;
+            border-right: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--branco);
+        }
+
+        .conversations-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .conversations-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.5rem;
+        }
+
+        .search-conversations {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .search-input {
+            position: relative;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .search-input i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--cinza-escuro);
+        }
+
+        .conversations-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .conversation-item {
+            display: flex;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .conversation-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .conversation-item.active {
+            background-color: var(--cinza-claro);
+            border-right: 3px solid var(--vermelho);
+        }
+
+        .conversation-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--azul-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .conversation-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .conversation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .conversation-name {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .conversation-time {
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+            flex-shrink: 0;
+        }
+
+        .conversation-preview {
+            font-size: 0.9rem;
+            color: var(--cinza-escuro);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .conversation-meta {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .conversation-unread {
+            background-color: var(--vermelho);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Área de Conversa */
+        .conversation-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--branco);
+        }
+
+        .conversation-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            background-color: var(--branco);
+        }
+
+        .current-conversation-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .current-conversation-info {
+            flex: 1;
+        }
+
+        .current-conversation-name {
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+
+        .current-conversation-status {
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+        }
+
+        .online-status {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .conversation-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-escuro);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .action-button:hover {
+            background-color: var(--cinza-claro);
+        }
+
+        /* Mensagens */
+        .messages-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-date-divider {
+            text-align: center;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .date-label {
+            background-color: #e0e0e0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+            display: inline-block;
+        }
+
+        .message {
+            max-width: 70%;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.received {
+            align-self: flex-start;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .received .message-bubble {
+            background-color: var(--branco);
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .sent .message-bubble {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--cinza-escuro);
+            margin-top: 5px;
+            align-self: flex-end;
+        }
+
+        .sent .message-time {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .message-status {
+            font-size: 0.7rem;
+            color: var(--cinza-escuro);
+            margin-top: 2px;
+            text-align: right;
+        }
+
+        /* Input de Mensagem */
+        .message-input-container {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            background-color: var(--branco);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .attachment-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-escuro);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .attachment-button:hover {
+            background-color: var(--cinza-claro);
+        }
+
+        .message-input {
+            flex: 1;
+            position: relative;
+        }
+
+        .message-input textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            resize: none;
+            font-size: 14px;
+            max-height: 120px;
+            outline: none;
+        }
+
+        .send-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--vermelho);
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+        }
+
+        .send-button:hover {
+            background-color: var(--azul-escuro);
+        }
+
+        /* Conversa Vazia */
+        .empty-conversation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            color: var(--cinza-escuro);
+        }
+
+        .empty-conversation i {
+            font-size: 4rem;
+            color: var(--azul-claro);
+            margin-bottom: 20px;
+        }
+
+        .empty-conversation h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+
+        /* Modal Novo Pedido */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--branco);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--cinza-escuro);
+            z-index: 10;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            color: var(--azul-escuro);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .conversations-sidebar {
+                width: 300px;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .messaging-container {
+                flex-direction: column;
+                height: calc(100vh - 140px);
+            }
+            
+            .conversations-sidebar {
+                width: 100%;
+                height: 40%;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .conversation-area {
+                height: 60%;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .conversation-header {
+                padding: 10px 15px;
+            }
+            
+            .conversation-item {
+                padding: 12px 15px;
+            }
+            
+            .conversation-avatar {
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+            }
+            
+            .messages-container {
+                padding: 15px;
+            }
+            
+            .message-input-container {
+                padding: 10px 15px;
+            }
+            
+            .action-button {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .attachment-button,
+            .send-button {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="fornecedores.html">Fornecedores</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <div class="user-info">
+                    <div class="user-avatar">MC</div>
+                    <span>Mecânica Central</span>
+                </div>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="mensagens.html">Mensagens</a>
+        </div>
+    </div>
+
+    <!-- Sistema de Mensagens -->
+    <div class="container">
+        <div class="messaging-container">
+            <!-- Lista de Conversas -->
+            <div class="conversations-sidebar">
+                <div class="conversations-header">
+                    <h2>Conversas</h2>
+                    <button class="btn btn-primary btn-sm" id="newConversationBtn">
+                        <i class="fas fa-plus"></i> Nova Conversa
+                    </button>
+                </div>
+
+                <div class="search-conversations">
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar conversas...">
+                    </div>
+                </div>
+
+                <div class="conversations-list">
+                    <!-- Conversa 1 -->
+                    <div class="conversation-item active">
+                        <div class="conversation-avatar">AS</div>
+                        <div class="conversation-info">
+                            <div class="conversation-header">
+                                <div class="conversation-name">AutoPeças Silva</div>
+                                <div class="conversation-time">10:45</div>
+                            </div>
+                            <div class="conversation-preview">Olá! Temos o kit de embreagem em estoque...</div>
+                            <div class="conversation-meta">
+                                <div class="conversation-unread">3</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conversa 2 -->
+                    <div class="conversation-item">
+                        <div class="conversation-avatar">PP</div>
+                        <div class="conversation-info">
+                            <div class="conversation-header">
+                                <div class="conversation-name">Peças Premium</div>
+                                <div class="conversation-time">Ontem</div>
+                            </div>
+                                <div class="conversation-preview">Seu pedido #0987 foi enviado...</div>
+                        </div>
+                    </div>
+
+                    <!-- Conversa 3 -->
+                    <div class="conversation-item">
+                        <div class="conversation-avatar">MP</div>
+                        <div class="conversation-info">
+                            <div class="conversation-header">
+                                <div class="conversation-name">MegaPeças</div>
+                                <div class="conversation-time">12/12</div>
+                            </div>
+                            <div class="conversation-preview">Oferta especial para você esta semana...</div>
+                        </div>
+                    </div>
+
+                    <!-- Conversa 4 -->
+                    <div class="conversation-item">
+                        <div class="conversation-avatar">AP</div>
+                        <div class="conversation-info">
+                            <div class="conversation-header">
+                                <div class="conversation-name">AutoPeças RJ</div>
+                                <div class="conversation-time">10/12</div>
+                            </div>
+                            <div class="conversation-preview">Confirmação de pagamento recebida...</div>
+                        </div>
+                    </div>
+
+                    <!-- Conversa 5 -->
+                    <div class="conversation-item">
+                        <div class="conversation-avatar">FP</div>
+                        <div class="conversation-info">
+                            <div class="conversation-header">
+                                <div class="conversation-name">Ferramentas Pro</div>
+                                <div class="conversation-time">05/12</div>
+                            </div>
+                            <div class="conversation-preview">Sua encomenda chegou, quando podemos...</div>
+                        </div>
+                    </div>
+
+                    <!-- Conversa 6 -->
+                    <div class="conversation-item">
+                        <div class="conversation-avatar">OP</div>
+                        <div class="conversation-info">
+                            <div class="conversation-header">
+                                <div class="conversation-name">Oficina Peças</div>
+                                <div class="conversation-time">01/12</div>
+                            </div>
+                            <div class="conversation-preview">Obrigado pelo pedido! Em 24h estará...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Conversa -->
+            <div class="conversation-area">
+                <div class="conversation-header">
+                    <div class="current-conversation-avatar">AS</div>
+                    <div class="current-conversation-info">
+                        <div class="current-conversation-name">AutoPeças Silva</div>
+                        <div class="current-conversation-status">
+                            <span class="online-status"></span> Online
+                        </div>
+                    </div>
+                    <div class="conversation-actions">
+                        <div class="action-button">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="action-button">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="messages-container">
+                    <div class="message-date-divider">
+                        <span class="date-label">Hoje</span>
+                    </div>
+
+                    <!-- Mensagem Recebida -->
+                    <div class="message received">
+                        <div class="message-bubble">
+                            Olá! Temos o kit de embreagem para Volkswagen Golf em estoque. Preço especial para você: R$ 487,90 com 5% de cashback.
+                        </div>
+                        <div class="message-time">10:30</div>
+                    </div>
+
+                    <!-- Mensagem Enviada -->
+                    <div class="message sent">
+                        <div class="message-bubble">
+                            Ótimo! Preciso de 2 unidades. Tem preço melhor para quantidade?
+                        </div>
+                        <div class="message-time">10:32</div>
+                        <div class="message-status">Entregue</div>
+                    </div>
+
+                    <!-- Mensagem Recebida -->
+                    <div class="message received">
+                        <div class="message-bubble">
+                            Para 2 unidades conseguimos fazer por R$ 920,00 com frete grátis. Isso dá 6% de economia.
+                        </div>
+                        <div class="message-time">10:35</div>
+                    </div>
+
+                    <!-- Mensagem Recebida -->
+                    <div class="message received">
+                        <div class="message-bubble">
+                            Além disso, tenho uma promoção de pastilhas de freio se você levar o kit completo.
+                        </div>
+                        <div class="message-time">10:36</div>
+                    </div>
+
+                    <!-- Mensagem Enviada -->
+                    <div class="message sent">
+                        <div class="message-bubble">
+                            Perfeito! Vou querer as 2 unidades do kit e o conjunto de pastilhas também. Pode fechar pedido?
+                        </div>
+                        <div class="message-time">10:40</div>
+                        <div class="message-status">Entregue</div>
+                    </div>
+
+                    <!-- Mensagem Recebida -->
+                    <div class="message received">
+                        <div class="message-bubble">
+                            Excelente! Já preparei o pedido para você. Total: R$ 1.245,00 com frete grátis e cashback de R$ 62,25.
+                        </div>
+                        <div class="message-time">10:45</div>
+                    </div>
+                </div>
+
+                <div class="message-input-container">
+                    <div class="attachment-button">
+                        <i class="fas fa-paperclip"></i>
+                    </div>
+                    <div class="message-input">
+                        <textarea placeholder="Digite sua mensagem..." rows="1"></textarea>
+                    </div>
+                    <button class="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nova Conversa -->
+    <div class="modal" id="newConversationModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h3>Nova Conversa</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="supplierSelect">Selecionar Fornecedor</label>
+                    <select id="supplierSelect">
+                        <option value="">Selecione um fornecedor</option>
+                        <option value="1">AutoPeças Silva</option>
+                        <option value="2">Peças Premium</option>
+                        <option value="3">MegaPeças</option>
+                        <option value="4">AutoPeças RJ</option>
+                        <option value="5">Ferramentas Pro</option>
+                        <option value="6">Oficina Peças</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="messageSubject">Assunto</label>
+                    <input type="text" id="messageSubject" placeholder="Assunto da mensagem">
+                </div>
+                <div class="form-group">
+                    <label for="initialMessage">Mensagem</label>
+                    <textarea id="initialMessage" placeholder="Digite sua mensagem..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline">Cancelar</button>
+                <button class="btn btn-primary">Iniciar Conversa</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const newConversationBtn = document.getElementById('newConversationBtn');
+            const newConversationModal = document.getElementById('newConversationModal');
+            const closeModalBtn = document.querySelector('.close-modal');
+            
+            // Abrir modal nova conversa
+            newConversationBtn.addEventListener('click', function() {
+                newConversationModal.style.display = 'flex';
+            });
+            
+            // Fechar modal
+            closeModalBtn.addEventListener('click', function() {
+                newConversationModal.style.display = 'none';
+            });
+            
+            // Fechar modal clicando fora
+            window.addEventListener('click', function(event) {
+                if (event.target === newConversationModal) {
+                    newConversationModal.style.display = 'none';
+                }
+            });
+            
+            // Alternar entre conversas
+            const conversationItems = document.querySelectorAll('.conversation-item');
+            conversationItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    conversationItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Simular carregamento de conversa
+                    const supplierName = this.querySelector('.conversation-name').textContent;
+                    const avatarText = this.querySelector('.conversation-avatar').textContent;
+                    
+                    document.querySelector('.current-conversation-name').textContent = supplierName;
+                    document.querySelector('.current-conversation-avatar').textContent = avatarText;
+                    
+                    // Limpar notificações
+                    const unreadBadge = this.querySelector('.conversation-unread');
+                    if (unreadBadge) {
+                        unreadBadge.remove();
+                    }
+                });
+            });
+            
+            // Enviar mensagem
+            const messageInput = document.querySelector('.message-input textarea');
+            const sendButton = document.querySelector('.send-button');
+            
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (messageText) {
+                    const messagesContainer = document.querySelector('.messages-container');
+                    
+                    // Criar nova mensagem
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message sent';
+                    messageDiv.innerHTML = `
+                        <div class="message-bubble">${messageText}</div>
+                        <div class="message-time">${getCurrentTime()}</div>
+                        <div class="message-status">Enviando...</div>
+                    `;
+                    
+                    messagesContainer.appendChild(messageDiv);
+                    messageInput.value = '';
+                    
+                    // Rolagem automática para a última mensagem
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    
+                    // Simular resposta após 2 segundos
+                    setTimeout(() => {
+                        document.querySelector('.message-status').textContent = 'Entregue';
+                        
+                        // Simular resposta do fornecedor
+                        simulateResponse();
+                    }, 2000);
+                }
+            }
+            
+            sendButton.addEventListener('click', sendMessage);
+            
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Ajustar altura do textarea automaticamente
+            messageInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+            
+            // Função para simular resposta
+            function simulateResponse() {
+                const responses = [
+                    "Ótimo! Podemos entregar até amanhã.",
+                    "Temos sim em estoque. Precisa de quantas unidades?",
+                    "Posso fazer um preço especial para você.",
+                    "Acabei de verificar e temos promoção esta semana.",
+                    "Perfeito! Já separo seu pedido."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                const messagesContainer = document.querySelector('.messages-container');
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message received';
+                messageDiv.innerHTML = `
+                    <div class="message-bubble">${randomResponse}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                `;
+                
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            // Função para obter hora atual
+            function getCurrentTime() {
+                const now = new Date();
+                return now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+            }
+            
+            // Rolagem inicial para o final das mensagens
+            const messagesContainer = document.querySelector('.messages-container');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+    </script>
+</body>
+</html>

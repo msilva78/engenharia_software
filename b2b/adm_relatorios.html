@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Administrador | ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-success {
+            background-color: #4CAF50;
+            color: var(--branco);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel Administrativo */
+        .admin-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+            flex-shrink: 0;
+        }
+
+        .admin-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .admin-menu li {
+            margin-bottom: 10px;
+        }
+
+        .admin-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+            width: 100%;
+        }
+
+        .admin-menu a:hover, .admin-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .admin-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+            min-width: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Filtros de Relatórios */
+        .filters-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filters-title {
+            color: var(--azul-escuro);
+            font-size: 1.2rem;
+        }
+
+        .filters-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Cards de Relatórios */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .report-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--vermelho);
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .report-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--branco);
+            background-color: var(--azul-escuro);
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .report-title {
+            color: var(--azul-escuro);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .report-description {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .report-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+        }
+
+        /* Gráficos de Relatórios */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-header h3 {
+            color: var(--azul-escuro);
+            font-size: 1.3rem;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Tabela de Relatórios */
+        .table-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .table-title {
+            color: var(--azul-escuro);
+            font-size: 1.2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(51, 69, 99, 0.03);
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        /* Estilos para os botões de ação na tabela */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-start;
+        }
+
+        .action-buttons .btn {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            min-width: auto;
+            width: auto;
+        }
+
+        .action-buttons .btn i {
+            margin-right: 0;
+            font-size: 0.8rem;
+        }
+
+        /* Ajustar o tamanho dos botões nos cards de relatório */
+        .report-actions .btn {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
+
+        .report-actions .btn i {
+            margin-right: 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .admin-panel {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+            }
+            
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .filters-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .table-header .btn {
+                margin-top: 15px;
+            }
+            
+            .report-stats {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <span>Olá, Administrador</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="adm_dashboard.html">Painel Administrativo</a>
+            <span>&gt;</span>
+            <a href="adm_relatorios.html">Relatórios</a>
+        </div>
+    </div>
+
+    <!-- Painel Administrativo -->
+    <div class="container">
+        <div class="admin-panel">
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <h3>Painel Admin</h3>
+                <ul class="admin-menu">
+                   <li><a href="adm_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="adm_caduser.html"><i class="fas fa-user-plus"></i> Cadastrar Usuários</a></li>
+                    <li><a href="adm_geruser.html"><i class="fas fa-users"></i> Gerenciar Usuários</a></li>
+                    <li><a href="adm_cadprestador.html"><i class="fas fa-user-tie"></i> Cadastrar Prestador</a></li>
+                    <li><a href="adm_prestador_financas.html"><i class="fas fa-chart-line"></i> Prestador Finanças</a></li>
+                    <li><a href="adm_price_calculate.html"><i class="fas fa-calculator"></i> Preço e Comissão</a></li>
+                    <li><a href="adm_logistica.html"><i class="fas fa-truck"></i> Entregas</a></li>
+                    <li><a href="adm_produtos.html"><i class="fas fa-box"></i> Produtos</a></li>
+                    <li><a href="adm_pedidos.html"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                    <li><a href="adm_relatorios.html" class="active"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                    <li><a href="adm_setup.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="admin-content">
+                <div class="admin-header">
+                    <h2>Relatórios do Sistema</h2>
+                    <div>
+                        <span>Período: Últimos 30 dias | Última atualização: hoje, 14:30</span>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="filters-card">
+                    <div class="filters-header">
+                        <h3 class="filters-title">Filtrar Relatórios</h3>
+                    </div>
+                    <div class="filters-content">
+                        <div class="form-group">
+                            <label for="report-type">Tipo de Relatório</label>
+                            <select id="report-type">
+                                <option value="">Todos os relatórios</option>
+                                <option value="vendas">Relatório de Vendas</option>
+                                <option value="usuarios">Relatório de Usuários</option>
+                                <option value="produtos">Relatório de Produtos</option>
+                                <option value="pedidos">Relatório de Pedidos</option>
+                                <option value="financeiro">Relatório Financeiro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date-from">Data de</label>
+                            <input type="date" id="date-from" value="2023-05-15">
+                        </div>
+                        <div class="form-group">
+                            <label for="date-to">Data até</label>
+                            <input type="date" id="date-to" value="2023-06-15">
+                        </div>
+                        <div class="form-group">
+                            <label for="periodo">Período</label>
+                            <select id="periodo">
+                                <option value="30">Últimos 30 dias</option>
+                                <option value="7">Última semana</option>
+                                <option value="90">Últimos 3 meses</option>
+                                <option value="365">Último ano</option>
+                                <option value="custom">Personalizado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-secondary btn-sm" id="clear-filters">Limpar</button>
+                        <button class="btn btn-primary btn-sm" id="apply-filters">Gerar Relatório</button>
+                        <button class="btn btn-success btn-sm">
+                            <i class="fas fa-file-export"></i> Exportar PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards de Relatórios -->
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn btn-sm btn-secondary"><i class="fas fa-download"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <h3 class="report-title">Relatório de Vendas</h3>
+                        <p class="report-description">Análise detalhada das vendas realizadas no período selecionado, incluindo métricas de performance.</p>
+                        <div class="report-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">R$ 86.550</div>
+                                <div class="stat-label">Faturamento Total</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">328</div>
+                                <div class="stat-label">Pedidos</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn btn-sm btn-secondary"><i class="fas fa-download"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <h3 class="report-title">Relatório de Usuários</h3>
+                        <p class="report-description">Estatísticas de cadastro e atividade dos usuários do sistema (mecânicos e fornecedores).</p>
+                        <div class="report-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">1.248</div>
+                                <div class="stat-label">Usuários Totais</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">42</div>
+                                <div class="stat-label">Novos/Mês</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn btn-sm btn-secondary"><i class="fas fa-download"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <h3 class="report-title">Relatório de Produtos</h3>
+                        <p class="report-description">Análise de estoque, produtos mais vendidos e performance por categoria.</p>
+                        <div class="report-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">5.742</div>
+                                <div class="stat-label">Produtos Ativos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">156</div>
+                                <div class="stat-label">Categorias</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-header">
+                            <div class="report-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="report-actions">
+                                <button class="btn btn-sm btn-secondary"><i class="fas fa-download"></i></button>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <h3 class="report-title">Relatório Financeiro</h3>
+                        <p class="report-description">Demonstrativo financeiro completo com receitas, despesas e indicadores de rentabilidade.</p>
+                        <div class="report-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">15.8%</div>
+                                <div class="stat-label">Crescimento</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">R$ 12.4K</div>
+                                <div class="stat-label">Lucro Líquido</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos de Relatórios -->
+                <div class="charts-section">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Performance de Vendas</h3>
+                            <select id="salesPeriod">
+                                <option value="month">Este Mês</option>
+                                <option value="quarter">Este Trimestre</option>
+                                <option value="year">Este Ano</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salesPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Distribuição por Categoria</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="categoryDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabela de Relatórios Detalhados -->
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3 class="table-title">Relatórios Gerados Recentemente</h3>
+                        <div>
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="fas fa-history"></i> Histórico
+                            </button>
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Novo Relatório
+                            </button>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome do Relatório</th>
+                                <th>Tipo</th>
+                                <th>Período</th>
+                                <th>Data de Geração</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Relatório de Vendas - Junho 2023</td>
+                                <td>Vendas</td>
+                                <td>01/06/2023 - 15/06/2023</td>
+                                <td>15/06/2023 14:30</td>
+                                <td><span class="badge badge-success">Concluído</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary" title="Visualizar"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-secondary" title="Download"><i class="fas fa-download"></i></button>
+                                        <button class="btn btn-sm btn-success" title="Regenerar"><i class="fas fa-redo"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Análise de Usuários Ativos</td>
+                                <td>Usuários</td>
+                                <td>Últimos 30 dias</td>
+                                <td>14/06/2023 10:15</td>
+                                <td><span class="badge badge-success">Concluído</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary" title="Visualizar"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-secondary" title="Download"><i class="fas fa-download"></i></button>
+                                        <button class="btn btn-sm btn-success" title="Regenerar"><i class="fas fa-redo"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Relatório Financeiro Trimestral</td>
+                                <td>Financeiro</td>
+                                <td>Q2 2023</td>
+                                <td>10/06/2023 09:00</td>
+                                <td><span class="badge badge-success">Concluído</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary" title="Visualizar"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-secondary" title="Download"><i class="fas fa-download"></i></button>
+                                        <button class="btn btn-sm btn-success" title="Regenerar"><i class="fas fa-redo"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Análise de Produtos Mais Vendidos</td>
+                                <td>Produtos</td>
+                                <td>Últimos 90 dias</td>
+                                <td>08/06/2023 16:45</td>
+                                <td><span class="badge badge-warning">Parcial</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary" title="Visualizar"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-secondary" title="Download"><i class="fas fa-download"></i></button>
+                                        <button class="btn btn-sm btn-success" title="Regenerar"><i class="fas fa-redo"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Relatório de Pedidos Pendentes</td>
+                                <td>Pedidos</td>
+                                <td>Últimos 7 dias</td>
+                                <td>05/06/2023 11:20</td>
+                                <td><span class="badge badge-success">Concluído</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary" title="Visualizar"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-sm btn-secondary" title="Download"><i class="fas fa-download"></i></button>
+                                        <button class="btn btn-sm btn-success" title="Regenerar"><i class="fas fa-redo"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico de performance de vendas
+            const salesCtx = document.getElementById('salesPerformanceChart').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Vendas 2023',
+                            data: [45000, 52000, 48000, 61000, 72000, 86550],
+                            borderColor: '#334563',
+                            backgroundColor: 'rgba(51, 69, 99, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Vendas 2022',
+                            data: [38000, 42000, 45000, 48000, 52000, 55000],
+                            borderColor: '#c83134',
+                            backgroundColor: 'rgba(200, 49, 52, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de distribuição por categoria
+            const categoryCtx = document.getElementById('categoryDistributionChart').getContext('2d');
+            const categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Motor', 'Freios', 'Suspensão', 'Elétrica', 'Transmissão', 'Outros'],
+                    datasets: [{
+                        data: [28, 22, 15, 12, 10, 13],
+                        backgroundColor: [
+                            '#334563',
+                            '#c83134',
+                            '#7793c1',
+                            '#4CAF50',
+                            '#FF9800',
+                            '#9C27B0'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Atualizar gráfico de vendas conforme seleção
+            document.getElementById('salesPeriod').addEventListener('change', function(e) {
+                let newData2023, newData2022, newLabels;
+                
+                if (e.target.value === 'month') {
+                    newLabels = ['1', '5', '10', '15', '20', '25', '30'];
+                    newData2023 = [2500, 2900, 3500, 4200, 4800, 4100, 5300];
+                    newData2022 = [2000, 2200, 2500, 2800, 3000, 2700, 3200];
+                } else if (e.target.value === 'quarter') {
+                    newLabels = ['Abr', 'Mai', 'Jun'];
+                    newData2023 = [61000, 72000, 86550];
+                    newData2022 = [48000, 52000, 55000];
+                } else {
+                    newLabels = ['Q1', 'Q2', 'Q3', 'Q4'];
+                    newData2023 = [145000, 219550, 0, 0];
+                    newData2022 = [125000, 155000, 135000, 160000];
+                }
+                
+                salesChart.data.labels = newLabels;
+                salesChart.data.datasets[0].data = newData2023;
+                salesChart.data.datasets[1].data = newData2022;
+                salesChart.update();
+            });
+
+            // Filtros
+            const clearFiltersBtn = document.getElementById('clear-filters');
+            const applyFiltersBtn = document.getElementById('apply-filters');
+            
+            clearFiltersBtn.addEventListener('click', function() {
+                document.getElementById('report-type').value = '';
+                document.getElementById('date-from').value = '';
+                document.getElementById('date-to').value = '';
+                document.getElementById('periodo').value = '30';
+            });
+            
+            applyFiltersBtn.addEventListener('click', function() {
+                const reportType = document.getElementById('report-type').value;
+                const periodo = document.getElementById('periodo').value;
+                
+                alert(`Relatório gerado para: ${reportType || 'Todos os tipos'} - Período: ${periodo} dias`);
+                // Em um sistema real, aqui seria feita a requisição para gerar o relatório
+            });
+
+            // Interatividade nos cards de relatório
+            document.querySelectorAll('.report-card .btn-primary').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reportTitle = this.closest('.report-card').querySelector('.report-title').textContent;
+                    alert(`Visualizando: ${reportTitle}`);
+                });
+            });
+
+            document.querySelectorAll('.report-card .btn-secondary').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reportTitle = this.closest('.report-card').querySelector('.report-title').textContent;
+                    alert(`Download do relatório: ${reportTitle}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

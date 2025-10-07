@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Prestadores - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Conteúdo Principal */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        .page-description {
+            color: var(--cinza-escuro);
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        /* Formulário de Cadastro */
+        .form-container {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+        }
+
+        .form-section-header i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: flex-end;
+        }
+
+        /* Lista de Prestadores */
+        .providers-list {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+        }
+
+        .providers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .providers-title {
+            color: var(--azul-escuro);
+            font-size: 1.5rem;
+        }
+
+        .providers-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .providers-table th,
+        .providers-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .providers-table th {
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+
+        .providers-table tr:hover {
+            background-color: var(--cinza-claro);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .status-inactive {
+            background-color: #FFEBEE;
+            color: #C62828;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 500px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            color: var(--azul-escuro);
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--cinza-escuro);
+        }
+
+        /* Botão Voltar */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-button:hover {
+            color: var(--vermelho);
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .providers-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .breadcrumb-content {
+                flex-wrap: wrap;
+            }
+            
+            .breadcrumb-content span {
+                margin: 0 5px;
+            }
+            
+            .form-container,
+            .providers-list {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <span>Olá, Administrador</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="adm_dashboard.html">Painel Administrativo</a>
+            <span>&gt;</span>
+            <a href="adm_logistica.html">Logística</a>
+            <span>&gt;</span>
+            <a href="#">Cadastro de Prestadores</a>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <!-- Botão Voltar -->
+        <a href="adm_dashboard.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Voltar ao Dashboard
+        </a>
+
+        <div class="page-header">
+            <h2 class="page-title">Prestadores de Serviços de Entrega</h2>
+            <button class="btn btn-primary" id="new-provider-btn">
+                <i class="fas fa-plus"></i> Novo Prestador
+            </button>
+        </div>
+
+        <p class="page-description">
+            Cadastre e gerencie os prestadores de serviços de entrega que serão utilizados no sistema de logística.
+            Esses prestadores estarão disponíveis para seleção no painel de controle de logística.
+        </p>
+
+        <!-- Formulário de Cadastro -->
+        <div class="form-container" id="provider-form">
+            <form id="delivery-provider-form">
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Informações Básicas</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="provider-name">Nome do Prestador *</label>
+                            <input type="text" id="provider-name" name="provider-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-type">Tipo de Serviço *</label>
+                            <select id="provider-type" name="provider-type" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="Moto">Entregador (Moto)</option>
+                                <option value="Carro">Entregador (Carro)</option>
+                                <option value="Van">Entregador (Van)</option>
+                                <option value="Correios">Correios</option>
+                                <option value="Transportadora">Transportadora</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-cnpj">CNPJ *</label>
+                            <input type="text" id="provider-cnpj" name="provider-cnpj" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-phone">Telefone *</label>
+                            <input type="tel" id="provider-phone" name="provider-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-email">E-mail *</label>
+                            <input type="email" id="provider-email" name="provider-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-status">Status *</label>
+                            <select id="provider-status" name="provider-status" required>
+                                <option value="active">Ativo</option>
+                                <option value="inactive">Inativo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <i class="fas fa-truck"></i>
+                        <h3>Informações de Entrega</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="provider-coverage">Cobertura de Entrega *</label>
+                            <select id="provider-coverage" name="provider-coverage" required>
+                                <option value="">Selecione a cobertura</option>
+                                <option value="local">Local (bairro/cidade)</option>
+                                <option value="regional">Regional (várias cidades)</option>
+                                <option value="estadual">Estadual</option>
+                                <option value="nacional">Nacional</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-delivery-time">Prazo de Entrega (dias) *</label>
+                            <input type="number" id="provider-delivery-time" name="provider-delivery-time" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-cost">Custo por Entrega (R$) *</label>
+                            <input type="number" id="provider-cost" name="provider-cost" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group form-full">
+                            <label for="provider-zones">Zones de Atendimento *</label>
+                            <select id="provider-zones" name="provider-zones" multiple required>
+                                <option value="centro">Centro</option>
+                                <option value="zona-norte">Zona Norte</option>
+                                <option value="zona-sul">Zona Sul</option>
+                                <option value="zona-leste">Zona Leste</option>
+                                <option value="zona-oeste">Zona Oeste</option>
+                                <option value="regiao-metropolitana">Região Metropolitana</option>
+                            </select>
+                            <small>Mantenha pressionado Ctrl para selecionar múltiplas zonas</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>Documentos</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="provider-contract">Contrato</label>
+                            <input type="file" id="provider-contract" name="provider-contract">
+                        </div>
+                        <div class="form-group">
+                            <label for="provider-license">Licença de Operação</label>
+                            <input type="file" id="provider-license" name="provider-license">
+                        </div>
+                        <div class="form-group form-full">
+                            <label for="provider-notes">Observações</label>
+                            <textarea id="provider-notes" name="provider-notes" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="reset" class="btn btn-outline">Limpar Formulário</button>
+                    <button type="submit" class="btn btn-primary">Salvar Prestador</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista de Prestadores Cadastrados -->
+        <div class="providers-list">
+            <div class="providers-header">
+                <h3 class="providers-title">Prestadores Cadastrados</h3>
+                <button class="btn btn-outline btn-sm" id="refresh-providers">
+                    <i class="fas fa-sync-alt"></i> Atualizar
+                </button>
+            </div>
+
+            <table class="providers-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Contato</th>
+                        <th>Cobertura</th>
+                        <th>Prazo</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Expresso São Paulo</td>
+                        <td>Transportadora</td>
+                        <td>contato@expressosp.com.br</td>
+                        <td>Nacional</td>
+                        <td>3-5 dias</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td class="action-buttons">
+                            <button class="btn btn-outline btn-sm edit-btn" data-id="1">Editar</button>
+                            <button class="btn btn-outline btn-sm delete-btn" data-id="1">Excluir</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Entregas Rápidas Motoboy</td>
+                        <td>Entregador (Moto)</td>
+                        <td>(11) 99999-8888</td>
+                        <td>Local</td>
+                        <td>1-2 horas</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td class="action-buttons">
+                            <button class="btn btn-outline btn-sm edit-btn" data-id="2">Editar</button>
+                            <button class="btn btn-outline btn-sm delete-btn" data-id="2">Excluir</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Correios</td>
+                        <td>Correios</td>
+                        <td>central@correios.com.br</td>
+                        <td>Nacional</td>
+                        <td>5-10 dias</td>
+                        <td><span class="status-badge status-active">Ativo</span></td>
+                        <td class="action-buttons">
+                            <button class="btn btn-outline btn-sm edit-btn" data-id="3">Editar</button>
+                            <button class="btn btn-outline btn-sm delete-btn" data-id="3">Excluir</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fretamento Silva</td>
+                        <td>Entregador (Van)</td>
+                        <td>(11) 3333-4444</td>
+                        <td>Regional</td>
+                        <td>1-2 dias</td>
+                        <td><span class="status-badge status-inactive">Inativo</span></td>
+                        <td class="action-buttons">
+                            <button class="btn btn-outline btn-sm edit-btn" data-id="4">Editar</button>
+                            <button class="btn btn-outline btn-sm delete-btn" data-id="4">Excluir</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmar Exclusão</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <p>Tem certeza que deseja excluir este prestador de serviço?</p>
+            <div class="form-actions">
+                <button class="btn btn-outline" id="cancel-delete">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-delete">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variáveis globais
+            const providerForm = document.getElementById('delivery-provider-form');
+            const newProviderBtn = document.getElementById('new-provider-btn');
+            const refreshProvidersBtn = document.getElementById('refresh-providers');
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const closeModalBtn = document.querySelector('.close-modal');
+            const cancelDeleteBtn = document.getElementById('cancel-delete');
+            const confirmDeleteBtn = document.getElementById('confirm-delete');
+            let currentProviderId = null;
+            
+            // Botão para mostrar formulário de novo prestador
+            newProviderBtn.addEventListener('click', function() {
+                providerForm.reset();
+                providerForm.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Botão para atualizar lista
+            refreshProvidersBtn.addEventListener('click', function() {
+                alert('Lista de prestadores atualizada!');
+            });
+            
+            // Envio do formulário
+            providerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simular envio de dados
+                const providerName = document.getElementById('provider-name').value;
+                alert(`Prestador ${providerName} salvo com sucesso!`);
+                
+                // Limpar formulário
+                providerForm.reset();
+            });
+            
+            // Botões de edição
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const providerId = this.getAttribute('data-id');
+                    const providerRow = this.closest('tr');
+                    const providerName = providerRow.querySelector('td:first-child').textContent;
+                    
+                    // Preencher formulário com dados (em uma implementação real, buscaria do servidor)
+                    document.getElementById('provider-name').value = providerName;
+                    
+                    // Rolar até o formulário
+                    providerForm.scrollIntoView({ behavior: 'smooth' });
+                    
+                    alert(`Editando prestador: ${providerName} (ID: ${providerId})`);
+                });
+            });
+            
+            // Botões de exclusão
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentProviderId = this.getAttribute('data-id');
+                    const providerRow = this.closest('tr');
+                    const providerName = providerRow.querySelector('td:first-child').textContent;
+                    
+                    // Atualizar mensagem do modal
+                    const modalText = confirmationModal.querySelector('p');
+                    modalText.textContent = `Tem certeza que deseja excluir o prestador "${providerName}"?`;
+                    
+                    // Mostrar modal
+                    confirmationModal.style.display = 'flex';
+                });
+            });
+            
+            // Fechar modal
+            closeModalBtn.addEventListener('click', function() {
+                confirmationModal.style.display = 'none';
+            });
+            
+            cancelDeleteBtn.addEventListener('click', function() {
+                confirmationModal.style.display = 'none';
+            });
+            
+            // Confirmar exclusão
+            confirmDeleteBtn.addEventListener('click', function() {
+                alert(`Prestador com ID ${currentProviderId} excluído com sucesso!`);
+                confirmationModal.style.display = 'none';
+                
+                // Em uma implementação real, faria uma requisição para excluir do servidor
+                // e removeria a linha da tabela
+            });
+            
+            // Fechar modal clicando fora dele
+            window.addEventListener('click', function(e) {
+                if (e.target === confirmationModal) {
+                    confirmationModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

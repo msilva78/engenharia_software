@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--vermelho);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel do Mecânico */
+        .mechanic-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .mechanic-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .mechanic-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .mechanic-menu li {
+            margin-bottom: 10px;
+        }
+
+        .mechanic-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+        }
+
+        .mechanic-menu a:hover, .mechanic-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .mechanic-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .mechanic-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .mechanic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mechanic-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Configurações Básicas */
+        .basic-settings {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .settings-section {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-size: 1rem;
+        }
+
+        .section-title {
+            color: var(--azul-escuro);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .setting-description {
+            color: var(--cinza-escuro);
+            font-size: 0.85rem;
+        }
+
+        /* Switch Toggle */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Select Styles */
+        .select-wrapper {
+            position: relative;
+            min-width: 150px;
+        }
+
+        .select-wrapper select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Ações */
+        .actions-section {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+
+        .actions-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .mechanic-panel {
+                flex-direction: column;
+            }
+            
+            .mechanic-sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .mechanic-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .actions-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="#" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">2</span>
+                </a>
+                <span>Olá, Mecânica Central</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="mec_dashboard.html">Dashboard</a>
+            <span>&gt;</span>
+            <a href="mec_setup.html">Configurações</a>
+        </div>
+    </div>
+
+    <!-- Painel do Mecânico -->
+    <div class="container">
+        <div class="mechanic-panel">
+            <!-- Sidebar -->
+            <div class="mechanic-sidebar">
+                <h3>Painel do Mecânico</h3>
+                <ul class="mechanic-menu">
+                    <li><a href="mec_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="all_produtos.html"><i class="fas fa-shopping-cart"></i> Comprar Peças</a></li>
+                    <li><a href="mec_pedidos.html"><i class="fas fa-clipboard-list"></i> Meus Pedidos</a></li>
+                    <li><a href="mec_cashback.html"><i class="fas fa-coins"></i> Meu Cashback</a></li>
+                    <li><a href="mec_descontos.html"><i class="fas fa-tags"></i> Descontos</a></li>
+                    <li><a href="mec_perfiluser.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                    <li><a href="mec_setup.html" class="active"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="mechanic-content">
+                <div class="mechanic-header">
+                    <h2>Configurações Básicas</h2>
+                    <div>
+                        <span>Gerencie suas preferências principais</span>
+                    </div>
+                </div>
+
+                <div class="basic-settings">
+                    <!-- Notificações -->
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="section-title">Notificações</h3>
+                        </div>
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Notificações de Pedidos</div>
+                                    <div class="setting-description">Receba atualizações sobre seus pedidos</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Mensagens de Fornecedores</div>
+                                    <div class="setting-description">Notificações de chat com fornecedores</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Ofertas Especiais</div>
+                                    <div class="setting-description">Promoções e descontos exclusivos</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preferências -->
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="fas fa-sliders-h"></i>
+                            </div>
+                            <h3 class="section-title">Preferências</h3>
+                        </div>
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Idioma</div>
+                                    <div class="setting-description">Idioma da interface</div>
+                                </div>
+                                <div class="select-wrapper">
+                                    <select>
+                                        <option value="pt">Português (BR)</option>
+                                        <option value="es">Español</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Moeda</div>
+                                    <div class="setting-description">Moeda para exibição de preços</div>
+                                </div>
+                                <div class="select-wrapper">
+                                    <select>
+                                        <option value="BRL">Real (R$)</option>
+                                        <option value="USD">Dólar (US$)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Modo Escuro</div>
+                                    <div class="setting-description">Interface em tema escuro</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat com Fornecedores -->
+                    <div class="settings-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3 class="section-title">Chat com Fornecedores</h3>
+                        </div>
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Chat Antes da Compra</div>
+                                    <div class="setting-description">Permitir tirar dúvidas antes de comprar</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Chat Após a Compra</div>
+                                    <div class="setting-description">Acompanhamento do pedido com fornecedor</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-label">Som de Notificação</div>
+                                    <div class="setting-description">Som para novas mensagens</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="actions-section">
+                        <div class="actions-buttons">
+                            <button class="btn btn-primary" onclick="saveSettings()">
+                                <i class="fas fa-save"></i> Salvar Configurações
+                            </button>
+                            <button class="btn btn-outline" onclick="resetSettings()">
+                                <i class="fas fa-undo"></i> Restaurar Padrão
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="all_produtos.html">Produtos</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Vantagens</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-coins"></i> Cashback em Todas as Compras</a></li>
+                        <li><a href="#"><i class="fas fa-tags"></i> Descontos Exclusivos</a></li>
+                        <li><a href="#"><i class="fas fa-truck"></i> Entrega Rápida</a></li>
+                        <li><a href="#"><i class="fas fa-shield-alt"></i> Compra Segura</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar configurações salvas
+            loadSavedSettings();
+            
+            // Adicionar eventos aos switches
+            const switches = document.querySelectorAll('.switch input');
+            switches.forEach(switchElement => {
+                switchElement.addEventListener('change', function() {
+                    showNotification('Alteração realizada. Lembre-se de salvar.', 'info');
+                });
+            });
+
+            // Adicionar eventos aos selects
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.addEventListener('change', function() {
+                    showNotification('Alteração realizada. Lembre-se de salvar.', 'info');
+                });
+            });
+        });
+
+        function saveSettings() {
+            // Simular salvamento das configurações
+            const settings = {
+                notifications: {
+                    orders: document.querySelectorAll('input[type="checkbox"]')[0].checked,
+                    messages: document.querySelectorAll('input[type="checkbox"]')[1].checked,
+                    offers: document.querySelectorAll('input[type="checkbox"]')[2].checked
+                },
+                preferences: {
+                    language: document.querySelector('select').value,
+                    currency: document.querySelectorAll('select')[1].value,
+                    darkMode: document.querySelectorAll('input[type="checkbox"]')[3].checked
+                },
+                chat: {
+                    prePurchase: document.querySelectorAll('input[type="checkbox"]')[4].checked,
+                    postPurchase: document.querySelectorAll('input[type="checkbox"]')[5].checked,
+                    sound: document.querySelectorAll('input[type="checkbox"]')[6].checked
+                }
+            };
+
+            // Salvar no localStorage (simulação)
+            localStorage.setItem('mechanicSettings', JSON.stringify(settings));
+            
+            showNotification('Configurações salvas com sucesso!', 'success');
+        }
+
+        function resetSettings() {
+            if (confirm('Tem certeza que deseja restaurar as configurações padrão?')) {
+                // Reset dos switches
+                document.querySelectorAll('input[type="checkbox"]').forEach((checkbox, index) => {
+                    // Manter notificações de pedidos e mensagens ativas por padrão
+                    checkbox.checked = index === 0 || index === 1 || index === 4 || index === 5 || index === 6;
+                });
+                
+                // Reset dos selects
+                document.querySelectorAll('select').forEach((select, index) => {
+                    select.selectedIndex = 0;
+                });
+                
+                showNotification('Configurações restauradas para o padrão!', 'success');
+            }
+        }
+
+        function loadSavedSettings() {
+            const savedSettings = localStorage.getItem('mechanicSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                
+                // Aplicar configurações salvas
+                document.querySelectorAll('input[type="checkbox"]')[0].checked = settings.notifications.orders;
+                document.querySelectorAll('input[type="checkbox"]')[1].checked = settings.notifications.messages;
+                document.querySelectorAll('input[type="checkbox"]')[2].checked = settings.notifications.offers;
+                document.querySelectorAll('input[type="checkbox"]')[3].checked = settings.preferences.darkMode;
+                document.querySelectorAll('input[type="checkbox"]')[4].checked = settings.chat.prePurchase;
+                document.querySelectorAll('input[type="checkbox"]')[5].checked = settings.chat.postPurchase;
+                document.querySelectorAll('input[type="checkbox"]')[6].checked = settings.chat.sound;
+                
+                document.querySelector('select').value = settings.preferences.language;
+                document.querySelectorAll('select')[1].value = settings.preferences.currency;
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Criar elemento de notificação
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background-color: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                border-radius: 5px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animação de entrada
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

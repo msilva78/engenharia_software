@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade | ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none; /* Remover marcadores da lista */
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Hero Section */
+        .page-hero {
+            background: linear-gradient(rgba(51, 69, 99, 0.9), rgba(51, 69, 99, 0.9)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--branco);
+            padding: 70px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .page-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Conteúdo da Política */
+        .policy-content {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: var(--sombra);
+            margin-bottom: 60px;
+        }
+
+        .policy-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .policy-header h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+        }
+
+        .last-updated {
+            color: var(--azul-claro);
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .policy-section {
+            margin-bottom: 40px;
+        }
+
+        .policy-section h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .policy-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .highlight-box {
+            background-color: var(--cinza-claro);
+            border-left: 4px solid var(--vermelho);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+
+        .definition-list {
+            margin: 20px 0;
+        }
+
+        .definition-list dt {
+            font-weight: bold;
+            color: var(--azul-escuro);
+            margin-top: 15px;
+        }
+
+        .definition-list dd {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--cinza-claro);
+        }
+
+        /* Seção de Contato */
+        .contact-section {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: var(--sombra);
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .contact-section h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 25px;
+        }
+
+        .contact-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-option {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: var(--cinza-claro);
+            transition: transform 0.3s;
+        }
+
+        .contact-option:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-option i {
+            font-size: 2.5rem;
+            color: var(--vermelho);
+            margin-bottom: 20px;
+        }
+
+        .contact-option h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 70px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul {
+            list-style: none; /* Remover marcadores do footer */
+            margin-left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--vermelho);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Navegação Rápida */
+        .quick-nav {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 90px;
+            z-index: 99;
+        }
+
+        .quick-nav h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .quick-nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quick-nav-links a {
+            padding: 8px 15px;
+            background-color: var(--cinza-claro);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .quick-nav-links a:hover {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .page-hero {
+                padding: 50px 0;
+            }
+            
+            .page-hero h2 {
+                font-size: 2rem;
+            }
+            
+            .policy-content {
+                padding: 25px;
+            }
+            
+            .quick-nav {
+                position: static;
+            }
+            
+            .quick-nav-links {
+                flex-direction: column;
+            }
+            
+            .contact-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                    <li><a href="index_perguntas.html">Perguntas Frequentes</a></li>
+                    <li><a href="index_politica.html" class="active">Política de Privacidade</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="#" id="login-btn" class="btn btn-primary">Entrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="index_politica.html">Política de Privacidade</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="container">
+            <h2>Política de Privacidade</h2>
+            <p>Conheça como protegemos e utilizamos suas informações na plataforma ABM Oficial</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Navegação Rápida -->
+        <div class="quick-nav">
+            <h3>Navegação Rápida:</h3>
+            <div class="quick-nav-links">
+                <a href="#introducao">Introdução</a>
+                <a href="#dados-coletados">Dados Coletados</a>
+                <a href="#uso-dados">Uso dos Dados</a>
+                <a href="#compartilhamento">Compartilhamento</a>
+                <a href="#direitos">Seus Direitos</a>
+                <a href="#seguranca">Segurança</a>
+                <a href="#contato">Contato</a>
+            </div>
+        </div>
+
+        <!-- Conteúdo da Política -->
+        <div class="policy-content">
+            <div class="policy-header">
+                <h2>Política de Privacidade ABM Oficial</h2>
+                <p class="last-updated">Última atualização: 15 de Novembro de 2023</p>
+                <p>A sua privacidade é importante para nós. Esta política explica como coletamos, usamos, compartilhamos e protegemos suas informações.</p>
+            </div>
+
+            <section id="introducao" class="policy-section">
+                <h3>1. Introdução</h3>
+                <p>A ABM Oficial ("nós", "nosso" ou "nossa") opera a plataforma B2B que conecta fornecedores de peças automotivas a mecânicos e revendedores. Esta Política de Privacidade descreve nossas práticas relativas à coleta, uso e divulgação de informações que coletamos de e sobre você quando utiliza nossa plataforma.</p>
+                <p>Ao acessar ou usar nossos serviços, você concorda com os termos desta Política de Privacidade e com nossos Termos de Uso. Se você não concordar com estes termos, por favor, não utilize nossos serviços.</p>
+            </section>
+
+            <section id="dados-coletados" class="policy-section">
+                <h3>2. Quais Dados Coletamos</h3>
+                <p>Coletamos diferentes tipos de informações para fornecer e melhorar nossos serviços:</p>
+                
+                <h4>2.1. Informações fornecidas voluntariamente</h4>
+                <ul>
+                    <li>Dados de cadastro: nome completo, e-mail, telefone, endereço, CNPJ/CPF</li>
+                    <li>Informações profissionais: nome da empresa, ramo de atividade, especialidades</li>
+                    <li>Dados de pagamento: informações de cartão de crédito, conta bancária (criptografadas)</li>
+                    <li>Comunicações: mensagens trocadas com outros usuários e com nosso suporte</li>
+                </ul>
+                
+                <h4>2.2. Informações coletadas automatizadas</h4>
+                <ul>
+                    <li>Dados de uso: páginas visitadas, tempo de permanência, cliques</li>
+                    <li>Dados técnicos: endereço IP, tipo de navegador, dispositivo utilizado</li>
+                    <li>Cookies e tecnologias similares: para melhorar sua experiência</li>
+                    <li>Localização: dados de localização aproximada baseados no IP</li>
+                </ul>
+                
+                <h4>2.3. Informações de terceiros</h4>
+                <p>Podemos receber informações sobre você de outras fontes, como:</p>
+                <ul>
+                    <li>Redes sociais, quando você se conecta através delas</li>
+                    <li>Parceiros comerciais e provedores de serviços</li>
+                    <li>Bancos e instituições financeiras para processamento de pagamentos</li>
+                </ul>
+            </section>
+
+            <section id="uso-dados" class="policy-section">
+                <h3>3. Como Utilizamos Seus Dados</h3>
+                <p>Utilizamos suas informações para os seguintes propósitos:</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Finalidade</th>
+                                <th>Descrição</th>
+                                <th>Base Legal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Prestação de serviços</td>
+                                <td>Fornecer acesso à plataforma e conectar compradores e vendedores</td>
+                                <td>Execução de contrato</td>
+                            </tr>
+                            <tr>
+                                <td>Processamento de pagamentos</td>
+                                <td>Processar transações financeiras entre os usuários</td>
+                                <td>Execução de contrato</td>
+                            </tr>
+                            <tr>
+                                <td>Comunicações</td>
+                                <td>Enviar notificações sobre transações, atualizações e suporte</td>
+                                <td>Execução de contrato</td>
+                            </tr>
+                            <tr>
+                                <td>Melhoria de serviços</td>
+                                <td>Analisar uso da plataforma para melhorar funcionalidades</td>
+                                <td>Interesse legítimo</td>
+                            </tr>
+                            <tr>
+                                <td>Marketing</td>
+                                <td>Enviar ofertas personalizadas e novidades (com consentimento)</td>
+                                <td>Consentimento</td>
+                            </tr>
+                            <tr>
+                                <td>Segurança</td>
+                                <td>Prevenir fraudes e atividades ilegais na plataforma</td>
+                                <td>Interesse legítimo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="highlight-box">
+                    <p><strong>Nota:</strong> Para finalidades de marketing, sempre solicitaremos seu consentimento explícito. Você pode optar por não receber comunicações promocionais a qualquer momento.</p>
+                </div>
+            </section>
+
+            <section id="compartilhamento" class="policy-section">
+                <h3>4. Compartilhamento de Dados</h3>
+                <p>Seus dados podem ser compartilhados nas seguintes situações:</p>
+                
+                <h4>4.1. Entre usuários da plataforma</h4>
+                <p>Para facilitar transações, compartilhamos informações limitadas entre compradores e vendedores:</p>
+                <ul>
+                    <li>Fornecedores veem: nome, endereço de entrega e dados de contato do comprador</li>
+                    <li>Compradores veem: nome da empresa, avaliações e dados de contato do fornecedor</li>
+                </ul>
+                
+                <h4>4.2. Com prestadores de serviços</h4>
+                <p>Terceiros que nos auxiliam na operação da plataforma:</p>
+                <ul>
+                    <li>Processadores de pagamento</li>
+                    <li>Serviços de hospedagem e infraestrutura</li>
+                    <li>Plataformas de análise de dados</li>
+                    <li>Serviços de marketing e comunicação</li>
+                </ul>
+                
+                <h4>4.3. Por exigência legal</h4>
+                <p>Podemos divulgar informações quando exigido por lei, regulamento, processo legal ou solicitação governamental.</p>
+                
+                <h4>4.4. Em transações empresariais</h4>
+                <p>Em caso de fusão, aquisição ou venda de ativos, suas informações podem ser transferidas como parte da transação.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Importante:</strong> Não vendemos seus dados pessoais para terceiros. Todo compartilhamento é realizado em conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>
+                </div>
+            </section>
+
+            <section id="direitos" class="policy-section">
+                <h3>5. Seus Direitos</h3>
+                <p>De acordo com a LGPD, você tem os seguintes direitos sobre seus dados pessoais:</p>
+                
+                <div class="definition-list">
+                    <dt>Confirmação e acesso</dt>
+                    <dd>Confirmar que tratamos seus dados e acessá-los.</dd>
+                    
+                    <dt>Correção</dt>
+                    <dd>Solicitar a correção de dados incompletos, inexatos ou desatualizados.</dd>
+                    
+                    <dt>Anonimização, bloqueio ou eliminação</dt>
+                    <dd>Solicitar a anonimização, bloqueio ou eliminação de dados desnecessários ou excessivos.</dd>
+                    
+                    <dt>Portabilidade</dt>
+                    <dd>Solicitar a portabilidade dos dados a outro fornecedor de serviço.</dd>
+                    
+                    <dt>Eliminação</dt>
+                    <dd>Solicitar a eliminação dos dados tratados com seu consentimento.</dd>
+                    
+                    <dt>Informação sobre compartilhamento</dt>
+                    <dd>Obter informações sobre as entidades públicas e privadas com as quais compartilhamos seus dados.</dd>
+                    
+                    <dt>Revogação do consentimento</dt>
+                    <dd>Revogar seu consentimento a qualquer momento.</dd>
+                </div>
+                
+                <p>Para exercer seus direitos, entre em contato conosco através dos canais indicados no final desta política.</p>
+            </section>
+
+            <section id="seguranca" class="policy-section">
+                <h3>6. Segurança das Informações</h3>
+                <p>Implementamos medidas técnicas и organizacionais apropriadas para proteger suas informações pessoais contra acesso não autorizado, alteração, divulgação ou destruição. Estas medidas incluem:</p>
+                
+                <ul>
+                    <li>Criptografia de dados sensíveis</li>
+                    <li>Controles de acesso baseados em função</li>
+                    <li>Monitoramento contínuo de segurança</li>
+                    <li>Backups regulares</li>
+                    <li>Treinamento de equipe em proteção de dados</li>
+                </ul>
+                
+                <p>Embora adotemos medidas de segurança robustas, nenhum sistema é completamente seguro. Em caso de incidente de segurança que possa representar risco relevante para você, comunicaremos o ocorrido e tomaremos as providências necessárias.</p>
+            </section>
+
+            <section id="cookies" class="policy-section">
+                <h3>7. Cookies e Tecnologias Similares</h3>
+                <p>Utilizamos cookies e tecnologias similares para melhorar sua experiência, analisar tráfego e personalizar conteúdo e anúncios. Os tipos de cookies que utilizamos incluem:</p>
+                
+                <ul>
+                    <li><strong>Cookies essenciais:</strong> Necessários para o funcionamento básico do site</li>
+                    <li><strong>Cookies de desempenho:</strong> Coletam informações sobre como os visitantes usam o site</li>
+                    <li><strong>Cookies de funcionalidade:</strong> Permitem que o site forneça funcionalidades personalizadas</li>
+                    <li><strong>Cookies de publicidade:</strong> Usados para entregar anúncios mais relevantes</li>
+                </ul>
+                
+                <p>Você pode controlar o uso de cookies através das configurações do seu navegador. No entanto, a desativação de cookies pode afetar a funcionalidade do site.</p>
+            </section>
+
+            <section id="armazenamento" class="policy-section">
+                <h3>8. Armazenamento e Retenção de Dados</h3>
+                <p>Seus dados pessoais são armazenados em servidores localizados no Brasil e mantidos pelo tempo necessário para cumprir as finalidades descritas nesta política, considerando:</p>
+                
+                <ul>
+                    <li>A necessidade de manter os dados para prestar os serviços solicitados</li>
+                    <li>Obrigações legais ou regulatórias de retenção de dados</li>
+                    <li>Prazos prescricionais aplicáveis</li>
+                    <li>Resolução de disputas ou execução de acordos</li>
+                </ul>
+                
+                <p>Quando os dados não forem mais necessários, serão anonimizados ou eliminados de forma segura.</p>
+            </section>
+
+            <section id="menores" class="policy-section">
+                <h3>9. Proteção de Menores</h3>
+                <p>Nossos serviços não são destinados a menores de 18 anos. Não coletamos intencionalmente informações de menores. Se tomarmos conhecimento de que coletamos dados de um menor без consentimento parental, tomaremos medidas para remover essas informações.</p>
+            </section>
+
+            <section id="alteracoes" class="policy-section">
+                <h3>10. Alterações nesta Política</h3>
+                <p>Podemos atualizar esta Política de Privacidade periodicamente para refletir mudanças em nossas práticas ou por outros motivos operacionais, legais ou regulatórios. Notificaremos sobre alterações significativas através de avisos em nosso site ou por e-mail.</p>
+                
+                <p>A data da última atualização será revisada no topo desta política. O uso continuado de nossos serviços após tais modificações constitui sua concordância com a política revisada.</p>
+            </section>
+
+            <section id="contato" class="policy-section">
+                <h3>11. Contato</h3>
+                <p>Se você tiver dúvidas, preocupações ou solicitações relacionadas a esta Política de Privacidade ou ao tratamento de seus dados pessoais, entre em contato conosco:</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Encarregado de Proteção de Dados (DPO)</strong><br>
+                    E-mail: dpo@abmoficial.com.br<br>
+                    Telefone: (11) 3456-7890 (ramal 123)</p>
+                </div>
+                
+                <p>Responderemos a todas as solicitações legítimas dentro dos prazos estabelecidos pela LGPD.</p>
+            </section>
+        </div>
+
+        <!-- Seção de Contato -->
+        <section class="contact-section">
+            <h3>Ainda com dúvidas sobre privacidade?</h3>
+            <p>Entre em contato com nosso Encarregado de Proteção de Dados</p>
+            
+            <div class="contact-options">
+                <div class="contact-option">
+                    <i class="fas fa-envelope"></i>
+                    <h4>E-mail</h4>
+                    <p>dpo@abmoficial.com.br</p>
+                    <p>Resposta em até 48h</p>
+                </div>
+                
+                <div class="contact-option">
+                    <i class="fas fa-phone-alt"></i>
+                    <h4>Telefone</h4>
+                    <p>(11) 3456-7890</p>
+                    <p>Ramal 123</p>
+                </div>
+                
+                <div class="contact-option">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h4>Escritório</h4>
+                    <p>Av. Paulista, 1000</p>
+                    <p>São Paulo - SP, 01310-100</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                        <li><a href="index_perguntas.html">Perguntas Frequentes</a></li>
+                        <li><a href="index_politica.html">Política de Privacidade</a></li>
+                        <li><a href="index_termo.html">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="#">Motor</a></li>
+                        <li><a href="#">Transmissão</a></li>
+                        <li><a href="#">Freios</a></li>
+                        <li><a href="#">Suspensão</a></li>
+                        <li><a href="#">Elétrica</a></li>
+                        <li><a href="#">Acessórios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (11) 3456-7890</li>
+                        <li><i class="fas fa-envelope"></i> contato@abmoficial.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000, São Paulo - SP</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navegação suave para as âncoras
+            document.querySelectorAll('.quick-nav-links a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Funcionalidade de login (simplificada)
+            const loginBtn = document.getElementById('login-btn');
+            
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Redirecionando para a página de login...');
+                // Em um sistema real: window.location.href = 'login.html';
+            });
+            
+            // Destacar seção atual durante a rolagem
+            const sections = document.querySelectorAll('.policy-section');
+            const navLinks = document.querySelectorAll('.quick-nav-links a');
+            
+            window.addEventListener('scroll', function() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

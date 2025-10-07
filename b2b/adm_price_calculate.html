@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Preço e Comissão | ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel Administrativo */
+        .admin-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .admin-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .admin-menu li {
+            margin-bottom: 10px;
+        }
+
+        .admin-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+        }
+
+        .admin-menu a:hover, .admin-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .admin-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Calculadora de Preço */
+        .calculator-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .calculator-info {
+            background-color: var(--cinza-claro);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .calculator-info p {
+            margin-bottom: 10px;
+        }
+
+        .calculator-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .calculator-results {
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .result-value {
+            font-weight: 600;
+        }
+
+        .result-total {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .result-total .result-label {
+            color: var(--branco);
+        }
+
+        .commission-breakdown {
+            margin-top: 30px;
+        }
+
+        .commission-breakdown h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* Faixas de Preço */
+        .price-ranges {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .price-ranges h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+        }
+
+        .range-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .range-table th, .range-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .range-table th {
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+
+        .range-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .range-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .range-info {
+            background-color: var(--cinza-claro);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .range-info p {
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .admin-panel {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .form-group input, .form-group select {
+                max-width: 100%;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .range-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <span>Olá, Administrador</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="adm_dashboard.html">Painel Administrativo</a>
+            <span>&gt;</span>
+            <a href="#">Calculadora de Preço e Comissão</a>
+        </div>
+    </div>
+
+    <!-- Painel Administrativo -->
+    <div class="container">
+        <div class="admin-panel">
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <h3>Painel Admin</h3>
+                <ul class="admin-menu">
+                   <li><a href="adm_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="adm_caduser.html"><i class="fas fa-user-plus"></i> Cadastrar Usuários</a></li>
+                    <li><a href="adm_geruser.html"><i class="fas fa-users"></i> Gerenciar Usuários</a></li>
+                    <li><a href="adm_cadprestador.html"><i class="fas fa-user-tie"></i> Cadastrar Prestador</a></li>
+                    <li><a href="adm_prestador_financas.html"><i class="fas fa-chart-line"></i> Prestador Finanças</a></li>
+                    <li><a href="adm_price_calculate.html" class="active"><i class="fas fa-calculator"></i> Preço e Comissão</a></li>
+                    <li><a href="adm_logistica.html"><i class="fas fa-truck"></i> Entregas</a></li>
+                    <li><a href="adm_produtos.html"><i class="fas fa-box"></i> Produtos</a></li>
+                    <li><a href="adm_pedidos.html"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                    <li><a href="adm_relatorios.html"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                    <li><a href="adm_setup.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="admin-content">
+                <div class="admin-header">
+                    <h2>Calculadora de Preço e Comissão</h2>
+                    <div>
+                        <span>Configure preços e comissões para produtos</span>
+                    </div>
+                </div>
+
+                <div class="calculator-container">
+                    <div class="calculator-info">
+                        <p><i class="fas fa-info-circle"></i> Esta calculadora permite configurar preços e comissões para produtos no sistema.</p>
+                        <p><strong>Comissão padrão da plataforma: 12%</strong> (valor configurável pelo administrador)</p>
+                    </div>
+
+                    <div class="calculator-form">
+                        <div class="form-group">
+                            <label for="cost-price">Preço de Custo (R$)</label>
+                            <input type="number" id="cost-price" step="0.01" min="0" placeholder="0,00" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profit-margin">Margem de Lucro Desejada (%)</label>
+                            <input type="number" id="profit-margin" step="0.1" min="0" value="30" placeholder="0,0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="commission-type">Tipo de Cálculo de Comissão</label>
+                            <select id="commission-type">
+                                <option value="fixed">Comissão Fixa (12%)</option>
+                                <option value="range">Comissão por Faixa de Preço</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" id="calculate-btn">Calcular Preço de Venda</button>
+                    </div>
+
+                    <!-- Seção de Faixas de Preço -->
+                    <div class="price-ranges" id="price-ranges-section" style="display: none;">
+                        <h3>Configuração de Faixas de Preço</h3>
+                        
+                        <div class="range-info">
+                            <p><i class="fas fa-info-circle"></i> Configure faixas de preço com diferentes porcentagens de comissão.</p>
+                            <p>O sistema aplicará automaticamente a comissão correspondente à faixa de preço do produto.</p>
+                        </div>
+                        
+                        <div class="range-actions">
+                            <button class="btn btn-sm btn-primary" id="add-range-btn">
+                                <i class="fas fa-plus"></i> Adicionar Faixa
+                            </button>
+                            <button class="btn btn-sm btn-secondary" id="apply-ranges-btn">
+                                <i class="fas fa-check"></i> Aplicar Faixas
+                            </button>
+                        </div>
+                        
+                        <table class="range-table">
+                            <thead>
+                                <tr>
+                                    <th>Faixa de Preço (R$)</th>
+                                    <th>Comissão (%)</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ranges-table-body">
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                            <input type="number" class="range-min" placeholder="Mínimo" value="0" step="0.01" min="0">
+                                            <span>até</span>
+                                            <input type="number" class="range-max" placeholder="Máximo" value="50" step="0.01" min="0">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="range-commission" value="15" step="0.1" min="0">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline remove-range">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                            <input type="number" class="range-min" placeholder="Mínimo" value="50.01" step="0.01" min="0">
+                                            <span>até</span>
+                                            <input type="number" class="range-max" placeholder="Máximo" value="100" step="0.01" min="0">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="range-commission" value="12" step="0.1" min="0">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline remove-range">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                            <input type="number" class="range-min" placeholder="Mínimo" value="100.01" step="0.01" min="0">
+                                            <span>até</span>
+                                            <input type="number" class="range-max" placeholder="Máximo" value="" step="0.01" min="0">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="range-commission" value="10" step="0.1" min="0">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline remove-range">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="calculator-results" id="results-container" style="display: none;">
+                        <h3>Resultado do Cálculo</h3>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Preço de Custo:</span>
+                            <span class="result-value" id="result-cost">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Margem de Lucro:</span>
+                            <span class="result-value" id="result-margin">0%</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Preço de Venda Sugerido:</span>
+                            <span class="result-value" id="result-sale-price">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="commission-breakdown">
+                            <h3>Detalhamento da Comissão</h3>
+                            
+                            <div class="breakdown-item">
+                                <span>Comissão da Plataforma (<span id="result-commission-rate">0</span>%):</span>
+                                <span id="result-commission">R$ 0,00</span>
+                            </div>
+                            
+                            <div class="breakdown-item">
+                                <span>Valor Líquido a Receber:</span>
+                                <span id="result-net-value">R$ 0,00</span>
+                            </div>
+                            
+                            <div class="breakdown-item">
+                                <span>Lucro Líquido Estimado:</span>
+                                <span id="result-net-profit">R$ 0,00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="result-total">
+                            <div class="breakdown-item">
+                                <span class="result-label">Lucratividade:</span>
+                                <span class="result-value" id="result-profitability">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="adm_dashboard.html" class="btn btn-outline">Voltar ao Dashboard</a>
+                        <button class="btn btn-primary" id="save-config">Salvar Configuração</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculate-btn');
+            const saveConfigBtn = document.getElementById('save-config');
+            const resultsContainer = document.getElementById('results-container');
+            const commissionType = document.getElementById('commission-type');
+            const priceRangesSection = document.getElementById('price-ranges-section');
+            const addRangeBtn = document.getElementById('add-range-btn');
+            const applyRangesBtn = document.getElementById('apply-ranges-btn');
+            const rangesTableBody = document.getElementById('ranges-table-body');
+            
+            // Obter parâmetros da URL (se houver)
+            const urlParams = new URLSearchParams(window.location.search);
+            const costPrice = urlParams.get('costPrice');
+            
+            if (costPrice) {
+                document.getElementById('cost-price').value = costPrice;
+            }
+            
+            // Mostrar/ocultar seção de faixas de preço
+            commissionType.addEventListener('change', function() {
+                if (this.value === 'range') {
+                    priceRangesSection.style.display = 'block';
+                } else {
+                    priceRangesSection.style.display = 'none';
+                }
+            });
+            
+            // Adicionar nova faixa de preço
+            addRangeBtn.addEventListener('click', function() {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" class="range-min" placeholder="Mínimo" step="0.01" min="0">
+                            <span>até</span>
+                            <input type="number" class="range-max" placeholder="Máximo" step="0.01" min="0">
+                        </div>
+                    </td>
+                    <td>
+                        <input type="number" class="range-commission" value="12" step="0.1" min="0">
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline remove-range">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                rangesTableBody.appendChild(newRow);
+                
+                // Adicionar evento de remoção
+                newRow.querySelector('.remove-range').addEventListener('click', function() {
+                    if (rangesTableBody.children.length > 1) {
+                        newRow.remove();
+                    } else {
+                        alert('É necessário ter pelo menos uma faixa de preço.');
+                    }
+                });
+            });
+            
+            // Adicionar eventos de remoção para as faixas existentes
+            document.querySelectorAll('.remove-range').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (rangesTableBody.children.length > 1) {
+                        this.closest('tr').remove();
+                    } else {
+                        alert('É necessário ter pelo menos uma faixa de preço.');
+                    }
+                });
+            });
+            
+            // Aplicar faixas de preço
+            applyRangesBtn.addEventListener('click', function() {
+                // Validar faixas
+                const ranges = [];
+                let isValid = true;
+                let lastMax = -1;
+                
+                const rows = rangesTableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const minInput = row.querySelector('.range-min');
+                    const maxInput = row.querySelector('.range-max');
+                    const commissionInput = row.querySelector('.range-commission');
+                    
+                    const min = parseFloat(minInput.value) || 0;
+                    const max = parseFloat(maxInput.value);
+                    const commission = parseFloat(commissionInput.value) || 0;
+                    
+                    // Validar valores
+                    if (isNaN(min) || min < 0) {
+                        minInput.style.borderColor = 'red';
+                        isValid = false;
+                    } else {
+                        minInput.style.borderColor = '';
+                    }
+                    
+                    if (isNaN(max) || max <= min) {
+                        maxInput.style.borderColor = 'red';
+                        isValid = false;
+                    } else {
+                        maxInput.style.borderColor = '';
+                    }
+                    
+                    if (min <= lastMax) {
+                        minInput.style.borderColor = 'red';
+                        isValid = false;
+                        alert('As faixas de preço não podem se sobrepor.');
+                    }
+                    
+                    if (isNaN(commission) || commission < 0 || commission > 100) {
+                        commissionInput.style.borderColor = 'red';
+                        isValid = false;
+                    } else {
+                        commissionInput.style.borderColor = '';
+                    }
+                    
+                    ranges.push({ min, max, commission });
+                    lastMax = max;
+                });
+                
+                if (isValid) {
+                    alert('Faixas de preço aplicadas com sucesso!');
+                    // Aqui você poderia salvar as faixas no localStorage ou em uma variável global
+                }
+            });
+            
+            // Calcular preço
+            calculateBtn.addEventListener('click', function() {
+                const cost = parseFloat(document.getElementById('cost-price').value);
+                const margin = parseFloat(document.getElementById('profit-margin').value);
+                const useRanges = commissionType.value === 'range';
+                
+                if (!cost || isNaN(cost) || cost <= 0) {
+                    alert('Por favor, informe um preço de custo válido.');
+                    return;
+                }
+                
+                // Calcular preço de venda
+                const salePrice = cost * (1 + margin/100);
+                
+                // Determinar comissão
+                let commissionRate = 0.12; // Padrão 12%
+                
+                if (useRanges) {
+                    // Verificar em qual faixa o preço se encaixa
+                    const rows = rangesTableBody.querySelectorAll('tr');
+                    for (let i = 0; i < rows.length; i++) {
+                        const row = rows[i];
+                        const min = parseFloat(row.querySelector('.range-min').value) || 0;
+                        const max = parseFloat(row.querySelector('.range-max').value);
+                        
+                        if (salePrice >= min && (isNaN(max) || salePrice <= max)) {
+                            commissionRate = parseFloat(row.querySelector('.range-commission').value) / 100;
+                            break;
+                        }
+                    }
+                }
+                
+                // Cálculos finais
+                const commission = salePrice * commissionRate;
+                const netValue = salePrice - commission;
+                const netProfit = netValue - cost;
+                const profitability = (netProfit / cost) * 100;
+                
+                // Exibir resultados
+                document.getElementById('result-cost').textContent = `R$ ${cost.toFixed(2)}`;
+                document.getElementById('result-margin').textContent = `${margin}%`;
+                document.getElementById('result-sale-price').textContent = `R$ ${salePrice.toFixed(2)}`;
+                document.getElementById('result-commission-rate').textContent = (commissionRate * 100).toFixed(1);
+                document.getElementById('result-commission').textContent = `R$ ${commission.toFixed(2)}`;
+                document.getElementById('result-net-value').textContent = `R$ ${netValue.toFixed(2)}`;
+                document.getElementById('result-net-profit').textContent = `R$ ${netProfit.toFixed(2)}`;
+                document.getElementById('result-profitability').textContent = `${profitability.toFixed(2)}%`;
+                
+                resultsContainer.style.display = 'block';
+            });
+            
+            // Salvar configuração
+            saveConfigBtn.addEventListener('click', function() {
+                alert('Configurações salvas com sucesso!');
+                // Aqui você implementaria a lógica para salvar as configurações no servidor
+            });
+        });
+    </script>
+</body>
+</html>

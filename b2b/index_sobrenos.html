@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Hero Sobre Nós */
+        .about-hero {
+            background: linear-gradient(rgba(51, 69, 99, 0.9), rgba(51, 69, 99, 0.9)), url('https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--branco);
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .about-hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Seção Sobre Nós */
+        .about-section {
+            padding: 60px 0;
+            background-color: var(--branco);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--azul-escuro);
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--vermelho);
+            margin: 15px auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .about-text h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Missão, Visão e Valores */
+        .values-section {
+            padding: 60px 0;
+            background-color: var(--cinza-claro);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .value-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--sombra);
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--azul-escuro);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--branco);
+            font-size: 2rem;
+        }
+
+        .value-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .value-card p {
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        /* Nossa Equipe */
+        .team-section {
+            padding: 60px 0;
+            background-color: var(--branco);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: var(--sombra);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-image {
+            height: 200px;
+            background-color: var(--azul-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-size: 4rem;
+        }
+
+        .member-info {
+            padding: 20px;
+        }
+
+        .member-info h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+
+        .member-info p {
+            color: var(--vermelho);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .member-info .description {
+            color: var(--cinza-escuro);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 70px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--vermelho);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .about-hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .about-hero p {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .values-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <!-- Logo da ABM - substitua pelo caminho correto da sua imagem -->
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="#" id="login-btn" class="btn btn-primary">Entrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="index_sobrenos.html">Sobre Nós</a>
+        </div>
+    </div>
+
+    <!-- Hero Sobre Nós -->
+    <section class="about-hero">
+        <div class="container">
+            <h2>Sobre a ABM Oficial</h2>
+            <p>Conectando fornecedores e mecânicos através da maior plataforma B2B de peças automotivas do Brasil</p>
+        </div>
+    </section>
+
+    <!-- Seção Sobre Nós -->
+    <section class="about-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossa História</h2>
+                <p>Conheça a trajetória da ABM Oficial e nossa missão no mercado automotivo</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Transformando o mercado de peças automotivas</h3>
+                    <p>Fundada em 2010, a ABM Oficial nasceu da necessidade de criar uma ponte eficiente entre fornecedores de peças automotivas e mecânicos de todo o Brasil. Com mais de uma década de atuação, nos tornamos referência no segmento B2B de autopeças.</p>
+                    <p>Nossa plataforma foi desenvolvida para simplificar o processo de compra e venda de peças automotivas, oferecendo uma experiência intuitiva, segura e eficiente para ambos os lados.</p>
+                    <p>Atualmente, conectamos mais de 5.000 fornecedores com mais de 25.000 mecânicos e oficinas em todo o território nacional, facilitando o acesso às melhores peças com os melhores preços.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Nossa Equipe">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Missão, Visão e Valores -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossos Pilares</h2>
+                <p>Os fundamentos que guiam nosso trabalho e relacionamento com clientes e parceiros</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Missão</h3>
+                    <p>Conectar fornecedores e mecânicos através de uma plataforma inovadora, oferecendo as melhores peças automotivas com agilidade, confiabilidade e preços competitivos, contribuindo para o crescimento do setor automotivo brasileiro.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Visão</h3>
+                    <p>Ser reconhecida como a principal plataforma B2B de peças automotivas da América Latina, referência em inovação, confiabilidade e satisfação dos clientes, promovendo a digitalização e modernização do setor.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3>Valores</h3>
+                    <p>Transparência nas relações, compromisso com a qualidade, inovação constante, respeito aos parceiros and clientes, responsabilidade social e ambiental, e ética em todos os processos empresariais.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nossa Equipe -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossa Equipe</h2>
+                <p>Conheça os profissionais que tornam a ABM Oficial uma referência no mercado</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Carlos Silva</h3>
+                        <p>CEO & Fundador</p>
+                        <div class="description">Com mais de 20 anos de experiência no mercado automotivo, Carlos lidera a visão estratégica da ABM Oficial.</div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Ana Santos</h3>
+                        <p>Diretora Comercial</p>
+                        <div class="description">Especialista em negócios B2B, Ana é responsável pelas parcerias estratégicas e expansão da rede de fornecedores.</div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Ricardo Oliveira</h3>
+                        <p>Gerente de Tecnologia</p>
+                        <div class="description">Com background em desenvolvimento de software, Ricardo garante que nossa plataforma esteja sempre inovando.</div>
+                    </div>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="member-info">
+                        <h3>Patrícia Mendes</h3>
+                        <p>Coordenadora de Suporte</p>
+                        <div class="description">Líder da equipe de atendimento, Patricia garante a melhor experiência para mecânicos e fornecedores.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="#">Motor</a></li>
+                        <li><a href="#">Transmissão</a></li>
+                        <li><a href="#">Freios</a></li>
+                        <li><a href="#">Suspensão</a></li>
+                        <li><a href="#">Elétrica</a></li>
+                        <li><a href="#">Acessórios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (11) 3456-7890</li>
+                        <li><i class="fas fa-envelope"></i> contato@abmoficial.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000, São Paulo - SP</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script básico para a página
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Redirecionando para a página de login...');
+                // Em um sistema real, isso abriria o modal de login
+            });
+        });
+    </script>
+</body>
+</html>

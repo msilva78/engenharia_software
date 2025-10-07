@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Logística - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Dashboard de Logística */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-title {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--cinza-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--azul-escuro);
+        }
+
+        .stat-card-title {
+            font-size: 1rem;
+            color: var(--cinza-escuro);
+        }
+
+        .stat-card-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+        }
+
+        .stat-card-desc {
+            font-size: 0.9rem;
+            color: var(--cinza-escuro);
+            margin-top: 5px;
+        }
+
+        /* Painel de Controle de Logística */
+        .logistics-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .panel-column {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            min-height: 600px;
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--cinza-claro);
+        }
+
+        .column-title {
+            color: var(--azul-escuro);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .column-badge {
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-item {
+            background-color: var(--cinza-claro);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid var(--azul-claro);
+            transition: all 0.3s ease;
+        }
+
+        .order-item.pending {
+            border-left-color: #FF9800;
+        }
+
+        .order-item.preparing {
+            border-left-color: #2196F3;
+        }
+
+        .order-item.ready {
+            border-left-color: #4CAF50;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+
+        .order-status {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-preparing {
+            background-color: #CCE5FF;
+            color: #004085;
+        }
+
+        .status-ready {
+            background-color: #D4EDDA;
+            color: #155724;
+        }
+
+        .order-details {
+            margin-bottom: 15px;
+        }
+
+        .order-product {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .order-quantity {
+            font-size: 0.9rem;
+            color: var(--cinza-escuro);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .transport-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .order-time {
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .logistics-panel {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .panel-column {
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .breadcrumb-content {
+                flex-wrap: wrap;
+            }
+            
+            .breadcrumb-content span {
+                margin: 0 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <div class="user-info">
+                    <div class="user-avatar">AD</div>
+                    <span>Admin Logística</span>
+                </div>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="adm_dashboard.html">Dashboard</a>
+            <span>&gt;</span>
+            <a href="adm_logistica.html">Controle de Logística</a>
+        </div>
+    </div>
+
+    <!-- Dashboard de Logística -->
+    <div class="container">
+        <div class="dashboard-header">
+            <h2 class="dashboard-title">Painel de Controle de Logística</h2>
+            <button class="btn btn-primary" id="refresh-btn">
+                <i class="fas fa-sync-alt"></i> Atualizar
+            </button>
+        </div>
+
+        <!-- Cards Estatísticos -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3 class="stat-card-title">Total de Pedidos</h3>
+                </div>
+                <div class="stat-card-value">24</div>
+                <div class="stat-card-desc">Pedidos em processamento</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3 class="stat-card-title">Para Preparar</h3>
+                </div>
+                <div class="stat-card-value">8</div>
+                <div class="stat-card-desc">Pedidos pendentes</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="stat-card-title">Em Preparação</h3>
+                </div>
+                <div class="stat-card-value">6</div>
+                <div class="stat-card-desc">Pedidos em andamento</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card-header">
+                    <div class="stat-card-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3 class="stat-card-title">Prontos para Envio</h3>
+                </div>
+                <div class="stat-card-value">10</div>
+                <div class="stat-card-desc">Pedidos finalizados hoje</div>
+            </div>
+        </div>
+
+        <!-- Painel de Controle de Logística -->
+        <div class="logistics-panel">
+            <!-- Coluna 1: Para Preparar -->
+            <div class="panel-column">
+                <div class="column-header">
+                    <h3 class="column-title">Para Preparar</h3>
+                    <span class="column-badge">8 pedidos</span>
+                </div>
+                <div class="order-list" id="pending-orders">
+                    <div class="order-item pending" data-id="1001">
+                        <div class="order-header">
+                            <span class="order-id">#1001</span>
+                            <span class="order-status status-pending">Pendente</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Kit Embreagem Completo</div>
+                            <div class="order-quantity">Quantidade: 2 unidades</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm start-prep-btn">Iniciar Preparação</button>
+                        </div>
+                    </div>
+
+                    <div class="order-item pending" data-id="1003">
+                        <div class="order-header">
+                            <span class="order-id">#1003</span>
+                            <span class="order-status status-pending">Pendente</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Pastilhas de Freio Dianteiras</div>
+                            <div class="order-quantity">Quantidade: 4 unidades</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm start-prep-btn">Iniciar Preparação</button>
+                        </div>
+                    </div>
+
+                    <div class="order-item pending" data-id="1005">
+                        <div class="order-header">
+                            <span class="order-id">#1005</span>
+                            <span class="order-status status-pending">Pendente</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Filtro de Óleo</div>
+                            <div class="order-quantity">Quantidade: 10 unidades</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm start-prep-btn">Iniciar Preparação</button>
+                        </div>
+                    </div>
+
+                    <div class="order-item pending" data-id="1007">
+                        <div class="order-header">
+                            <span class="order-id">#1007</span>
+                            <span class="order-status status-pending">Pendente</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Amortecedores Dianteiros</div>
+                            <div class="order-quantity">Quantidade: 2 unidades</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm start-prep-btn">Iniciar Preparação</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna 2: Em Preparação -->
+            <div class="panel-column">
+                <div class="column-header">
+                    <h3 class="column-title">Em Preparação</h3>
+                    <span class="column-badge">6 pedidos</span>
+                </div>
+                <div class="order-list" id="preparing-orders">
+                    <div class="order-item preparing" data-id="1002">
+                        <div class="order-header">
+                            <span class="order-id">#1002</span>
+                            <span class="order-status status-preparing">Preparando</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Bateria 60Ah</div>
+                            <div class="order-quantity">Quantidade: 1 unidade</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm ready-btn">Pronto para Envio</button>
+                        </div>
+                    </div>
+
+                    <div class="order-item preparing" data-id="1004">
+                        <div class="order-header">
+                            <span class="order-id">#1004</span>
+                            <span class="order-status status-preparing">Preparando</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Velas de Ignição</div>
+                            <div class="order-quantity">Quantidade: 8 unidades</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm ready-btn">Pronto para Envio</button>
+                        </div>
+                    </div>
+
+                    <div class="order-item preparing" data-id="1006">
+                        <div class="order-header">
+                            <span class="order-id">#1006</span>
+                            <span class="order-status status-preparing">Preparando</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Correia Dentada</div>
+                            <div class="order-quantity">Quantidade: 2 unidades</div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary btn-sm ready-btn">Pronto para Envio</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna 3: Pronto para Envio -->
+            <div class="panel-column">
+                <div class="column-header">
+                    <h3 class="column-title">Pronto para Envio</h3>
+                    <span class="column-badge">10 pedidos</span>
+                </div>
+                <div class="order-list" id="ready-orders">
+                    <div class="order-item ready" data-id="1008">
+                        <div class="order-header">
+                            <span class="order-id">#1008</span>
+                            <span class="order-status status-ready">Pronto</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Óleo do Motor 5W30</div>
+                            <div class="order-quantity">Quantidade: 6 unidades</div>
+                        </div>
+                        <div class="transport-info">
+                            <strong>Transporte:</strong> Carro
+                        </div>
+                        <div class="order-time">
+                            Concluído em: 05/06/2023 14:30
+                        </div>
+                    </div>
+
+                    <div class="order-item ready" data-id="1009">
+                        <div class="order-header">
+                            <span class="order-id">#1009</span>
+                            <span class="order-status status-ready">Pronto</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Lâmpadas Farol Dianteiro</div>
+                            <div class="order-quantity">Quantidade: 4 unidades</div>
+                        </div>
+                        <div class="transport-info">
+                            <strong>Transporte:</strong> Moto
+                        </div>
+                        <div class="order-time">
+                            Concluído em: 05/06/2023 15:45
+                        </div>
+                    </div>
+
+                    <div class="order-item ready" data-id="1010">
+                        <div class="order-header">
+                            <span class="order-id">#1010</span>
+                            <span class="order-status status-ready">Pronto</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="order-product">Filtro de Ar</div>
+                            <div class="order-quantity">Quantidade: 5 unidades</div>
+                        </div>
+                        <div class="transport-info">
+                            <strong>Transporte:</strong> Correios
+                        </div>
+                        <div class="order-time">
+                            Concluído em: 05/06/2023 16:20
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="all_produtos.html">Produtos</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="#">Motor</a></li>
+                        <li><a href="#">Sistema de Combustível</a></li>
+                        <li><a href="#">Transmissão</a></li>
+                        <li><a href="#">Suspensão</a></li>
+                        <li><a href="#">Elétrica</a></li>
+                        <li><a href="#">Freios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para seleção de transporte -->
+    <div id="transport-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: white; padding: 20px; border-radius: 10px; width: 400px; max-width: 90%;">
+            <h3 style="margin-bottom: 15px; color: var(--azul-escuro);">Selecionar Transporte</h3>
+            <select class="transport-select" id="transport-select">
+                <option value="">Selecione o tipo de transporte</option>
+                <option value="Moto">Moto</option>
+                <option value="Carro">Carro</option>
+                <option value="Correios">Correios</option>
+            </select>
+            <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                <button class="btn btn-outline" id="cancel-transport">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-transport">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variáveis globais
+            let currentOrderId = null;
+            const transportModal = document.getElementById('transport-modal');
+            
+            // Botão de atualizar
+            document.getElementById('refresh-btn').addEventListener('click', function() {
+                alert('Dados atualizados com sucesso!');
+            });
+            
+            // Botões de iniciar preparação
+            document.querySelectorAll('.start-prep-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderItem = this.closest('.order-item');
+                    const orderId = orderItem.getAttribute('data-id');
+                    
+                    // Mover para a coluna "Em Preparação"
+                    const preparingColumn = document.getElementById('preparing-orders');
+                    orderItem.querySelector('.order-actions').innerHTML = `
+                        <button class="btn btn-primary btn-sm ready-btn">Pronto para Envio</button>
+                    `;
+                    orderItem.querySelector('.order-status').textContent = 'Preparando';
+                    orderItem.querySelector('.order-status').className = 'order-status status-preparing';
+                    orderItem.classList.remove('pending');
+                    orderItem.classList.add('preparing');
+                    
+                    preparingColumn.appendChild(orderItem);
+                    
+                    // Atualizar contadores
+                    updateCounters();
+                    
+                    // Reatachar evento ao novo botão
+                    attachReadyEvent();
+                });
+            });
+            
+            // Função para anexar eventos aos botões "Pronto para Envio"
+            function attachReadyEvent() {
+                document.querySelectorAll('.ready-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const orderItem = this.closest('.order-item');
+                        currentOrderId = orderItem.getAttribute('data-id');
+                        
+                        // Mostrar modal para seleção de transporte
+                        transportModal.style.display = 'flex';
+                    });
+                });
+            }
+            
+            // Inicializar eventos
+            attachReadyEvent();
+            
+            // Cancelar seleção de transporte
+            document.getElementById('cancel-transport').addEventListener('click', function() {
+                transportModal.style.display = 'none';
+            });
+            
+            // Confirmar seleção de transporte
+            document.getElementById('confirm-transport').addEventListener('click', function() {
+                const transportSelect = document.getElementById('transport-select');
+                const transportValue = transportSelect.value;
+                
+                if (!transportValue) {
+                    alert('Por favor, selecione um tipo de transporte.');
+                    return;
+                }
+                
+                // Encontrar o item do pedido
+                const orderItem = document.querySelector(`.order-item[data-id="${currentOrderId}"]`);
+                
+                if (orderItem) {
+                    // Mover para a coluna "Pronto para Envio"
+                    const readyColumn = document.getElementById('ready-orders');
+                    
+                    // Atualizar informações
+                    const now = new Date();
+                    const formattedDate = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                    
+                    orderItem.querySelector('.order-actions').remove();
+                    orderItem.innerHTML += `
+                        <div class="transport-info">
+                            <strong>Transporte:</strong> ${transportValue}
+                        </div>
+                        <div class="order-time">
+                            Concluído em: ${formattedDate}
+                        </div>
+                    `;
+                    
+                    orderItem.querySelector('.order-status').textContent = 'Pronto';
+                    orderItem.querySelector('.order-status').className = 'order-status status-ready';
+                    orderItem.classList.remove('preparing');
+                    orderItem.classList.add('ready');
+                    
+                    readyColumn.appendChild(orderItem);
+                    
+                    // Fechar modal e resetar seleção
+                    transportModal.style.display = 'none';
+                    transportSelect.value = '';
+                    
+                    // Atualizar contadores
+                    updateCounters();
+                }
+            });
+            
+            // Função para atualizar contadores
+            function updateCounters() {
+                const pendingCount = document.getElementById('pending-orders').querySelectorAll('.order-item').length;
+                const preparingCount = document.getElementById('preparing-orders').querySelectorAll('.order-item').length;
+                const readyCount = document.getElementById('ready-orders').querySelectorAll('.order-item').length;
+                
+                document.querySelectorAll('.column-badge').forEach((badge, index) => {
+                    if (index === 0) badge.textContent = `${pendingCount} pedidos`;
+                    if (index === 1) badge.textContent = `${preparingCount} pedidos`;
+                    if (index === 2) badge.textContent = `${readyCount} pedidos`;
+                });
+                
+                // Atualizar cards estatísticos
+                document.querySelectorAll('.stat-card-value').forEach((value, index) => {
+                    if (index === 1) value.textContent = pendingCount;
+                    if (index === 2) value.textContent = preparingCount;
+                    if (index === 3) value.textContent = readyCount;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

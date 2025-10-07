@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho e Checkout - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--vermelho);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Progress Steps */
+        .checkout-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .checkout-progress::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #ddd;
+            z-index: 1;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--branco);
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--cinza-escuro);
+        }
+
+        .step-text {
+            font-size: 0.9rem;
+            color: var(--cinza-escuro);
+            text-align: center;
+        }
+
+        .progress-step.active .step-icon {
+            background-color: var(--azul-escuro);
+            border-color: var(--azul-escuro);
+            color: white;
+        }
+
+        .progress-step.active .step-text {
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+
+        .progress-step.completed .step-icon {
+            background-color: var(--vermelho);
+            border-color: var(--vermelho);
+            color: white;
+        }
+
+        /* Cart and Checkout Layout */
+        .checkout-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .cart-items {
+            flex: 2;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+        }
+
+        .cart-items h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .cart-empty i {
+            font-size: 4rem;
+            color: var(--azul-claro);
+            margin-bottom: 20px;
+        }
+
+        .cart-empty p {
+            margin-bottom: 20px;
+            color: var(--cinza-escuro);
+        }
+
+        .cart-item {
+            display: flex;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            background-color: var(--cinza-claro);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: var(--azul-escuro);
+            font-size: 1.5rem;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            color: var(--azul-escuro);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .item-supplier {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--vermelho);
+            margin-bottom: 5px;
+        }
+
+        .item-cashback {
+            color: #4CAF50;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .item-actions {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--cinza-claro);
+            border: none;
+            cursor: pointer;
+        }
+
+        .quantity-input {
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+
+        .remove-item {
+            color: #F44336;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .remove-item:hover {
+            text-decoration: underline;
+        }
+
+        .order-summary {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .order-summary h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .cashback-earned {
+            background-color: #E8F5E9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cashback-earned i {
+            color: #4CAF50;
+            font-size: 1.5rem;
+        }
+
+        .cashback-text {
+            color: #2E7D32;
+            font-weight: 500;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--vermelho);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .checkout-btn:hover {
+            background-color: var(--azul-escuro);
+        }
+
+        .continue-shopping {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--azul-escuro);
+            font-weight: 500;
+        }
+
+        .continue-shopping:hover {
+            text-decoration: underline;
+        }
+
+        /* Checkout Form */
+        .checkout-form {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .checkout-form h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-section h3 i {
+            color: var(--vermelho);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .address-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .address-option.selected {
+            border-color: var(--azul-escuro);
+            background-color: rgba(51, 69, 99, 0.05);
+        }
+
+        .address-option input {
+            width: auto;
+        }
+
+        .address-details {
+            flex: 1;
+        }
+
+        .address-details h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .add-new-address {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--azul-escuro);
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .payment-method.selected {
+            border-color: var(--azul-escuro);
+            background-color: rgba(51, 69, 99, 0.05);
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+
+        .payment-method h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .payment-method p {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        .card-form {
+            background-color: var(--cinza-claro);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .installment-options {
+            margin-top: 15px;
+        }
+
+        .installment-options select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .checkout-container {
+                flex-direction: column;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .checkout-progress {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .checkout-progress::before {
+                display: none;
+            }
+            
+            .progress-step {
+                flex-direction: row;
+                gap: 15px;
+            }
+            
+            .step-icon {
+                margin-bottom: 0;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+            }
+            
+            .item-image {
+                width: 100%;
+                height: 150px;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .item-actions {
+                flex-direction: row;
+                align-items: center;
+                margin-top: 15px;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .checkout-progress {
+                gap: 25px;
+            }
+            
+            .progress-step {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="#" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <span>Olá, Mecânica Central</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="all_produtos.html">Produtos</a>
+            <span>&gt;</span>
+            <a href="all_payment.html">Carrinho e Checkout</a>
+        </div>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="container">
+        <div class="checkout-progress">
+            <div class="progress-step completed">
+                <div class="step-icon">1</div>
+                <div class="step-text">Carrinho</div>
+            </div>
+            <div class="progress-step active">
+                <div class="step-icon">2</div>
+                <div class="step-text">Entrega</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-icon">3</div>
+                <div class="step-text">Pagamento</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-icon">4</div>
+                <div class="step-text">Confirmação</div>
+            </div>
+        </div>
+
+        <div class="checkout-container">
+            <!-- Carrinho de Compras -->
+            <div class="cart-items">
+                <h2>Seu Carrinho (3 itens)</h2>
+                
+                <div class="cart-item">
+                    <div class="item-image">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Kit de Embreagem Completo Volkswagen Golf 2015-2020</div>
+                        <div class="item-supplier">Fornecedor: AutoPeças Silva</div>
+                        <div class="item-price">R$ 487,90</div>
+                        <div class="item-cashback">Cashback: R$ 24,40</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="item-quantity">
+                            <button class="quantity-btn">-</button>
+                            <input type="text" class="quantity-input" value="1">
+                            <button class="quantity-btn">+</button>
+                        </div>
+                        <button class="remove-item">
+                            <i class="fas fa-trash"></i> Remover
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="cart-item">
+                    <div class="item-image">
+                        <i class="fas fa-oil-can"></i>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Bomba de Combustível Elétrica Universal</div>
+                        <div class="item-supplier">Fornecedor: Peças Premium</div>
+                        <div class="item-price">R$ 189,90</div>
+                        <div class="item-cashback">Cashback: R$ 9,50</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="item-quantity">
+                            <button class="quantity-btn">-</button>
+                            <input type="text" class="quantity-input" value="1">
+                            <button class="quantity-btn">+</button>
+                        </div>
+                        <button class="remove-item">
+                            <i class="fas fa-trash"></i> Remover
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="cart-item">
+                    <div class="item-image">
+                        <i class="fas fa-stop-circle"></i>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Kit Pastilhas de Freio Dianteiro</div>
+                        <div class="item-supplier">Fornecedor: Peças Premium</div>
+                        <div class="item-price">R$ 147,50</div>
+                        <div class="item-cashback">Cashback: R$ 7,38</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="item-quantity">
+                            <button class="quantity-btn">-</button>
+                            <input type="text" class="quantity-input" value="1">
+                            <button class="quantity-btn">+</button>
+                        </div>
+                        <button class="remove-item">
+                            <i class="fas fa-trash"></i> Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Resumo do Pedido -->
+            <div class="order-summary">
+                <h2>Resumo do Pedido</h2>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>R$ 825,30</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Frete</span>
+                    <span>R$ 45,00</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Desconto</span>
+                    <span style="color: #4CAF50;">-R$ 41,27</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>R$ 829,03</span>
+                </div>
+                
+                <div class="cashback-earned">
+                    <i class="fas fa-coins"></i>
+                    <div class="cashback-text">
+                        <strong>Você vai ganhar R$ 41,27 de cashback</strong><br>
+                        <small>Valor creditado em até 48h após a confirmação do pagamento</small>
+                    </div>
+                </div>
+                
+                <button class="checkout-btn">Continuar para Entrega</button>
+                <a href="all_produtos.html" class="continue-shopping">Continuar comprando</a>
+            </div>
+        </div>
+        
+        <!-- Formulário de Entrega -->
+        <div class="checkout-form">
+            <h2>Informações de Entrega</h2>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-truck"></i> Endereço de Entrega</h3>
+                
+                <div class="address-option selected">
+                    <input type="radio" name="address" id="address1" checked>
+                    <div class="address-details">
+                        <h4>Endereço Principal</h4>
+                        <p>Av. Paulista, 1000, Apt 123, Bela Vista - São Paulo/SP</p>
+                        <p>CEP: 01310-100</p>
+                    </div>
+                </div>
+                
+                <div class="address-option">
+                    <input type="radio" name="address" id="address2">
+                    <div class="address-details">
+                        <h4>Oficina</h4>
+                        <p>R. Augusta, 500, Loja 2, Consolação - São Paulo/SP</p>
+                        <p>CEP: 01305-000</p>
+                    </div>
+                </div>
+                
+                <div class="add-new-address">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Adicionar novo endereço</span>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-user"></i> Dados Pessoais</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Nome Completo</label>
+                        <input type="text" id="name" value="Mecânica Central">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" value="contato@mecanicacentral.com.br">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefone</label>
+                        <input type="tel" id="phone" value="(11) 99999-9999">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="document">CPF/CNPJ</label>
+                        <input type="text" id="document" value="12.345.678/0001-90">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-clock"></i> Opções de Entrega</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="shippingMethod">Método de Entrega</label>
+                        <select id="shippingMethod">
+                            <option value="standard">Entrega Standard (5-7 dias úteis) - R$ 45,00</option>
+                            <option value="express">Entrega Expressa (2-3 dias úteis) - R$ 75,00</option>
+                            <option value="nextday">Entrega Next Day (1 dia útil) - R$ 120,00</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deliveryDate">Data Estimada de Entrega</label>
+                        <input type="text" id="deliveryDate" value="15 de Dezembro de 2023" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Formulário de Pagamento -->
+        <div class="checkout-form">
+            <h2>Pagamento</h2>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-credit-card"></i> Método de Pagamento</h3>
+                
+                <div class="payment-methods">
+                    <div class="payment-method selected">
+                        <i class="fas fa-credit-card"></i>
+                        <h4>Cartão de Crédito</h4>
+                        <p>Até 12x sem juros</p>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <i class="fas fa-barcode"></i>
+                        <h4>Boleto Bancário</h4>
+                        <p>5% de desconto</p>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <i class="fas fa-pix"></i>
+                        <h4>PIX</h4>
+                        <p>7% de desconto</p>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h4>Cashback</h4>
+                        <p>Use seu saldo acumulado</p>
+                    </div>
+                </div>
+                
+                <div class="card-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="cardNumber">Número do Cartão</label>
+                            <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cardName">Nome no Cartão</label>
+                            <input type="text" id="cardName" placeholder="Como está no cartão">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cardExpiry">Validade</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/AA">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cardCvv">CVV</label>
+                            <input type="text" id="cardCvv" placeholder="000">
+                        </div>
+                    </div>
+                    
+                    <div class="installment-options">
+                        <label for="installments">Parcelas</label>
+                        <select id="installments">
+                            <option value="1">1x de R$ 829,03 sem juros</option>
+                            <option value="2">2x de R$ 414,52 sem juros</option>
+                            <option value="3">3x de R$ 276,34 sem juros</option>
+                            <option value="4">4x de R$ 207,26 sem juros</option>
+                            <option value="5">5x de R$ 165,81 sem juros</option>
+                            <option value="6">6x de R$ 138,17 sem juros</option>
+                            <option value="7">7x de R$ 118,43 sem juros</option>
+                            <option value="8">8x de R$ 103,63 sem juros</option>
+                            <option value="9">9x de R$ 92,11 sem juros</option>
+                            <option value="10">10x de R$ 82,90 sem juros</option>
+                            <option value="11">11x de R$ 75,37 sem juros</option>
+                            <option value="12">12x de R$ 69,09 sem juros</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-file-alt"></i> Resumo Final</h3>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>R$ 825,30</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Frete</span>
+                        <span>R$ 45,00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Desconto</span>
+                        <span style="color: #4CAF50;">-R$ 41,27</span>
+                    </div>
+                    
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span>R$ 829,03</span>
+                    </div>
+                    
+                    <div class="cashback-earned">
+                        <i class="fas fa-coins"></i>
+                        <div class="cashback-text">
+                            <strong>Você vai ganhar R$ 41,27 de cashback</strong><br>
+                            <small>Valor creditado em até 48h após a confirmação do pagamento</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="checkout-btn">Finalizar Pedido</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="all_produtos.html">Produtos</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="#">Motor</a></li>
+                        <li><a href="#">Sistema de Combustível</a></li>
+                        <li><a href="#">Transmissão</a></li>
+                        <li><a href="#">Suspensão</a></li>
+                        <li><a href="#">Elétrica</a></li>
+                        <li><a href="#">Freios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleção de endereço
+            const addressOptions = document.querySelectorAll('.address-option');
+            addressOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    addressOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                });
+            });
+            
+            // Seleção de método de pagamento
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    paymentMethods.forEach(m => m.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Atualização de quantidade
+            const quantityBtns = document.querySelectorAll('.quantity-btn');
+            quantityBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('.quantity-input');
+                    let currentValue = parseInt(input.value);
+                    
+                    if (this.textContent === '+') {
+                        input.value = currentValue + 1;
+                    } else if (this.textContent === '-' && currentValue > 1) {
+                        input.value = currentValue - 1;
+                    }
+                    
+                    updateOrderSummary();
+                });
+            });
+            
+            // Remover item do carrinho
+            const removeButtons = document.querySelectorAll('.remove-item');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const cartItem = this.closest('.cart-item');
+                    cartItem.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        cartItem.remove();
+                        updateOrderSummary();
+                        
+                        // Verificar se o carrinho está vazio
+                        if (document.querySelectorAll('.cart-item').length === 0) {
+                            showEmptyCart();
+                        }
+                    }, 300);
+                });
+            });
+            
+            // Atualizar resumo do pedido
+            function updateOrderSummary() {
+                // Em uma implementação real, isso calcularia os valores com base nos itens do carrinho
+                console.log('Resumo do pedido atualizado');
+            }
+            
+            // Mostrar carrinho vazio
+            function showEmptyCart() {
+                const cartItems = document.querySelector('.cart-items');
+                cartItems.innerHTML = `
+                    <h2>Seu Carrinho (0 itens)</h2>
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Seu carrinho está vazio</p>
+                        <a href="all_produtos.html" class="btn btn-primary">Continuar Comprando</a>
+                    </div>
+                `;
+            }
+            
+            // Formatação de campos de cartão
+            const cardNumber = document.getElementById('cardNumber');
+            if (cardNumber) {
+                cardNumber.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 16) value = value.slice(0, 16);
+                    
+                    // Adicionar espaços a cada 4 dígitos
+                    value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+                    e.target.value = value;
+                });
+            }
+            
+            const cardExpiry = document.getElementById('cardExpiry');
+            if (cardExpiry) {
+                cardExpiry.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 4) value = value.slice(0, 4);
+                    
+                    // Adicionar barra após 2 dígitos
+                    if (value.length > 2) {
+                        value = value.replace(/(\d{2})(?=\d)/g, '$1/');
+                    }
+                    e.target.value = value;
+                });
+            }
+            
+            const cardCvv = document.getElementById('cardCvv');
+            if (cardCvv) {
+                cardCvv.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 3) value = value.slice(0, 3);
+                    e.target.value = value;
+                });
+            }
+            
+            // Finalizar pedido
+            const finishButtons = document.querySelectorAll('.checkout-btn');
+            finishButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('Pedido finalizado com sucesso! Em uma implementação real, isso processaria o pagamento.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota de Pagamento - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Conteúdo Principal */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Nota de Pagamento - Layout A4 */
+        .invoice-container {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--cinza-claro);
+        }
+
+        .invoice-logo {
+            text-align: center;
+            flex: 1;
+        }
+
+        .invoice-logo img {
+            height: 70px;
+            margin-bottom: 10px;
+        }
+
+        .invoice-title {
+            color: var(--azul-escuro);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .invoice-info {
+            text-align: right;
+            flex: 1;
+        }
+
+        .invoice-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+
+        .invoice-dates {
+            font-size: 0.9rem;
+            color: var(--cinza-escuro);
+        }
+
+        .invoice-section {
+            margin-bottom: 25px;
+        }
+
+        .invoice-section-title {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--cinza-claro);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .invoice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .invoice-item {
+            margin-bottom: 15px;
+        }
+
+        .invoice-label {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .invoice-value {
+            color: var(--cinza-escuro);
+            font-size: 0.95rem;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .invoice-table th,
+        .invoice-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+
+        .invoice-table th {
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+
+        .invoice-table .text-right {
+            text-align: right;
+        }
+
+        .invoice-total {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .total-box {
+            background-color: var(--cinza-claro);
+            padding: 15px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-label {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            font-size: 0.95rem;
+        }
+
+        .total-value {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .grand-total {
+            border-top: 2px solid var(--azul-escuro);
+            padding-top: 8px;
+            margin-top: 8px;
+            font-size: 1.05rem;
+        }
+
+        .invoice-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px solid var(--cinza-claro);
+            text-align: center;
+            color: var(--cinza-escuro);
+            font-size: 0.85rem;
+        }
+
+        .invoice-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Estilos de impressão para A4 */
+        @media print {
+            @page {
+                size: A4;
+                margin: 1.5cm;
+            }
+            
+            header, .breadcrumb, .page-header, .invoice-actions, footer {
+                display: none !important;
+            }
+            
+            body {
+                background-color: white;
+                color: black;
+                font-size: 12pt;
+                line-height: 1.4;
+            }
+            
+            .invoice-container {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            .invoice-header {
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+            
+            .invoice-section {
+                margin-bottom: 20px;
+            }
+            
+            .invoice-table {
+                font-size: 10pt;
+            }
+            
+            .invoice-label, .invoice-value {
+                font-size: 10pt;
+            }
+            
+            .total-box {
+                width: 250px;
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .invoice-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .invoice-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .invoice-info {
+                text-align: center;
+                margin-top: 20px;
+            }
+            
+            .invoice-actions {
+                flex-direction: column;
+            }
+            
+            .invoice-table {
+                font-size: 0.8rem;
+            }
+            
+            .invoice-table th, 
+            .invoice-table td {
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .breadcrumb-content {
+                flex-wrap: wrap;
+            }
+            
+            .breadcrumb-content span {
+                margin: 0 5px;
+            }
+            
+            .invoice-container {
+                padding: 20px;
+            }
+            
+            .total-box {
+                width: 100%;
+            }
+            
+            .invoice-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <div class="user-info">
+                    <div class="user-avatar">AD</div>
+                    <span>Admin Financeiro</span>
+                </div>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="adm_dashboard.html">Dashboard</a>
+            <span>&gt;</span>
+            <a href="adm_prestadores.html">Prestadores de Serviço</a>
+            <span>&gt;</span>
+            <a href="adm_prestador_financas.html">Controle Financeiro</a>
+            <span>&gt;</span>
+            <span>Nota de Pagamento</span>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">Nota de Pagamento - Prestação de Serviços</h2>
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-print"></i> Imprimir Nota
+            </button>
+        </div>
+
+        <!-- Nota de Pagamento -->
+        <div class="invoice-container">
+            <div class="invoice-header">
+                <div class="invoice-logo">
+                    <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                    <h3 class="invoice-title">ABM Oficial</h3>
+                    <p>CNPJ: 12.345.678/0001-90</p>
+                </div>
+                <div class="invoice-info">
+                    <div class="invoice-number">NOTA DE PAGAMENTO #NP20230610001</div>
+                    <div class="invoice-dates">
+                        <div>Data de Emissão: 12/06/2023</div>
+                        <div>Data do Serviço: 10/06/2023</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="invoice-section">
+                <h4 class="invoice-section-title">Dados do Prestador de Serviço</h4>
+                <div class="invoice-grid">
+                    <div class="invoice-item">
+                        <div class="invoice-label">Nome/Razão Social</div>
+                        <div class="invoice-value">Expresso São Paulo Transportes Ltda</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">CNPJ/CPF</div>
+                        <div class="invoice-value">98.765.432/0001-10</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Endereço</div>
+                        <div class="invoice-value">Av. Paulista, 1000, São Paulo - SP</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Telefone</div>
+                        <div class="invoice-value">(11) 3333-4444</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">E-mail</div>
+                        <div class="invoice-value">contato@expressosp.com.br</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Inscrição Municipal</div>
+                        <div class="invoice-value">123.456.789.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="invoice-section">
+                <h4 class="invoice-section-title">Descrição dos Serviços Prestados</h4>
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Entrega de pedidos - Zona Sul</td>
+                            <td>22</td>
+                            <td class="text-right">R$ 90,00</td>
+                            <td class="text-right">R$ 1.980,00</td>
+                        </tr>
+                        <tr>
+                            <td>Taxa de urgência</td>
+                            <td>1</td>
+                            <td class="text-right">R$ 50,00</td>
+                            <td class="text-right">R$ 50,00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right"><strong>Subtotal</strong></td>
+                            <td class="text-right"><strong>R$ 2.030,00</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="invoice-section">
+                <h4 class="invoice-section-title">Informações de Pagamento</h4>
+                <div class="invoice-grid">
+                    <div class="invoice-item">
+                        <div class="invoice-label">Forma de Pagamento</div>
+                        <div class="invoice-value">Transferência Bancária</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Data de Vencimento</div>
+                        <div class="invoice-value">17/06/2023</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Status</div>
+                        <div class="invoice-value">Pago em 15/06/2023</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Código de Transação</div>
+                        <div class="invoice-value">TRX20230615123456</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Banco</div>
+                        <div class="invoice-value">Banco do Brasil</div>
+                    </div>
+                    <div class="invoice-item">
+                        <div class="invoice-label">Agência/Conta</div>
+                        <div class="invoice-value">1234-5 / 98765-4</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="invoice-total">
+                <div class="total-box">
+                    <div class="total-row">
+                        <div class="total-label">Subtotal</div>
+                        <div class="total-value">R$ 2.030,00</div>
+                    </div>
+                    <div class="total-row">
+                        <div class="total-label">ISS (5%)</div>
+                        <div class="total-value">R$ 101,50</div>
+                    </div>
+                    <div class="total-row grand-total">
+                        <div class="total-label">Total Pago</div>
+                        <div class="total-value">R$ 2.131,50</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="invoice-footer">
+                <p>ABM Oficial - CNPJ: 12.345.678/0001-90</p>
+                <p>Av. das Nações Unidas, 12345 - São Paulo/SP - CEP: 04578-000</p>
+                <p>Telefone: (11) 3000-4000 - E-mail: contato@abmoficial.com.br</p>
+            </div>
+
+            <div class="invoice-actions">
+                <button class="btn btn-outline" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir Nota de Pagamento
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="all_produtos.html">Produtos</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="#">Motor</a></li>
+                        <li><a href="#">Sistema de Combustível</a></li>
+                        <li><a href="#">Transmissão</a></li>
+                        <li><a href="#">Suspensão</a></li>
+                        <li><a href="#">Elétrica</a></li>
+                        <li><a href="#">Freios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obter parâmetros da URL (caso necessário)
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentId = urlParams.get('id');
+            
+            // Se houver um ID na URL, podemos usá-lo para carregar dados específicos
+            if (paymentId) {
+                console.log('Carregando dados do pagamento:', paymentId);
+                // Aqui você poderia fazer uma requisição para obter os dados do pagamento
+            }
+        });
+    </script>
+</body>
+</html>

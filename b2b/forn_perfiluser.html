@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel do Usuário */
+        .user-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .user-sidebar {
+            width: 280px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .profile-card {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: var(--branco);
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .profile-name {
+            color: var(--azul-escuro);
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .user-menu h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .user-menu li {
+            margin-bottom: 8px;
+        }
+
+        .user-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+        }
+
+        .user-menu a:hover, .user-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .user-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        .user-type-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .badge-mechanic {
+            background-color: #E3F2FD;
+            color: #1976D2;
+        }
+
+        .badge-supplier {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .badge-admin {
+            background-color: #FBE9E7;
+            color: #D32F2F;
+        }
+
+        /* Abas do Perfil */
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--cinza-escuro);
+            position: relative;
+        }
+
+        .tab-button.active {
+            color: var(--azul-escuro);
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--vermelho);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Formulários */
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* Informações Pessoais */
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--cinza-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-escuro);
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .avatar-change {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: var(--azul-escuro);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .upload-info {
+            flex: 1;
+        }
+
+        .upload-info p {
+            color: var(--cinza-escuro);
+            margin-bottom: 15px;
+        }
+
+        /* Informações da Empresa/Fornecedor */
+        .company-info {
+            background-color: var(--cinza-claro);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .company-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .company-header h3 {
+            color: var(--azul-escuro);
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .company-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: var(--azul-escuro);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--cinza-escuro);
+        }
+
+        /* Preferências */
+        .preferences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .preference-card {
+            background-color: var(--cinza-claro);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .preference-card h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--azul-escuro);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .preference-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .preference-option label {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        /* Segurança */
+        .security-alert {
+            background-color: #FFF3CD;
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .security-alert i {
+            color: #FFC107;
+            font-size: 1.5rem;
+        }
+
+        .security-alert p {
+            margin: 0;
+            color: #856404;
+        }
+
+        .password-strength {
+            height: 5px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s;
+        }
+
+        .strength-weak {
+            background-color: #F44336;
+            width: 33%;
+        }
+
+        .strength-medium {
+            background-color: #FF9800;
+            width: 66%;
+        }
+
+        .strength-strong {
+            background-color: #4CAF50;
+            width: 100%;
+        }
+
+        .sessions-list {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .session-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--cinza-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-escuro);
+        }
+
+        .session-details h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .session-details p {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        .session-current {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4CAF50;
+        }
+
+        /* Produtos e Serviços */
+        .products-services {
+            margin-bottom: 30px;
+        }
+
+        .ps-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .ps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .ps-card {
+            background-color: var(--cinza-claro);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .ps-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .ps-card h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+
+        .ps-card p {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .ps-card .btn {
+            width: 100%;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .user-panel {
+                flex-direction: column;
+            }
+            
+            .user-sidebar {
+                width: 100%;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .preferences-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ps-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .profile-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .avatar-upload {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .company-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .session-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .ps-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .ps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <div class="user-info">
+                    <div class="user-avatar">AP</div>
+                    <span>Auto Peças Ltda</span>
+                </div>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="forn_dashboard.html">Dashboard</a>
+            <span>&gt;</span>
+            <a href="forn_perfiluser.html">Meu Perfil</a>
+        </div>
+    </div>
+
+    <!-- Painel do Usuário -->
+    <div class="container">
+        <div class="user-panel">
+            <!-- Sidebar -->
+            <div class="user-sidebar">
+                <div class="profile-card">
+                    <div class="profile-avatar">AP</div>
+                    <h3 class="profile-name">Auto Peças Ltda</h3>
+                    <p class="profile-role">Fornecedor Premium</p>
+                    <span class="profile-badge">Fornecedor Certificado</span>
+                </div>
+
+                <div class="user-menu">
+                    <h3>Menu do Perfil</h3>
+                    <ul>
+                        <li><a href="#" class="active"><i class="fas fa-user"></i> Informações Pessoais</a></li>
+                        <li><a href="#"><i class="fas fa-building"></i> Dados da Empresa</a></li>
+                        <li><a href="#"><i class="fas fa-box"></i> Produtos/Serviços</a></li>
+                        <li><a href="#"><i class="fas fa-lock"></i> Segurança</a></li>
+                        <li><a href="#"><i class="fas fa-bell"></i> Notificações</a></li>
+                        <li><a href="#"><i class="fas fa-chart-line"></i> Estatísticas</a></li>
+                        <li><a href="#"><i class="fas fa-truck"></i> Logística</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="user-content">
+                <div class="user-header">
+                    <h2>Meu Perfil</h2>
+                    <span class="user-type-badge badge-supplier">Fornecedor</span>
+                </div>
+
+                <!-- Abas do Perfil -->
+                <div class="profile-tabs">
+                    <button class="tab-button active" data-tab="personal">Informações Pessoais</button>
+                    <button class="tab-button" data-tab="company">Dados da Empresa</button>
+                    <button class="tab-button" data-tab="products">Produtos/Serviços</button>
+                    <button class="tab-button" data-tab="preferences">Preferências</button>
+                    <button class="tab-button" data-tab="security">Segurança</button>
+                </div>
+
+                <!-- Informações Pessoais -->
+                <div class="tab-content active" id="personal">
+                    <div class="avatar-upload">
+                        <div class="avatar-preview">
+                            <i class="fas fa-user"></i>
+                            <div class="avatar-change">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        <div class="upload-info">
+                            <p>Altere sua foto de perfil. Formatos suportados: JPG, PNG ou GIF. Tamanho máximo: 2MB.</p>
+                            <button class="btn btn-outline btn-sm">Alterar Imagem</button>
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="form-section">
+                            <h3><i class="fas fa-user-circle"></i> Dados Pessoais</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="firstName">Nome</label>
+                                    <input type="text" id="firstName" value="Ana">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Sobrenome</label>
+                                    <input type="text" id="lastName" value="Pereira">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">E-mail</label>
+                                    <input type="email" id="email" value="ana.pereira@autopecas.com.br">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Telefone</label>
+                                    <input type="tel" id="phone" value="(11) 98888-7777">
+                                </div>
+                                <div class="form-group">
+                                    <label for="document">CPF/CNPJ</label>
+                                    <input type="text" id="document" value="98.765.432/0001-10">
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthdate">Data de Nascimento</label>
+                                    <input type="date" id="birthdate" value="1980-08-22">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Dados da Empresa -->
+                <div class="tab-content" id="company">
+                    <div class="company-info">
+                        <div class="company-header">
+                            <h3>Auto Peças Ltda</h3>
+                            <button class="btn btn-outline btn-sm">Editar Dados</button>
+                        </div>
+                        <div class="company-details">
+                            <div class="detail-item">
+                                <div class="detail-label">CNPJ</div>
+                                <div class="detail-value">98.765.432/0001-10</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Telefone Comercial</div>
+                                <div class="detail-value">(11) 4444-5555</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">E-mail Comercial</div>
+                                <div class="detail-value">contato@autopecas.com.br</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Especialidade</div>
+                                <div class="detail-value">Peças para Motor e Transmissão</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Tempo de Mercado</div>
+                                <div class="detail-value">12 anos</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Avaliação</div>
+                                <div class="detail-value">4.8/5.0 (245 avaliações)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="form-section">
+                            <h3><i class="fas fa-building"></i> Informações da Empresa</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="companyName">Nome da Empresa</label>
+                                    <input type="text" id="companyName" value="Auto Peças Ltda">
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyDocument">CNPJ</label>
+                                    <input type="text" id="companyDocument" value="98.765.432/0001-10">
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyPhone">Telefone Comercial</label>
+                                    <input type="tel" id="companyPhone" value="(11) 4444-5555">
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyEmail">E-mail Comercial</label>
+                                    <input type="email" id="companyEmail" value="contato@autopecas.com.br">
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyWebsite">Website</label>
+                                    <input type="url" id="companyWebsite" value="https://www.autopecas.com.br">
+                                </div>
+                                <div class="form-group form-full">
+                                    <label for="companySpecialty">Especialidade</label>
+                                    <select id="companySpecialty">
+                                        <option value="engine" selected>Motor</option>
+                                        <option value="transmission">Transmissão</option>
+                                        <option value="suspension">Suspensão</option>
+                                        <option value="electrical">Elétrica</option>
+                                        <option value="brakes">Freios</option>
+                                        <option value="general">Mecânica Geral</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-full">
+                                    <label for="companyDescription">Descrição da Empresa</label>
+                                    <textarea id="companyDescription" rows="4">Especializada em peças para motor e transmissão, com mais de 12 anos de experiência no mercado automotivo. Fornecemos peças de alta qualidade para oficinas em todo o Brasil.</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Produtos/Serviços -->
+                <div class="tab-content" id="products">
+                    <div class="products-services">
+                        <div class="ps-header">
+                            <h3>Meus Produtos e Serviços</h3>
+                            <button class="btn btn-primary">Adicionar Novo</button>
+                        </div>
+                        
+                        <div class="ps-grid">
+                            <div class="ps-card">
+                                <h4>Kit Embreagem</h4>
+                                <p>Kit completo de embreagem para diversos modelos de veículos.</p>
+                                <p><strong>R$ 289,90</strong></p>
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                            </div>
+                            
+                            <div class="ps-card">
+                                <h4>Jogo de Pastilhas</h4>
+                                <p>Pastilhas de freio dianteiras para carros nacionais e importados.</p>
+                                <p><strong>R$ 129,90</strong></p>
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                            </div>
+                            
+                            <div class="ps-card">
+                                <h4>Filtro de Óleo</h4>
+                                <p>Filtros de óleo de alta performance para todos os modelos.</p>
+                                <p><strong>R$ 24,90</strong></p>
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                            </div>
+                            
+                            <div class="ps-card">
+                                <h4>Serviço de Entrega</h4>
+                                <p>Entrega expressa para toda a região metropolitana.</p>
+                                <p><strong>Grátis acima de R$ 300,00</strong></p>
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline">Ver Todos</button>
+                        <button type="button" class="btn btn-primary">Gerenciar Estoque</button>
+                    </div>
+                </div>
+
+                <!-- Preferências -->
+                <div class="tab-content" id="preferences">
+                    <form>
+                        <div class="form-section">
+                            <h3><i class="fas fa-bell"></i> Preferências de Notificação</h3>
+                            <div class="preferences-grid">
+                                <div class="preference-card">
+                                    <h4><i class="fas fa-shopping-cart"></i> Pedidos</h4>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Novos pedidos</label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Cancelamentos</label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Pedidos em atraso</label>
+                                    </div>
+                                </div>
+
+                                <div class="preference-card">
+                                    <h4><i class="fas fa-comment"></i> Comunicação</h4>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Mensagens de clientes</label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Notificações da plataforma</label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Newsletter</label>
+                                    </div>
+                                </div>
+
+                                <div class="preference-card">
+                                    <h4><i class="fas fa-chart-line"></i> Relatórios</h4>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Relatórios semanais</label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Relatórios mensais</label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <label>Alertas de estoque</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar Preferências</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Segurança -->
+                <div class="tab-content" id="security">
+                    <div class="security-alert">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>Recomendamos que você altere sua senha regularmente para manter sua conta segura.</p>
+                    </div>
+
+                    <form>
+                        <div class="form-section">
+                            <h3><i class="fas fa-lock"></i> Alterar Senha</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="currentPassword">Senha Atual</label>
+                                    <input type="password" id="currentPassword">
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">Nova Senha</label>
+                                    <input type="password" id="newPassword">
+                                    <div class="password-strength">
+                                        <div class="strength-bar strength-weak"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirmar Nova Senha</label>
+                                    <input type="password" id="confirmPassword">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-desktop"></i> Sessões Ativas</h3>
+                            <div class="sessions-list">
+                                <div class="session-item session-current">
+                                    <div class="session-info">
+                                        <div class="session-icon">
+                                            <i class="fas fa-desktop"></i>
+                                        </div>
+                                        <div class="session-details">
+                                            <h4>Chrome - Windows 10</h4>
+                                            <p>São Paulo, SP - Ativo agora</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm">Sair</button>
+                                </div>
+                                <div class="session-item">
+                                    <div class="session-info">
+                                        <div class="session-icon">
+                                            <i class="fas fa-mobile-alt"></i>
+                                        </div>
+                                        <div class="session-details">
+                                            <h4>Safari - iOS</h4>
+                                            <p>Rio de Janeiro, RJ - 2 horas atrás</p>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm">Sair</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Atualizar Senha</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Institucional</h3>
+                    <ul>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="#">Nossa História</a></li>
+                        <li><a href="#">Missão e Valores</a></li>
+                        <li><a href="#">Trabalhe Conosco</a></li>
+                        <li><a href="#">Seja um Fornecedor</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Atendimento</h3>
+                    <ul>
+                        <li><a href="index_contato.html">Fale Conosco</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Ouvidoria</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Para Fornecedores</h3>
+                    <ul>
+                        <li><a href="#">Área do Fornecedor</a></li>
+                        <li><a href="#">Como Vender</a></li>
+                        <li><a href="#">Cadastro de Produtos</a></li>
+                        <li><a href="#">Relatórios</a></li>
+                        <li><a href="#">Suporte Técnico</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000, São Paulo</li>
+                        <li><i class="fas fa-phone"></i> (11) 3333-4444</li>
+                        <li><i class="fas fa-envelope"></i> contato@abmoficial.com.br</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script para alternar entre as abas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Remove a classe ativa de todos os botões e conteúdos
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Adiciona a classe ativa ao botão clicado e ao conteúdo correspondente
+                    button.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

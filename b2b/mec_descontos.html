@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descontos Exclusivos - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--vermelho);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel do Mecânico */
+        .mechanic-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .mechanic-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .mechanic-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .mechanic-menu li {
+            margin-bottom: 10px;
+        }
+
+        .mechanic-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+        }
+
+        .mechanic-menu a:hover, .mechanic-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .mechanic-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .mechanic-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .mechanic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mechanic-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Filtros de Descontos */
+        .discounts-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            background-color: var(--cinza-claro);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: var(--azul-escuro);
+            font-size: 0.9rem;
+        }
+
+        .filter-group select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 180px;
+        }
+
+        .filter-actions {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        /* Categorias de Descontos */
+        .categories-section {
+            margin-bottom: 30px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .category-card {
+            background-color: var(--branco);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--sombra);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover, .category-card.active {
+            transform: translateY(-5px);
+            border-color: var(--vermelho);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 1.2rem;
+            color: var(--branco);
+        }
+
+        .category-icon.seguros { background-color: var(--azul-escuro); }
+        .category-icon.hoteis { background-color: var(--vermelho); }
+        .category-icon.clubes { background-color: var(--azul-claro); }
+        .category-icon.farmacias { background-color: #4CAF50; }
+        .category-icon.restaurantes { background-color: #FF9800; }
+        .category-icon.viagens { background-color: #9C27B0; }
+        .category-icon.educacao { background-color: #607D8B; }
+        .category-icon.automotivo { background-color: #795548; }
+
+        .category-name {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            font-size: 0.9rem;
+        }
+
+        /* Grid de Descontos */
+        .discounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .discount-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            transition: all 0.3s ease;
+        }
+
+        .discount-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .discount-header {
+            padding: 20px;
+            text-align: center;
+            color: var(--branco);
+            position: relative;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--branco);
+            color: var(--vermelho);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .discount-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .discount-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .discount-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .discount-body {
+            padding: 20px;
+        }
+
+        .discount-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--vermelho);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .discount-description {
+            color: var(--cinza-escuro);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .discount-features {
+            margin-bottom: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .feature-item i {
+            color: #4CAF50;
+        }
+
+        .discount-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .discount-footer {
+            padding: 15px 20px;
+            background-color: var(--cinza-claro);
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+        }
+
+        /* Descontos Utilizados */
+        .used-discounts {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h3 {
+            color: var(--azul-escuro);
+            font-size: 1.3rem;
+        }
+
+        .used-discounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .used-discount-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .used-discount-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-size: 1rem;
+        }
+
+        .used-discount-info {
+            flex: 1;
+        }
+
+        .used-discount-name {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .used-discount-date {
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+        }
+
+        .used-discount-value {
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .mechanic-panel {
+                flex-direction: column;
+            }
+            
+            .mechanic-sidebar {
+                width: 100%;
+            }
+            
+            .discounts-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .discounts-filters {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-group select {
+                min-width: 100%;
+            }
+            
+            .discounts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .discount-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .used-discounts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="#" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">1</span>
+                </a>
+                <span>Olá, Mecânica Central</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="mec_dashboard.html">Dashboard</a>
+            <span>&gt;</span>
+            <a href="mec_descontos.html">Descontos Exclusivos</a>
+        </div>
+    </div>
+
+    <!-- Painel do Mecânico -->
+    <div class="container">
+        <div class="mechanic-panel">
+            <!-- Sidebar -->
+            <div class="mechanic-sidebar">
+                <h3>Painel do Mecânico</h3>
+                <ul class="mechanic-menu">
+                    <li><a href="mec_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="mec_produtos.html"><i class="fas fa-shopping-cart"></i> Comprar Peças</a></li>
+                    <li><a href="mec_pedido.html"><i class="fas fa-history"></i> Meus Pedidos</a></li>
+                    <li><a href="mec_cashback.html"><i class="fas fa-coins"></i> Meu Cashback</a></li>
+                    <li><a href="mec_descontos.html" class="active"><i class="fas fa-tags"></i> Descontos</a></li>
+                    <li><a href="mec_perfiluser.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                    <li><a href="mec_setup.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="mechanic-content">
+                <div class="mechanic-header">
+                    <h2>Descontos Exclusivos</h2>
+                    <div>
+                        <span>Nível: Ouro | Descontos disponíveis: 28</span>
+                    </div>
+                </div>
+
+                <!-- Filtros de Descontos -->
+                <div class="discounts-filters">
+                    <div class="filter-group">
+                        <label for="categoryFilter">Categoria</label>
+                        <select id="categoryFilter">
+                            <option value="all">Todas as categorias</option>
+                            <option value="seguros">Seguros</option>
+                            <option value="hoteis">Hotéis</option>
+                            <option value="clubes">Clubes</option>
+                            <option value="farmacias">Farmácias</option>
+                            <option value="restaurantes">Restaurantes</option>
+                            <option value="viagens">Viagens</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="discountType">Tipo de Desconto</label>
+                        <select id="discountType">
+                            <option value="all">Todos os tipos</option>
+                            <option value="percentage">Porcentagem</option>
+                            <option value="fixed">Valor Fixo</option>
+                            <option value="cashback">Cashback Extra</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn btn-primary btn-sm">Aplicar Filtros</button>
+                    </div>
+                </div>
+
+                <!-- Categorias de Descontos -->
+                <div class="categories-section">
+                    <h3 style="color: var(--azul-escuro); margin-bottom: 15px;">Categorias</h3>
+                    <div class="categories-grid">
+                        <div class="category-card active">
+                            <div class="category-icon seguros">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="category-name">Seguros</div>
+                        </div>
+                        
+                        <div class="category-card">
+                            <div class="category-icon hoteis">
+                                <i class="fas fa-hotel"></i>
+                            </div>
+                            <div class="category-name">Hotéis</div>
+                        </div>
+                        
+                        <div class="category-card">
+                            <div class="category-icon clubes">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="category-name">Clubes</div>
+                        </div>
+                        
+                        <div class="category-card">
+                            <div class="category-icon farmacias">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <div class="category-name">Farmácias</div>
+                        </div>
+                        
+                        <div class="category-card">
+                            <div class="category-icon restaurantes">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="category-name">Restaurantes</div>
+                        </div>
+                        
+                        <div class="category-card">
+                            <div class="category-icon viagens">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <div class="category-name">Viagens</div>
+                        </div>
+                        
+                        <div class="category-card">
+                            <div class="category-icon educacao">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="category-name">Educação</div>
+                        </div>
+                        
+                        <div class="category-card">
+                            <div class="category-icon automotivo">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="category-name">Automotivo</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid de Descontos -->
+                <div class="discounts-grid">
+                    <!-- Desconto 1 -->
+                    <div class="discount-card">
+                        <div class="discount-header" style="background-color: var(--azul-escuro);">
+                            <div class="discount-badge">Mais Popular</div>
+                            <div class="discount-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="discount-title">Seguro Auto</div>
+                            <div class="discount-subtitle">Porto Seguro</div>
+                        </div>
+                        <div class="discount-body">
+                            <div class="discount-value">25% OFF</div>
+                            <p class="discount-description">Desconto especial em seguro auto para clientes ABM. Cobertura completa com assistência 24h.</p>
+                            <div class="discount-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Assistência 24 horas</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Carro reserva</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Proteção total</span>
+                                </div>
+                            </div>
+                            <div class="discount-actions">
+                                <button class="btn btn-primary">Usar Desconto</button>
+                                <button class="btn btn-outline btn-sm">Detalhes</button>
+                            </div>
+                        </div>
+                        <div class="discount-footer">
+                            <span>Válido até: 31/12/2023</span>
+                            <span>258 usados</span>
+                        </div>
+                    </div>
+
+                    <!-- Desconto 2 -->
+                    <div class="discount-card">
+                        <div class="discount-header" style="background-color: var(--vermelho);">
+                            <div class="discount-badge">Novo</div>
+                            <div class="discount-icon">
+                                <i class="fas fa-hotel"></i>
+                            </div>
+                            <div class="discount-title">Rede de Hotéis</div>
+                            <div class="discount-subtitle">Hotéis Brasil</div>
+                        </div>
+                        <div class="discount-body">
+                            <div class="discount-value">35% OFF</div>
+                            <p class="discount-description">Desconto exclusivo em mais de 500 hotéis em todo o Brasil. Reserve agora e garanta sua hospedagem.</p>
+                            <div class="discount-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Cancelamento grátis</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Café da manhã incluso</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Wi-Fi gratuito</span>
+                                </div>
+                            </div>
+                            <div class="discount-actions">
+                                <button class="btn btn-primary">Usar Desconto</button>
+                                <button class="btn btn-outline btn-sm">Detalhes</button>
+                            </div>
+                        </div>
+                        <div class="discount-footer">
+                            <span>Válido até: 28/02/2024</span>
+                            <span>142 usados</span>
+                        </div>
+                    </div>
+
+                    <!-- Desconto 3 -->
+                    <div class="discount-card">
+                        <div class="discount-header" style="background-color: var(--azul-claro);">
+                            <div class="discount-icon">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="discount-title">Academias</div>
+                            <div class="discount-subtitle">Smart Fit</div>
+                        </div>
+                        <div class="discount-body">
+                            <div class="discount-value">40% OFF</div>
+                            <p class="discount-description">Plano Black com desconto especial. Acesso a todas as unidades e aulas coletivas inclusas.</p>
+                            <div class="discount-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Acesso a todas unidades</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Aulas coletivas</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Área de musculação</span>
+                                </div>
+                            </div>
+                            <div class="discount-actions">
+                                <button class="btn btn-primary">Usar Desconto</button>
+                                <button class="btn btn-outline btn-sm">Detalhes</button>
+                            </div>
+                        </div>
+                        <div class="discount-footer">
+                            <span>Válido até: 15/01/2024</span>
+                            <span>89 usados</span>
+                        </div>
+                    </div>
+
+                    <!-- Desconto 4 -->
+                    <div class="discount-card">
+                        <div class="discount-header" style="background-color: #4CAF50;">
+                            <div class="discount-icon">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <div class="discount-title">Farmácias</div>
+                            <div class="discount-subtitle">DrogaRaia</div>
+                        </div>
+                        <div class="discount-body">
+                            <div class="discount-value">20% OFF</div>
+                            <p class="discount-description">Desconto em medicamentos e produtos de beleza. Válido em todas as lojas físicas e online.</p>
+                            <div class="discount-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Medicamentos</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Produtos de beleza</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Entrega grátis</span>
+                                </div>
+                            </div>
+                            <div class="discount-actions">
+                                <button class="btn btn-primary">Usar Desconto</button>
+                                <button class="btn btn-outline btn-sm">Detalhes</button>
+                            </div>
+                        </div>
+                        <div class="discount-footer">
+                            <span>Válido até: 30/06/2024</span>
+                            <span>324 usados</span>
+                        </div>
+                    </div>
+
+                    <!-- Desconto 5 -->
+                    <div class="discount-card">
+                        <div class="discount-header" style="background-color: #FF9800;">
+                            <div class="discount-badge">Limitado</div>
+                            <div class="discount-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="discount-title">Restaurantes</div>
+                            <div class="discount-subtitle">Outback</div>
+                        </div>
+                        <div class="discount-body">
+                            <div class="discount-value">30% OFF</div>
+                            <p class="discount-description">Jantar especial com desconto. Válido de segunda a quinta-feira. Não acumulativo com outras promoções.</p>
+                            <div class="discount-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Cardápio completo</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Bebidas inclusas</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Estacionamento grátis</span>
+                                </div>
+                            </div>
+                            <div class="discount-actions">
+                                <button class="btn btn-primary">Usar Desconto</button>
+                                <button class="btn btn-outline btn-sm">Detalhes</button>
+                            </div>
+                        </div>
+                        <div class="discount-footer">
+                            <span>Válido até: 31/03/2024</span>
+                            <span>67 usados</span>
+                        </div>
+                    </div>
+
+                    <!-- Desconto 6 -->
+                    <div class="discount-card">
+                        <div class="discount-header" style="background-color: #9C27B0;">
+                            <div class="discount-icon">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <div class="discount-title">Viagens</div>
+                            <div class="discount-subtitle">CVC</div>
+                        </div>
+                        <div class="discount-body">
+                            <div class="discount-value">15% OFF</div>
+                            <p class="discount-description">Pacotes de viagem nacionais e internacionais. Parcele em até 10x sem juros.</p>
+                            <div class="discount-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Voos + hospedagem</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Passeios inclusos</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Seguro viagem</span>
+                                </div>
+                            </div>
+                            <div class="discount-actions">
+                                <button class="btn btn-primary">Usar Desconto</button>
+                                <button class="btn btn-outline btn-sm">Detalhes</button>
+                            </div>
+                        </div>
+                        <div class="discount-footer">
+                            <span>Válido até: 31/12/2023</span>
+                            <span>198 usados</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descontos Utilizados -->
+                <div class="used-discounts">
+                    <div class="section-header">
+                        <h3>Descontos Utilizados Recentemente</h3>
+                        <a href="#">Ver histórico completo</a>
+                    </div>
+                    <div class="used-discounts-grid">
+                        <div class="used-discount-card">
+                            <div class="used-discount-icon" style="background-color: var(--azul-escuro);">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="used-discount-info">
+                                <div class="used-discount-name">Seguro Auto - Porto</div>
+                                <div class="used-discount-date">Utilizado em: 28/11/2023</div>
+                            </div>
+                            <div class="used-discount-value">-25%</div>
+                        </div>
+                        
+                        <div class="used-discount-card">
+                            <div class="used-discount-icon" style="background-color: var(--vermelho);">
+                                <i class="fas fa-hotel"></i>
+                            </div>
+                            <div class="used-discount-info">
+                                <div class="used-discount-name">Hotel Praia Mar</div>
+                                <div class="used-discount-date">Utilizado em: 15/11/2023</div>
+                            </div>
+                            <div class="used-discount-value">-35%</div>
+                        </div>
+                        
+                        <div class="used-discount-card">
+                            <div class="used-discount-icon" style="background-color: #4CAF50;">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <div class="used-discount-info">
+                                <div class="used-discount-name">Farmácia DrogaRaia</div>
+                                <div class="used-discount-date">Utilizado em: 10/11/2023</div>
+                            </div>
+                            <div class="used-discount-value">-20%</div>
+                        </div>
+                        
+                        <div class="used-discount-card">
+                            <div class="used-discount-icon" style="background-color: #FF9800;">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="used-discount-info">
+                                <div class="used-discount-name">Restaurante Outback</div>
+                                <div class="used-discount-date">Utilizado em: 05/11/2023</div>
+                            </div>
+                            <div class="used-discount-value">-30%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="all_produtos.html">Produtos</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Vantagens</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-coins"></i> Cashback em Todas as Compras</a></li>
+                        <li><a href="#"><i class="fas fa-tags"></i> Descontos Exclusivos</a></li>
+                        <li><a href="#"><i class="fas fa-truck"></i> Entrega Rápida</a></li>
+                        <li><a href="#"><i class="fas fa-shield-alt"></i> Compra Segura</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filtros de descontos
+            const filterButton = document.querySelector('.filter-actions button');
+            filterButton.addEventListener('click', function() {
+                const categoryFilter = document.getElementById('categoryFilter').value;
+                const discountType = document.getElementById('discountType').value;
+                
+                alert(`Filtros aplicados:\nCategoria: ${categoryFilter}\nTipo: ${discountType}`);
+            });
+
+            // Categorias interativas
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    categoryCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const categoryName = this.querySelector('.category-name').textContent;
+                    console.log(`Categoria selecionada: ${categoryName}`);
+                });
+            });
+
+            // Botões de usar desconto
+            document.querySelectorAll('.discount-actions .btn-primary').forEach(button => {
+                button.addEventListener('click', function() {
+                    const discountTitle = this.closest('.discount-card').querySelector('.discount-title').textContent;
+                    const discountValue = this.closest('.discount-card').querySelector('.discount-value').textContent;
+                    
+                    alert(`Ativando desconto: ${discountValue} em ${discountTitle}\n\nVocde receberá um código por email.`);
+                });
+            });
+
+            // Botões de detalhes
+            document.querySelectorAll('.discount-actions .btn-outline').forEach(button => {
+                button.addEventListener('click', function() {
+                    const discountTitle = this.closest('.discount-card').querySelector('.discount-title').textContent;
+                    const discountSubtitle = this.closest('.discount-card').querySelector('.discount-subtitle').textContent;
+                    
+                    alert(`Detalhes do desconto:\n\n${discountTitle} - ${discountSubtitle}\n\nMais informações serão exibidas em uma nova página.`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

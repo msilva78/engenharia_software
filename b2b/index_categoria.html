@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias de Peças - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Hero Categorias */
+        .categories-hero {
+            background: linear-gradient(rgba(51, 69, 99, 0.9), rgba(51, 69, 99, 0.9)), url('https://images.unsplash.com/photo-1563720223880-4d93eef1f1c2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--branco);
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .categories-hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .categories-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Categorias - MESMO LAYOUT DA PÁGINA INICIAL */
+        .categories {
+            padding: 80px 0;
+            background-color: var(--branco);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--azul-escuro);
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--vermelho);
+            margin: 15px auto;
+        }
+
+        .section-title p {
+            color: var(--cinza-escuro);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .category-card {
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--sombra);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--azul-escuro);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--branco);
+            font-size: 2rem;
+        }
+
+        .category-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .category-card p {
+            color: var(--cinza-escuro);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .subcategories {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(51, 69, 99, 0.1);
+        }
+
+        .subcategories h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .subcategories ul {
+            list-style-type: none;
+        }
+
+        .subcategories li {
+            margin-bottom: 8px;
+            color: var(--cinza-escuro);
+            padding: 5px 0;
+            border-bottom: 1px dashed rgba(51, 69, 99, 0.1);
+        }
+
+        .subcategories li:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 70px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--vermelho);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .categories-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .categories-hero h2 {
+                font-size: 2rem;
+            }
+            
+            .categories-hero p {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <!-- Logo da ABM - substitua pelo caminho correto da sua imagem -->
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="#" id="login-btn" class="btn btn-primary">Entrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="index_categoria.html">Categorias</a>
+        </div>
+    </div>
+
+    <!-- Hero Categorias -->
+    <section class="categories-hero">
+        <div class="container">
+            <h2>Categorias de Peças Automotivas</h2>
+            <p>Explore nossa completa variedade de peças e componentes para todos os tipos de veículos</p>
+        </div>
+    </section>
+
+    <!-- Categorias - MESMO LAYOUT DA PÁGINA INICIAL -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossas Categorias</h2>
+                <p>Encontre as peças ideais para seu veículo em nossa ampla seleção de categorias</p>
+            </div>
+            
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Motor</h3>
+                    <p>Peças para o coração do seu veículo. Componentes essenciais para o funcionamento do motor, garantindo performance e durabilidade.</p>
+                    <div class="subcategories">
+                        <h4>Principais Componentes:</h4>
+                        <ul>
+                            <li>Kit de Motor Completo</li>
+                            <li>Vela de Ignição</li>
+                            <li>Bomba de Combustível</li>
+                            <li>Correia Dentada</li>
+                            <li>Filtros de Ar e Óleo</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-oil-can"></i>
+                    </div>
+                    <h3>Sistema de Combustível</h3>
+                    <p>Componentes para alimentação do motor. Sistema responsável por fornecer combustível de forma eficiente para o motor.</p>
+                    <div class="subcategories">
+                        <h4>Principais Componentes:</h4>
+                        <ul>
+                            <li>Bomba de Combustível</li>
+                            <li>Injectores</li>
+                            <li>Regulador de Pressão</li>
+                            <li>Filtro de Combustível</li>
+                            <li>Tanque de Combustível</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Transmissão</h3>
+                    <p>Peças para câmbio e transmissão de força. Componentes que transferem a potência do motor para as rodas.</p>
+                    <div class="subcategories">
+                        <h4>Principais Componentes:</h4>
+                        <ul>
+                            <li>Kit de Embreagem</li>
+                            <li>Cambio Automático/Manual</li>
+                            <li>Diferencial</li>
+                            <li>Cardan</li>
+                            <li>Fluidos de Transmissão</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Suspensão</h3>
+                    <p>Conforto e estabilidade para seu veículo. Sistema que mantém o contato dos pneus com o solo e absorve impactos.</p>
+                    <div class="subcategories">
+                        <h4>Principais Componentes:</h4>
+                        <ul>
+                            <li>Amortecedores</li>
+                            <li>Molas</li>
+                            <li>Buchas e Coxins</li>
+                            <li>Terminais de Direção</li>
+                            <li>Barra Estabilizadora</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Elétrica</h3>
+                    <p>Sistema elétrico e componentes eletrônicos. Todos os componentes responsáveis pela parte elétrica do veículo.</p>
+                    <div class="subcategories">
+                        <h4>Principais Componentes:</h4>
+                        <ul>
+                            <li>Baterias</li>
+                            <li>Alternadores</li>
+                            <li>Motor de Arranque</li>
+                            <li>Centralina</li>
+                            <li>Sistema de Iluminação</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-stop-circle"></i>
+                    </div>
+                    <h3>Freios</h3>
+                    <p>Segurança e controle para sua direção. Sistema responsável por reduzir a velocidade e parar o veículo com segurança.</p>
+                    <div class="subcategories">
+                        <h4>Principais Componentes:</h4>
+                        <ul>
+                            <li>Pastilhas de Freio</li>
+                            <li>Discos de Freio</li>
+                            <li>Lonas de Freio</li>
+                            <li>Cilindros de Roda</li>
+                            <li>Fluido de Freio</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Acessórios</h3>
+                    <p>Complementos e itens adicionais para veículos. Itens que agregam conforto, estilo e funcionalidade ao veículo.</p>
+                    <div class="subcategories">
+                        <h4>Principais Componentes:</h4>
+                        <ul>
+                            <li>Acessórios Internos</li>
+                            <li>Acessórios Externos</li>
+                            <li>Sistema de Áudio</li>
+                            <li>Itens de Segurança</li>
+                            <li>Prodivos de Limpeza</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="#motor">Motor</a></li>
+                        <li><a href="#combustivel">Sistema de Combustível</a></li>
+                        <li><a href="#transmissao">Transmissão</a></li>
+                        <li><a href="#suspensao">Suspensão</a></li>
+                        <li><a href="#eletrica">Elétrica</a></li>
+                        <li><a href="#freios">Freios</a></li>
+                        <li><a href="#acessorios">Acessórios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (11) 3456-7890</li>
+                        <li><i class="fas fa-envelope"></i> contato@abmoficial.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000, São Paulo - SP</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script básico para a página
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Redirecionando para a página de login...');
+                // Em um sistema real, isso abriria o modal de login
+            });
+        });
+    </script>
+</body>
+</html>

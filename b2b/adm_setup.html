@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Administrador | ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-success {
+            background-color: #4CAF50;
+            color: var(--branco);
+        }
+
+        .btn-warning {
+            background-color: #FF9800;
+            color: var(--branco);
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+            color: var(--branco);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel Administrativo */
+        .admin-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+            flex-shrink: 0;
+        }
+
+        .admin-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .admin-menu li {
+            margin-bottom: 10px;
+        }
+
+        .admin-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+            width: 100%;
+        }
+
+        .admin-menu a:hover, .admin-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .admin-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+            min-width: 0;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Configurações */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .settings-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--azul-escuro);
+        }
+
+        .settings-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: var(--branco);
+            background-color: var(--azul-escuro);
+        }
+
+        .settings-title {
+            color: var(--azul-escuro);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .settings-description {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .settings-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Formulários de Configuração */
+        .form-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .form-header {
+            margin-bottom: 25px;
+        }
+
+        .form-title {
+            color: var(--azul-escuro);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .form-description {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        .form-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Toggle Switch */
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: var(--cinza-claro);
+            border-radius: 8px;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .toggle-description {
+            font-size: 0.85rem;
+            color: var(--cinza-escuro);
+            margin-top: 5px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--vermelho);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Sistema Info */
+        .system-info {
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .info-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .admin-panel {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .settings-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .toggle-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <span>Olá, Administrador</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="adm_dashboard.html">Painel Administrativo</a>
+            <span>&gt;</span>
+            <a href="adm_setup.html">Configurações</a>
+        </div>
+    </div>
+
+    <!-- Painel Administrativo -->
+    <div class="container">
+        <div class="admin-panel">
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <h3>Painel Admin</h3>
+                <ul class="admin-menu">
+                    <li><a href="adm_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="adm_caduser.html"><i class="fas fa-user-plus"></i> Cadastrar Usuários</a></li>
+                    <li><a href="adm_geruser.html"><i class="fas fa-users"></i> Gerenciar Usuários</a></li>
+                    <li><a href="adm_cadprestador.html"><i class="fas fa-user-tie"></i> Cadastrar Prestador</a></li>
+                    <li><a href="adm_prestador_financas.html"><i class="fas fa-chart-line"></i> Prestador Finanças</a></li>
+                    <li><a href="adm_price_calculate.html"><i class="fas fa-calculator"></i> Preço e Comissão</a></li>
+                    <li><a href="adm_logistica.html"><i class="fas fa-truck"></i> Entregas</a></li>
+                    <li><a href="adm_produtos.html"><i class="fas fa-box"></i> Produtos</a></li>
+                    <li><a href="adm_pedidos.html"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                    <li><a href="adm_relatorios.html"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                    <li><a href="adm_setup.html" class="active"><i class="fas fa-cog"></i> Configurações</a></li>>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="admin-content">
+                <div class="admin-header">
+                    <h2>Configurações do Sistema</h2>
+                    <div>
+                        <span>Última atualização: hoje, 14:30</span>
+                    </div>
+                </div>
+
+                <!-- Informações do Sistema -->
+                <div class="system-info">
+                    <h3 style="color: var(--azul-escuro); margin-bottom: 20px;">Status do Sistema</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-value">24/7</div>
+                            <div class="info-label">Sistema Online</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-value">99.8%</div>
+                            <div class="info-label">Uptime</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-value">v2.1.4</div>
+                            <div class="info-label">Versão</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-value">256GB</div>
+                            <div class="info-label">Armazenamento</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cards de Configurações -->
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-user-cog"></i>
+                            </div>
+                            <h3 class="settings-title">Configurações de Usuário</h3>
+                        </div>
+                        <p class="settings-description">Gerencie permissões, roles e configurações de acesso dos usuários do sistema.</p>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary btn-sm">Configurar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <h3 class="settings-title">Configurações de Pedidos</h3>
+                        </div>
+                        <p class="settings-description">Defina regras de pedidos, limites e configurações de processamento.</p>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary btn-sm">Configurar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <h3 class="settings-title">Configurações de Produtos</h3>
+                        </div>
+                        <p class="settings-description">Configure categorias, atributos e regras de estoque dos produtos.</p>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary btn-sm">Configurar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="settings-title">Configurações Financeiras</h3>
+                        </div>
+                        <p class="settings-description">Defina taxas, comissões e configurações de pagamento do sistema.</p>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary btn-sm">Configurar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="settings-title">Notificações</h3>
+                        </div>
+                        <p class="settings-description">Configure alertas, notificações e comunicações do sistema.</p>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary btn-sm">Configurar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="settings-title">Segurança</h3>
+                        </div>
+                        <p class="settings-description">Gerencie políticas de segurança, backups e proteção de dados.</p>
+                        <div class="settings-actions">
+                            <button class="btn btn-primary btn-sm">Configurar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configurações Gerais -->
+                <div class="form-card">
+                    <div class="form-header">
+                        <h3 class="form-title">Configurações Gerais do Sistema</h3>
+                        <p class="form-description">Configure as principais opções e comportamentos do sistema ABM Oficial.</p>
+                    </div>
+                    
+                    <div class="form-content">
+                        <div class="form-group">
+                            <label for="system-name">Nome do Sistema</label>
+                            <input type="text" id="system-name" value="ABM Oficial - Plataforma B2B">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="system-email">E-mail do Sistema</label>
+                            <input type="email" id="system-email" value="contato@abmoficial.com.br">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="default-currency">Moeda Padrão</label>
+                            <select id="default-currency">
+                                <option value="BRL" selected>Real Brasileiro (R$)</option>
+                                <option value="USD">Dólar Americano ($)</option>
+                                <option value="EUR">Euro (€)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="timezone">Fuso Horário</label>
+                            <select id="timezone">
+                                <option value="America/Sao_Paulo" selected>Brasília (GMT-3)</option>
+                                <option value="America/New_York">New York (GMT-4)</option>
+                                <option value="Europe/London">Londres (GMT+1)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-secondary">Cancelar</button>
+                        <button class="btn btn-primary">Salvar Configurações</button>
+                    </div>
+                </div>
+
+                <!-- Configurações de Notificações -->
+                <div class="form-card">
+                    <div class="form-header">
+                        <h3 class="form-title">Configurações de Notificações</h3>
+                        <p class="form-description">Gerencie como e quando o sistema deve enviar notificações.</p>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Notificações por E-mail</div>
+                            <div class="toggle-description">Enviar notificações por e-mail para administradores</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Notificações de Novos Pedidos</div>
+                            <div class="toggle-description">Alertar sobre novos pedidos em tempo real</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Notificações de Estoque Baixo</div>
+                            <div class="toggle-description">Alertar quando produtos estiverem com estoque crítico</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Relatórios Automáticos</div>
+                            <div class="toggle-description">Enviar relatórios periódicos automaticamente</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-secondary">Cancelar</button>
+                        <button class="btn btn-primary">Salvar Configurações</button>
+                    </div>
+                </div>
+
+                <!-- Configurações de Segurança -->
+                <div class="form-card">
+                    <div class="form-header">
+                        <h3 class="form-title">Configurações de Segurança</h3>
+                        <p class="form-description">Configure as políticas de segurança e proteção de dados do sistema.</p>
+                    </div>
+                    
+                    <div class="form-content">
+                        <div class="form-group">
+                            <label for="session-timeout">Tempo de Sessão (minutos)</label>
+                            <input type="number" id="session-timeout" value="30" min="5" max="240">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="max-login-attempts">Tentativas de Login Máximas</label>
+                            <input type="number" id="max-login-attempts" value="5" min="1" max="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="backup-frequency">Frequência de Backup</label>
+                            <select id="backup-frequency">
+                                <option value="daily">Diário</option>
+                                <option value="weekly" selected>Semanal</option>
+                                <option value="monthly">Mensal</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Autenticação em Dois Fatores</div>
+                            <div class="toggle-description">Exigir verificação em duas etapas para acesso administrativo</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Log de Atividades</div>
+                            <div class="toggle-description">Manter registro detalhado de todas as atividades do sistema</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-secondary">Cancelar</button>
+                        <button class="btn btn-primary">Salvar Configurações</button>
+                    </div>
+                </div>
+
+                <!-- Manutenção do Sistema -->
+                <div class="form-card">
+                    <div class="form-header">
+                        <h3 class="form-title">Manutenção do Sistema</h3>
+                        <p class="form-description">Ferramentas para manutenção e otimização do sistema.</p>
+                    </div>
+                    
+                    <div class="form-content">
+                        <div class="form-group">
+                            <label for="cache-clear">Limpar Cache do Sistema</label>
+                            <button class="btn btn-warning btn-sm" style="width: 100%;" onclick="clearSystemCache()">
+                                <i class="fas fa-broom"></i> Limpar Cache
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="backup-now">Backup Manual</label>
+                            <button class="btn btn-success btn-sm" style="width: 100%;" onclick="createBackup()">
+                                <i class="fas fa-download"></i> Criar Backup
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="system-update">Atualização do Sistema</label>
+                            <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="checkForUpdates()">
+                                <i class="fas fa-sync-alt"></i> Verificar Atualizações
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Modo de Manutenção</div>
+                            <div class="toggle-description">Colocar o sistema em modo de manutenção (acesso restrito)</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="maintenance-mode">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-danger">
+                            <i class="fas fa-power-off"></i> Reiniciar Sistema
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuração do modo de manutenção
+            const maintenanceToggle = document.getElementById('maintenance-mode');
+            
+            maintenanceToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    if (confirm('ATENÇÃO: Ao ativar o modo de manutenção, o sistema ficará indisponível para todos os usuários. Deseja continuar?')) {
+                        alert('Modo de manutenção ativado. O sistema será reiniciado em modo de manutenção.');
+                        // Em um sistema real, aqui seria feita a requisição para ativar o modo de manutenção
+                    } else {
+                        this.checked = false;
+                    }
+                } else {
+                    alert('Modo de manutenção desativado. O sistema voltará ao normal.');
+                }
+            });
+
+            // Salvar configurações
+            document.querySelectorAll('.btn-primary').forEach(button => {
+                if (button.textContent.includes('Salvar Configurações')) {
+                    button.addEventListener('click', function() {
+                        const formTitle = this.closest('.form-card').querySelector('.form-title').textContent;
+                        alert(`Configurações de "${formTitle}" salvas com sucesso!`);
+                        // Em um sistema real, aqui seria feita a requisição para salvar as configurações
+                    });
+                }
+            });
+
+            // Configurações dos cards
+            document.querySelectorAll('.settings-card .btn-primary').forEach(button => {
+                button.addEventListener('click', function() {
+                    const cardTitle = this.closest('.settings-card').querySelector('.settings-title').textContent;
+                    alert(`Abrindo configurações: ${cardTitle}`);
+                    // Em um sistema real, aqui seria redirecionado para a página específica de configurações
+                });
+            });
+        });
+
+        // Funções de manutenção
+        function clearSystemCache() {
+            if (confirm('Tem certeza que deseja limpar o cache do sistema?')) {
+                alert('Cache do sistema limpo com sucesso!');
+                // Em um sistema real, aqui seria feita a requisição para limpar o cache
+            }
+        }
+
+        function createBackup() {
+            alert('Backup do sistema iniciado. Você receberá uma notificação quando estiver concluído.');
+            // Em um sistema real, aqui seria feita a requisição para criar o backup
+        }
+
+        function checkForUpdates() {
+            alert('Verificando atualizações... Sistema está na versão mais recente (v2.1.4)');
+            // Em um sistema real, aqui seria feita a verificação de atualizações
+        }
+    </script>
+</body>
+</html>

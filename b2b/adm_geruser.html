@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Usuários - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel Administrativo */
+        .admin-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .admin-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .admin-menu li {
+            margin-bottom: 10px;
+        }
+
+        .admin-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+        }
+
+        .admin-menu a:hover, .admin-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .admin-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Controles de Gerenciamento */
+        .management-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--cinza-claro);
+            border-radius: 6px;
+            padding: 8px 15px;
+            width: 300px;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 8px;
+            font-size: 1rem;
+        }
+
+        .search-box i {
+            color: var(--azul-escuro);
+            margin-right: 10px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-controls select {
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background-color: var(--branco);
+            font-size: 1rem;
+        }
+
+        /* Tabela de Usuários */
+        .users-table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .users-table th {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            text-align: left;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .users-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .users-table tr:hover {
+            background-color: rgba(119, 147, 193, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+
+        .user-email {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+        }
+
+        .status-inactive {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: #c62828;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: #ef6c00;
+        }
+
+        .user-type {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background-color: rgba(51, 69, 99, 0.1);
+            color: var(--azul-escuro);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-edit {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+
+        .btn-delete {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .btn-view {
+            background-color: var(--cinza-escuro);
+            color: var(--branco);
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .pagination button {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background-color: var(--branco);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button:hover {
+            background-color: var(--cinza-claro);
+        }
+
+        .pagination button.active {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            border-color: var(--azul-escuro);
+        }
+
+        /* Modal de Confirmação */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--sombra);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: var(--azul-escuro);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--cinza-escuro);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .admin-panel {
+                flex-direction: column;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .management-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .filter-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <span>Olá, Administrador</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="adm_dashboard.html">Painel Administrativo</a>
+            <span>&gt;</span>
+            <a href="adm_geruser.html">Gerenciar Usuários</a>
+        </div>
+    </div>
+
+    <!-- Painel Administrativo -->
+    <div class="container">
+        <div class="admin-panel">
+            <!-- Sidebar -->
+            <div class="admin-sidebar">
+                <h3>Painel Admin</h3>
+                <ul class="admin-menu">
+                    <li><a href="adm_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="adm_caduser.html"><i class="fas fa-user-plus"></i> Cadastrar Usuários</a></li>
+                    <li><a href="adm_geruser.html" class="active"><i class="fas fa-users"></i> Gerenciar Usuários</a></li>
+                    <li><a href="adm_cadprestador.html"><i class="fas fa-user-tie"></i> Cadastrar Prestador</a></li>
+                    <li><a href="adm_prestador_financas.html"><i class="fas fa-chart-line"></i> Prestador Finanças</a></li>
+                    <li><a href="adm_price_calculate.html"><i class="fas fa-calculator"></i> Preço e Comissão</a></li>
+                    <li><a href="adm_logistica.html"><i class="fas fa-truck"></i> Entregas</a></li>
+                    <li><a href="adm_produtos.html"><i class="fas fa-box"></i> Produtos</a></li>
+                    <li><a href="adm_pedidos.html"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                    <li><a href="adm_relatorios.html"><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                    <li><a href="adm_setup.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="admin-content">
+                <div class="admin-header">
+                    <h2>Gerenciar Usuários</h2>
+                    <a href="adm_caduser.html" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Novo Usuário
+                    </a>
+                </div>
+
+                <!-- Controles de Gerenciamento -->
+                <div class="management-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchUsers" placeholder="Buscar usuários...">
+                    </div>
+                    <div class="filter-controls">
+                        <select id="filterType">
+                            <option value="">Todos os tipos</option>
+                            <option value="mechanic">Mecânico</option>
+                            <option value="supplier">Fornecedor</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                        <select id="filterStatus">
+                            <option value="">Todos os status</option>
+                            <option value="active">Ativo</option>
+                            <option value="inactive">Inativo</option>
+                            <option value="pending">Pendente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabela de Usuários -->
+                <div class="users-table-container">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Tipo</th>
+                                <th>Status</th>
+                                <th>Data de Cadastro</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">JS</div>
+                                        <div>
+                                            <div class="user-name">João Silva</div>
+                                            <div class="user-email">joao.silva@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="user-type">Mecânico</span></td>
+                                <td><span class="status-badge status-active">Ativo</span></td>
+                                <td>15/03/2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-small btn-view"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-small btn-edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-small btn-delete" onclick="openDeleteModal()"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">MP</div>
+                                        <div>
+                                            <div class="user-name">Maria Pereira</div>
+                                            <div class="user-email">maria.pereira@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="user-type">Fornecedor</span></td>
+                                <td><span class="status-badge status-active">Ativo</span></td>
+                                <td>22/04/2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-small btn-view"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-small btn-edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-small btn-delete" onclick="openDeleteModal()"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">CS</div>
+                                        <div>
+                                            <div class="user-name">Carlos Santos</div>
+                                            <div class="user-email">carlos.santos@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="user-type">Administrador</span></td>
+                                <td><span class="status-badge status-active">Ativo</span></td>
+                                <td>10/01/2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-small btn-view"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-small btn-edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-small btn-delete" onclick="openDeleteModal()"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">AF</div>
+                                        <div>
+                                            <div class="user-name">Ana Ferreira</div>
+                                            <div class="user-email">ana.ferreira@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="user-type">Mecânico</span></td>
+                                <td><span class="status-badge status-inactive">Inativo</span></td>
+                                <td>05/05/2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-small btn-view"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-small btn-edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-small btn-delete" onclick="openDeleteModal()"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar">RO</div>
+                                        <div>
+                                            <div class="user-name">Roberto Oliveira</div>
+                                            <div class="user-email">roberto.oliveira@email.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="user-type">Fornecedor</span></td>
+                                <td><span class="status-badge status-pending">Pendente</span></td>
+                                <td>18/06/2023</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-small btn-view"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-small btn-edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-small btn-delete" onclick="openDeleteModal()"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginação -->
+                <div class="pagination">
+                    <button><i class="fas fa-chevron-left"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Exclusão</h3>
+                <button class="close-modal" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <p>Tem certeza que deseja excluir o usuário <strong>João Silva</strong>? Esta ação não pode ser desfeita.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="deleteUser()">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funções para o modal de exclusão
+        function openDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function deleteUser() {
+            // Simulação de exclusão de usuário
+            alert('Usuário excluído com sucesso!');
+            closeDeleteModal();
+            // Em um sistema real, aqui faria uma requisição para excluir o usuário
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target === modal) {
+                closeDeleteModal();
+            }
+        }
+
+        // Funcionalidade de busca
+        document.getElementById('searchUsers').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.users-table tbody tr');
+            
+            rows.forEach(row => {
+                const userName = row.querySelector('.user-name').textContent.toLowerCase();
+                const userEmail = row.querySelector('.user-email').textContent.toLowerCase();
+                
+                if (userName.includes(searchTerm) || userEmail.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Funcionalidade de filtro por tipo
+        document.getElementById('filterType').addEventListener('change', function(e) {
+            filterTable();
+        });
+
+        // Funcionalidade de filtro por status
+        document.getElementById('filterStatus').addEventListener('change', function(e) {
+            filterTable();
+        });
+
+        function filterTable() {
+            const typeFilter = document.getElementById('filterType').value;
+            const statusFilter = document.getElementById('filterStatus').value;
+            const rows = document.querySelectorAll('.users-table tbody tr');
+            
+            rows.forEach(row => {
+                const userType = row.querySelector('.user-type').textContent.toLowerCase();
+                const userStatus = row.querySelector('.status-badge').classList[1]; // status-active, status-inactive, etc.
+                
+                let typeMatch = true;
+                let statusMatch = true;
+                
+                if (typeFilter && !userType.includes(typeFilter)) {
+                    typeMatch = false;
+                }
+                
+                if (statusFilter && !userStatus.includes(statusFilter)) {
+                    statusMatch = false;
+                }
+                
+                if (typeMatch && statusMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Adicionar interatividade aos botões de ação
+        document.querySelectorAll('.btn-view').forEach(button => {
+            button.addEventListener('click', function() {
+                const userName = this.closest('tr').querySelector('.user-name').textContent;
+                alert(`Visualizando detalhes do usuário: ${userName}`);
+                // Em um sistema real, isso redirecionaria para a página de detalhes do usuário
+            });
+        });
+
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            button.addEventListener('click', function() {
+                const userName = this.closest('tr').querySelector('.user-name').textContent;
+                alert(`Editando usuário: ${userName}`);
+                // Em um sistema real, isso redirecionaria para a página de edição do usuário
+            });
+        });
+    </script>
+</body>
+</html>

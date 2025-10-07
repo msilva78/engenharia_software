@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoPeças Silva - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Banner da Loja */
+        .store-banner {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .store-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Cabeçalho da Loja */
+        .store-header {
+            display: flex;
+            align-items: center;
+            background-color: var(--branco);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .store-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-right: 30px;
+            flex-shrink: 0;
+        }
+
+        .store-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .store-info h1 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+
+        .store-info p {
+            margin-bottom: 15px;
+            color: var(--cinza-escuro);
+        }
+
+        .store-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .store-rating .stars {
+            color: #ffc107;
+            margin-right: 10px;
+        }
+
+        .store-rating .reviews {
+            color: var(--azul-claro);
+            font-weight: 500;
+        }
+
+        .store-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .store-stat {
+            text-align: center;
+            padding: 10px 15px;
+            background-color: var(--cinza-claro);
+            border-radius: 8px;
+        }
+
+        .store-stat .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .store-stat .label {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        /* Filtros e Ordenação */
+        .products-filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: var(--branco);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: var(--sombra);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .filter-options select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: var(--branco);
+        }
+
+        .view-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-options button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--azul-claro);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .view-options button.active {
+            color: var(--vermelho);
+        }
+
+        /* Produtos */
+        .products-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.5rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: var(--sombra);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--vermelho);
+            color: var(--branco);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .product-info .category {
+            color: var(--azul-claro);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .product-info .price {
+            color: var(--vermelho);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Sobre a Loja */
+        .about-store {
+            background-color: var(--branco);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+        }
+
+        .about-store h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .store-details-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .store-details-list li i {
+            margin-right: 10px;
+            color: var(--vermelho);
+            width: 20px;
+        }
+
+        /* Avaliações */
+        .reviews-section {
+            background-color: var(--branco);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+        }
+
+        .reviews-section h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .review-summary {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .average-rating {
+            text-align: center;
+            margin-right: 30px;
+        }
+
+        .average-rating .score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            line-height: 1;
+        }
+
+        .average-rating .stars {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        .average-rating .total {
+            color: var(--azul-claro);
+        }
+
+        .rating-bars {
+            flex: 1;
+        }
+
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating-bar .star {
+            width: 80px;
+            color: var(--azul-escuro);
+        }
+
+        .rating-bar .bar {
+            flex: 1;
+            height: 10px;
+            background-color: var(--cinza-claro);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .rating-bar .fill {
+            height: 100%;
+            background-color: #ffc107;
+        }
+
+        .rating-bar .count {
+            width: 50px;
+            text-align: right;
+            color: var(--azul-claro);
+        }
+
+        .review-list {
+            margin-top: 30px;
+        }
+
+        .review-card {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+
+        .review-card:last-child {
+            border-bottom: none;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reviewer {
+            display: flex;
+            align-items: center;
+        }
+
+        .reviewer .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .reviewer .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reviewer .name {
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+
+        .review-stars {
+            color: #ffc107;
+        }
+
+        .review-date {
+            color: var(--azul-claro);
+            font-size: 0.9rem;
+        }
+
+        .review-content p {
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .review-summary {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .average-rating {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .store-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .store-logo {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .store-stats {
+                justify-content: center;
+            }
+            
+            .products-filter {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .view-options {
+                align-self: flex-end;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .store-stats {
+                flex-wrap: wrap;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-options {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <a href="#" class="btn btn-outline"><i class="fas fa-user"></i> Entrar</a>
+                <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Carrinho</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="index_categoria.html">Peças para Veículos</a>
+            <span>&gt;</span>
+            <a href="#">AutoPeças Silva</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Banner da Loja -->
+        <div class="store-banner">
+            <img src="https://via.placeholder.com/1200x300/334563/ffffff?text=Banner+AutoPeças+Silva+-+Especialista+em+Freios+e+Suspensão" alt="Banner AutoPeças Silva">
+        </div>
+
+        <!-- Cabeçalho da Loja -->
+        <div class="store-header">
+            <div class="store-logo">
+                <img src="https://via.placeholder.com/200x200/7793c1/ffffff?text=AutoPeças+Silva" alt="AutoPeças Silva">
+            </div>
+            <div class="store-info">
+                <h1>AutoPeças Silva</h1>
+                <p>Especializada em peças para sistema de freios e suspensão. Atendemos todo o território nacional com qualidade e agilidade.</p>
+                
+                <div class="store-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="reviews">4.8 (128 avaliações)</div>
+                </div>
+                
+                <div class="store-stats">
+                    <div class="store-stat">
+                        <div class="value">568</div>
+                        <div class="label">Produtos</div>
+                    </div>
+                    <div class="store-stat">
+                        <div class="value">98%</div>
+                        <div class="label">Avaliações Positivas</div>
+                    </div>
+                    <div class="store-stat">
+                        <div class="value">2.4k</div>
+                        <div class="label">Clientes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros e Ordenação -->
+        <div class="products-filter">
+            <div class="filter-options">
+                <select>
+                    <option>Todas as categorias</option>
+                    <option>Freios</option>
+                    <option>Suspensão</option>
+                    <option>Motor</option>
+                    <option>Transmissão</option>
+                </select>
+                <select>
+                    <option>Ordenar por: Mais relevantes</option>
+                    <option>Menor preço</option>
+                    <option>Maior preço</option>
+                    <option>Mais vendidos</option>
+                    <option>Melhores avaliações</option>
+                </select>
+            </div>
+            <div class="view-options">
+                <button class="active"><i class="fas fa-th"></i></button>
+                <button><i class="fas fa-list"></i></button>
+            </div>
+        </div>
+
+        <!-- Produtos em Destaque -->
+        <div class="products-section">
+            <div class="section-header">
+                <h2>Produtos em Destaque</h2>
+            </div>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/7793c1/ffffff?text=Pastilha+Freio" alt="Pastilha de Freio">
+                        <div class="product-badge">Destaque</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Pastilha de Freio Dianteira</h3>
+                        <span class="category">Freios</span>
+                        <div class="price">R$ 85,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/334563/ffffff?text=Disco+Freio" alt="Disco de Freio">
+                        <div class="product-badge">Destaque</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Disco de Freio Dianteiro</h3>
+                        <span class="category">Freios</span>
+                        <div class="price">R$ 225,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/c83134/ffffff?text=Amortecedor" alt="Amortecedor">
+                        <div class="product-badge">Destaque</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Amortecedor Dianteiro</h3>
+                        <span class="category">Suspensão</span>
+                        <div class="price">R$ 352,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/4CAF50/ffffff?text=Kit+Correia" alt="Kit Correia">
+                        <div class="product-badge">Destaque</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Kit Correia Dentada</h3>
+                        <span class="category">Motor</span>
+                        <div class="price">R$ 140,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Todos os Produtos -->
+        <div class="products-section">
+            <div class="section-header">
+                <h2>Todos os Produtos</h2>
+            </div>
+            <div class="products-grid">
+                <!-- Produto 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/7793c1/ffffff?text=Mangueira+Freio" alt="Mangueira de Freio">
+                    </div>
+                    <div class="product-info">
+                        <h3>Mangueira de Freio</h3>
+                        <span class="category">Freios</span>
+                        <div class="price">R$ 45,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Produto 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/334563/ffffff?text=Coxim+Motor" alt="Coxim do Motor">
+                    </div>
+                    <div class="product-info">
+                        <h3>Coxim do Motor</h3>
+                        <span class="category">Motor</span>
+                        <div class="price">R$ 120,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/c83134/ffffff?text=Kit+Embreagem" alt="Kit Embreagem">
+                    </div>
+                    <div class="product-info">
+                        <h3>Kit Embreagem Completo</h3>
+                        <span class="category">Transmissão</span>
+                        <div class="price">R$ 420,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Produto 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/300x200/4CAF50/ffffff?text=Barra+Estabilizadora" alt="Barra Estabilizadora">
+                    </div>
+                    <div class="product-info">
+                        <h3>Barra Estabilizadora</h3>
+                        <span class="category">Suspensão</span>
+                        <div class="price">R$ 180,00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-sm btn-outline">Detalhes</button>
+                            <button class="btn btn-sm btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sobre a Loja -->
+        <div class="about-store">
+            <h2>Sobre a AutoPeças Silva</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Especializada em peças para sistema de freios e suspensão. Atendemos todo o território nacional com qualidade e agilidade. Temos mais de 15 anos de experiência no mercado automotivo.</p>
+                    <p>Nossa missão é fornecer peças de alta qualidade com preços competitivos, garantindo a satisfação dos nossos clientes e a segurança veicular.</p>
+                    <p>Trabalhamos apenas com marcas reconhecidas e fornecedores confiáveis, assegurando a procedência e a qualidade de todos os nossos produtos.</p>
+                </div>
+                <div class="store-details">
+                    <ul class="store-details-list">
+                        <li><i class="fas fa-truck"></i> Entrega para todo Brasil</li>
+                        <li><i class="fas fa-shield-alt"></i> Produtos com garantia</li>
+                        <li><i class="fas fa-credit-card"></i> Parcele em até 12x</li>
+                        <li><i class="fas fa-headset"></i> Atendimento especializado</li>
+                        <li><i class="fas fa-undo"></i> Troca em até 30 dias</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avaliações -->
+        <div class="reviews-section">
+            <h2>Avaliações dos Clientes</h2>
+            
+            <div class="review-summary">
+                <div class="average-rating">
+                    <div class="score">4.8</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="total">128 avaliações</div>
+                </div>
+                
+                <div class="rating-bars">
+                    <div class="rating-bar">
+                        <div class="star">5 estrelas</div>
+                        <div class="bar">
+                            <div class="fill" style="width: 85%;"></div>
+                        </div>
+                        <div class="count">85%</div>
+                    </div>
+                    <div class="rating-bar">
+                        <div class="star">4 estrelas</div>
+                        <div class="bar">
+                            <div class="fill" style="width: 10%;"></div>
+                        </div>
+                        <div class="count">10%</div>
+                    </div>
+                    <div class="rating-bar">
+                        <div class="star">3 estrelas</div>
+                        <div class="bar">
+                            <div class="fill" style="width: 3%;"></div>
+                        </div>
+                        <div class="count">3%</div>
+                    </div>
+                    <div class="rating-bar">
+                        <div class="star">2 estrelas</div>
+                        <div class="bar">
+                            <div class="fill" style="width: 1%;"></div>
+                        </div>
+                        <div class="count">1%</div>
+                    </div>
+                    <div class="rating-bar">
+                        <div class="star">1 estrela</div>
+                        <div class="bar">
+                            <div class="fill" style="width: 1%;"></div>
+                        </div>
+                        <div class="count">1%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="review-list">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="avatar">
+                                <img src="https://via.placeholder.com/40x40/7793c1/ffffff?text=J" alt="João Silva">
+                            </div>
+                            <div class="name">João Silva</div>
+                        </div>
+                        <div class="review-date">12/03/2023</div>
+                    </div>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="review-content">
+                        <p>Produto de excelente qualidade e entrega super rápida. Com certeza voltarei a comprar!</p>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="avatar">
+                                <img src="https://via.placeholder.com/40x40/334563/ffffff?text=M" alt="Maria Santos">
+                            </div>
+                            <div class="name">Maria Santos</div>
+                        </div>
+                        <div class="review-date">05/03/2023</div>
+                    </div>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="review-content">
+                        <p>Atendimento excelente e produto conforme anunciado. Recomendo a todos!</p>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="avatar">
+                                <img src="https://via.placeholder.com/40x40/c83134/ffffff?text=R" alt="Roberto Oliveira">
+                            </div>
+                            <div class="name">Roberto Oliveira</div>
+                        </div>
+                        <div class="review-date">28/02/2023</div>
+                    </div>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="review-content">
+                        <p>Produto de boa qualidade, mas a entrega poderia ter sido mais rápida. No geral, satisfeito com a compra.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="">Central de Ajuda</a></li>
+                        <li><a href="index_politica.html">Política de Privacidade</a></li>
+                        <li><a href="index_termo.html">Termos de Uso</a></li>
+                        <li><a href="index_perguntas.html">Perguntas Frequentes</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000, São Paulo</li>
+                        <li><i class="fas fa-phone"></i> (11) 3456-7890</li>
+                        <li><i class="fas fa-envelope"></i> contato@abmoficial.com.br</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 ABM Oficial - Todos os direitos reservados
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script para alternar entre visualização em grade e lista
+        document.addEventListener('DOMContentLoaded', function() {
+            const gridViewBtn = document.querySelector('.view-options button:first-child');
+            const listViewBtn = document.querySelector('.view-options button:last-child');
+            const productsGrid = document.querySelector('.products-grid');
+            
+            gridViewBtn.addEventListener('click', function() {
+                productsGrid.classList.remove('list-view');
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+            });
+            
+            listViewBtn.addEventListener('click', function() {
+                productsGrid.classList.add('list-view');
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABM Oficial - Plataforma B2B de Peças Automotivas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Hero Section - TEXTO CORRIGIDO SEM QUEBRAS */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--branco);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin: 0 auto 40px;
+            max-width: 700px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        /* Categorias */
+        .categories {
+            padding: 80px 0;
+            background-color: var(--branco);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--azul-escuro);
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--vermelho);
+            margin: 15px auto;
+        }
+
+        .section-title p {
+            color: var(--cinza-escuro);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--sombra);
+        }
+
+        .category-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--azul-escuro);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--branco);
+            font-size: 1.8rem;
+        }
+
+        .category-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+
+        .category-card p {
+            color: var(--cinza-escuro);
+            font-size: 0.95rem;
+        }
+
+        /* Benefícios */
+        .benefits {
+            padding: 80px 0;
+            background-color: var(--cinza-claro);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 35px;
+        }
+
+        .benefit-card {
+            text-align: center;
+            padding: 40px 30px;
+            border-radius: 10px;
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            color: var(--vermelho);
+            margin-bottom: 25px;
+        }
+
+        .benefit-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        /* Como Funciona */
+        .how-it-works {
+            padding: 80px 0;
+            background-color: var(--branco);
+            position: relative;
+        }
+
+        .steps-container {
+            position: relative;
+            margin-top: 50px;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 220px;
+            text-align: center;
+            padding: 0 15px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 25px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .step h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+            color: var(--cinza-escuro);
+            line-height: 1.5;
+        }
+
+        /* Linha conectora */
+        .connection-line {
+            position: absolute;
+            top: 30px;
+            left: 15%;
+            width: 70%;
+            height: 2px;
+            background-color: var(--azul-claro);
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 70px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--vermelho);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Modal de Login */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--branco);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            margin: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--cinza-escuro);
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .close-modal:hover {
+            color: var(--vermelho);
+        }
+
+        .modal-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+        }
+
+        .modal-title h2 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        .modal-title p {
+            font-size: 0.95rem;
+            color: var(--cinza-escuro);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .form-options a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .form-options a:hover {
+            color: var(--vermelho);
+        }
+
+        /* Seção de logins de teste */
+        .test-logins {
+            margin-top: 25px;
+            padding: 18px;
+            background-color: var(--cinza-claro);
+            border-radius: 8px;
+            border-left: 4px solid var(--azul-escuro);
+        }
+
+        .test-logins h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .login-item {
+            margin-bottom: 12px;
+            padding: 10px;
+            background-color: var(--branco);
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+        }
+
+        .login-item strong {
+            color: var(--vermelho);
+        }
+
+        .login-item span {
+            display: block;
+            color: var(--cinza-escuro);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .login-type {
+            display: inline-block;
+            padding: 2px 6px;
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 6px;
+        }
+
+        .login-note {
+            font-size: 0.8rem;
+            color: var(--azul-escuro);
+            font-style: italic;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.4rem;
+                white-space: normal;
+            }
+            
+            .connection-line {
+                left: 12%;
+                width: 76%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .hero {
+                padding: 70px 0;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            /* Ajustes para a seção Como Funciona em tablets */
+            .steps {
+                flex-wrap: wrap;
+            }
+            
+            .step {
+                min-width: 45%;
+                margin-bottom: 40px;
+            }
+            
+            .connection-line {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .categories-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Ajustes para a seção Como Funciona em mobile */
+            .step {
+                min-width: 100%;
+                margin-bottom: 40px;
+            }
+            
+            .steps {
+                flex-direction: column;
+            }
+            
+            .step:not(:last-child)::after {
+                content: '↓';
+                display: block;
+                color: var(--azul-claro);
+                font-size: 2rem;
+                margin: 20px 0;
+            }
+            
+            .modal-content {
+                padding: 25px 20px;
+            }
+            
+            .test-logins {
+                padding: 15px;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .modal-content {
+                padding: 20px 15px;
+            }
+            
+            .test-logins {
+                padding: 12px;
+            }
+            
+            .login-item {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <!-- Logo da ABM - substitua pelo caminho correto da sua imagem -->
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <!-- Botão Cadastrar removido conforme solicitado -->
+                <a href="#" id="login-btn" class="btn btn-primary">Entrar</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section - TEXTO CORRIGIDO SEM QUEBRAS -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Conectando fornecedores a mecânicos</h2>
+                <p>A maior plataforma B2B de peças automotivas do Brasil. Encontre as melhores peças com os melhores preços.</p>
+                <a href="#" id="start-btn" class="btn btn-primary">Começar agora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorias -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Categorias em Destaque</h2>
+                <p>Explore nossa ampla variedade de peças automotivas para todas as necessidades</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Motor</h3>
+                    <p>Peças para o coração do seu veículo</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-oil-can"></i>
+                    </div>
+                    <h3>Sistema de Combustível</h3>
+                    <p>Componentes para alimentação do motor</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Transmissão</h3>
+                    <p>Peças para câmbio e transmissão de força</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Suspensão</h3>
+                    <p>Conforto e estabilidade para seu veículo</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Elétrica</h3>
+                    <p>Sistema elétrico e componentes eletrônicos</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-stop-circle"></i>
+                    </div>
+                    <h3>Freios</h3>
+                    <p>Segurança e controle para sua direção</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Acessórios</h3>
+                    <p>Complementos e itens adicionais para veículos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="benefits">
+        <div class="container">
+            <div class="section-title">
+                <h2>Vantagens de usar nossa plataforma</h2>
+                <p>Descubra por que milhares de mecânicos e fornecedores confiam em nós</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3>Cashback em Todas as Compras</h3>
+                    <p>Receba parte do valor gasto de volta para usar em futuras compras.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Entrega Rápida</h3>
+                    <p>Receba suas peças rapidamente com nossa rede de fornecedores.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Compra Segura</h3>
+                    <p>Transações seguras e garantia de qualidade em todos os produtos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como Funciona -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>Como Funciona</h2>
+                <p>Um processo simples para conectar fornecedores e mecânicos</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="connection-line"></div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Cadastre-se</h3>
+                        <p>Crie sua conta como mecânico ou fornecedor</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Encontre Peças</h3>
+                        <p>Busque pelas peças que precisa</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Faça seu Pedido</h3>
+                        <p>Compre diretamente dos fornecedores</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Receba e Revenda</h3>
+                        <p>Receba as peças e revenda para seus clientes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                        <li><a href="index_perguntas.html">Perguntas Frequentes</a></li>
+                        <li><a href="index_politica.html">Política de Privacidade</a></li>
+                        <li><a href="index_termo.html">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="index_categoria.html">Motor</a></li>
+                        <li><a href="index_categoria.html">Transmissão</a></li>
+                        <li><a href="index_categoria.html">Freios</a></li>
+                        <li><a href="index_categoria.html">Suspensão</a></li>
+                        <li><a href="index_categoria.html">Elétrica</a></li>
+                        <li><a href="index_categoria.html">Acessórios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (11) 3456-7890</li>
+                        <li><i class="fas fa-envelope"></i> contato@abmoficial.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000, São Paulo - SP</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Login Simplificado -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <div class="modal-title">
+                <h2>Acesso ao Sistema</h2>
+                <p>Faça login para acessar sua conta</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Usuário ou E-mail</label>
+                    <input type="text" id="username" placeholder="Digite seu usuário ou e-mail" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha" required>
+                </div>
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox"> Lembrar-me
+                    </label>
+                    <a href="#">Esqueci minha senha</a>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Acessar Sistema</button>
+            </form>
+            
+            <!-- Seção de logins de teste -->
+            <div class="test-logins">
+                <h3>Logins de Teste (Fase de Desenvolvimento)</h3>
+                
+                <div class="login-item">
+                    <strong>Administrador</strong> <span class="login-type">Admin</span>
+                    <span>Usuário: <strong>admin</strong> | E-mail: <strong>admin@abm.com</strong></span>
+                    <span>Senha: <strong>admin1234</strong></span>
+                    <span>Acesso: Painel Administrativo</span>
+                </div>
+                
+                <div class="login-item">
+                    <strong>Fornecedor</strong> <span class="login-type">Fornecedor</span>
+                    <span>Usuário: <strong>fornecedor</strong> | E-mail: <strong>fornecedor@abm.com</strong></span>
+                    <span>Senha: <strong>forn1234</strong></span>
+                    <span>Acesso: Painel do Fornecedor</span>
+                </div>
+                
+                <div class="login-item">
+                    <strong>Mecânico</strong> <span class="login-type">Mecânico</span>
+                    <span>Usuário: <strong>mecanico</strong> | E-mail: <strong>mecanico@abm.com</strong></span>
+                    <span>Senha: <strong>mec1234</strong></span>
+                    <span>Acesso: Painel do Mecânico</span>
+                </div>
+                
+                <p class="login-note">Você pode usar tanto o nome de usuário quanto o e-mail para fazer login</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script para o sistema de login simplificado
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById('login-btn');
+            const startBtn = document.getElementById('start-btn');
+            const modal = document.getElementById('login-modal');
+            const closeModal = document.querySelector('.close-modal');
+            const loginForm = document.getElementById('login-form');
+            
+            // Abrir modal ao clicar em Entrar ou Começar agora
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            startBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Fechar modal
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Processar login
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (!username || !password) {
+                    alert('Por favor, preencha todos os campos.');
+                    return;
+                }
+                
+                // Validação dos logins de teste
+                let redirectUrl = '';
+                let userType = '';
+                
+                // Verificar Admin (usuário ou e-mail)
+                if ((username === 'admin' || username === 'admin@abm.com') && password === 'admin1234') {
+                    redirectUrl = 'adm_dashboard.html';
+                    userType = 'Administrador';
+                } 
+                // Verificar Fornecedor (usuário ou e-mail)
+                else if ((username === 'fornecedor' || username === 'fornecedor@abm.com') && password === 'forn1234') {
+                    redirectUrl = 'forn_dashboard.html';
+                    userType = 'Fornecedor';
+                } 
+                // Verificar Mecânico (usuário ou e-mail)
+                else if ((username === 'mecanico' || username === 'mecanico@abm.com') && password === 'mec1234') {
+                    redirectUrl = 'mec_dashboard.html';
+                    userType = 'Mecânico';
+                } 
+                else {
+                    alert('Credenciais inválidas. Use um dos logins de teste fornecidos abaixo.');
+                    return;
+                }
+                
+                // Redirecionar para a página apropriada
+                alert(`Login realizado com sucesso! Bem-vindo, ${userType}. Redirecionando...`);
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                // Redirecionamento real para as páginas
+                window.location.href = redirectUrl;
+            });
+            
+            // Preencher automaticamente para testes
+            document.getElementById('username').addEventListener('focus', function() {
+                if (this.value === '') {
+                    this.value = 'admin'; // Valor padrão para facilitar testes
+                }
+            });
+        });
+    </script>
+</body>
+</html>

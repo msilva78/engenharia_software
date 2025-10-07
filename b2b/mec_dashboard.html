@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Mecânico - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel do Mecânico */
+        .mechanic-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .mechanic-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .mechanic-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .mechanic-menu li {
+            margin-bottom: 10px;
+        }
+
+        .mechanic-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+        }
+
+        .mechanic-menu a:hover, .mechanic-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .mechanic-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .mechanic-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .mechanic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .mechanic-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        .mechanic-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .mechanic-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .mechanic-details h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .mechanic-details p {
+            color: var(--cinza-escuro);
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--sombra);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+            color: var(--branco);
+        }
+
+        .stat-icon.orders {
+            background-color: var(--azul-escuro);
+        }
+
+        .stat-icon.cashback {
+            background-color: #4CAF50;
+        }
+
+        .stat-icon.savings {
+            background-color: var(--vermelho);
+        }
+
+        .stat-icon.points {
+            background-color: var(--azul-claro);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+        }
+
+        /* Cashback Section */
+        .cashback-section {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h3 {
+            color: var(--azul-escuro);
+            font-size: 1.3rem;
+        }
+
+        .cashback-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .cashback-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .cashback-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--sombra);
+        }
+
+        .cashback-card h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cashback-card h4 i {
+            color: #4CAF50;
+        }
+
+        .cashback-card p {
+            color: var(--cinza-escuro);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .cashback-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
+        /* Descontos Section */
+        .discounts-section {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .discounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .discount-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .discount-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--sombra);
+        }
+
+        .discount-header {
+            padding: 15px;
+            text-align: center;
+            color: var(--branco);
+        }
+
+        .discount-header.seguros {
+            background-color: var(--azul-escuro);
+        }
+
+        .discount-header.hoteis {
+            background-color: var(--vermelho);
+        }
+
+        .discount-header.clubes {
+            background-color: var(--azul-claro);
+        }
+
+        .discount-header.farmacias {
+            background-color: #4CAF50;
+        }
+
+        .discount-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .discount-body h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+
+        .discount-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--vermelho);
+            margin-bottom: 10px;
+        }
+
+        .discount-body p {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        /* Pedidos Recentes */
+        .orders-section {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th, .orders-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .orders-table th {
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+
+        .orders-table tr:hover {
+            background-color: rgba(51, 69, 99, 0.03);
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status.pending {
+            background-color: #FFF3CD;
+            color: #856404;
+        }
+
+        .status.processing {
+            background-color: #CCE5FF;
+            color: #004085;
+        }
+
+        .status.shipped {
+            background-color: #D4EDDA;
+            color: #155724;
+        }
+
+        .status.delivered {
+            background-color: #D1ECF1;
+            color: #0C5460;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--sombra);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+            color: var(--branco);
+            background-color: var(--azul-escuro);
+        }
+
+        .action-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .action-card p {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .mechanic-panel {
+                flex-direction: column;
+            }
+            
+            .mechanic-sidebar {
+                width: 100%;
+            }
+            
+            .cashback-grid, .discounts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .orders-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <span>Olá, Mecânica Central</span>
+                <a href="index.html" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="mec_dashboard.html">Dashboard do Mecânico</a>
+        </div>
+    </div>
+
+    <!-- Painel do Mecânico -->
+    <div class="container">
+        <div class="mechanic-panel">
+            <!-- Sidebar -->
+            <div class="mechanic-sidebar">
+                <h3>Painel do Mecânico</h3>
+                <ul class="mechanic-menu">
+                    <li><a href="mec_dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="mec_produtos.html"><i class="fas fa-shopping-cart"></i> Comprar Peças</a></li>
+                    <li><a href="mec_pedido.html"><i class="fas fa-history"></i> Meus Pedidos</a></li>
+                    <li><a href="mec_cashback.html"><i class="fas fa-coins"></i> Meu Cashback</a></li>
+                    <li><a href="mec_descontos.html"><i class="fas fa-tags"></i> Descontos</a></li>
+                    <li><a href="mec_perfiluser.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                    <li><a href="mec_setup.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="mechanic-content">
+                <div class="mechanic-header">
+                    <h2>Dashboard do Mecânico</h2>
+                    <div>
+                        <span>Última atualização: hoje, 14:20</span>
+                    </div>
+                </div>
+
+                <!-- Informações do Mecânico -->
+                <div class="mechanic-info">
+                    <div class="mechanic-avatar">MC</div>
+                    <div class="mechanic-details">
+                        <h3>Mecânica Central</h3>
+                        <p>Nível: Ouro | Cashback Acumulado: R$ 1.245,00</p>
+                    </div>
+                </div>
+
+                <!-- Estatísticas -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-value">28</div>
+                        <div class="stat-label">Pedidos Este Mês</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon cashback">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-value">R$ 326</div>
+                        <div class="stat-label">Cashback Este Mês</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon savings">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="stat-value">R$ 1.890</div>
+                        <div class="stat-label">Economia com Descontos</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon points">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-value">4.250</div>
+                        <div class="stat-label">Pontos Acumulados</div>
+                    </div>
+                </div>
+
+                <!-- Cashback -->
+                <div class="cashback-section">
+                    <div class="section-header">
+                        <h3>Meu Cashback</h3>
+                        <a href="#">Ver histórico completo</a>
+                    </div>
+                    <div class="cashback-grid">
+                        <div class="cashback-card">
+                            <h4><i class="fas fa-coins"></i> Cashback Disponível</h4>
+                            <p>Valor disponível para resgate ou uso em novas compras</p>
+                            <div class="cashback-value">R$ 1.245,00</div>
+                            <button class="btn btn-primary">Resgatar Agora</button>
+                        </div>
+                        
+                        <div class="cashback-card">
+                            <h4><i class="fas fa-chart-line"></i> Previsão Próximo Mês</h4>
+                            <p>Estimativa de cashback com base nas compras atuais</p>
+                            <div class="cashback-value">R$ 380,00</div>
+                            <button class="btn btn-secondary">Como Aumentar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descontos -->
+                <div class="discounts-section">
+                    <div class="section-header">
+                        <h3>Descontos Exclusivos</h3>
+                        <a href="#">Ver todos os descontos</a>
+                    </div>
+                    <div class="discounts-grid">
+                        <div class="discount-card">
+                            <div class="discount-header seguros">
+                                <i class="fas fa-shield-alt fa-2x"></i>
+                                <h4>Seguros</h4>
+                            </div>
+                            <div class="discount-body">
+                                <div class="discount-value">25% OFF</div>
+                                <p>Seguro veicular e residencial</p>
+                                <button class="btn btn-primary">Usar Desconto</button>
+                            </div>
+                        </div>
+                        
+                        <div class="discount-card">
+                            <div class="discount-header hoteis">
+                                <i class="fas fa-hotel fa-2x"></i>
+                                <h4>Hotéis</h4>
+                            </div>
+                            <div class="discount-body">
+                                <div class="discount-value">35% OFF</div>
+                                <p>Rede de hotéis parceiros em todo Brasil</p>
+                                <button class="btn btn-primary">Usar Desconto</button>
+                            </div>
+                        </div>
+                        
+                        <div class="discount-card">
+                            <div class="discount-header clubes">
+                                <i class="fas fa-dumbbell fa-2x"></i>
+                                <h4>Clubes</h4>
+                            </div>
+                            <div class="discount-body">
+                                <div class="discount-value">40% OFF</div>
+                                <p>Academias e clubes esportivos</p>
+                                <button class="btn btn-primary">Usar Desconto</button>
+                            </div>
+                        </div>
+                        
+                        <div class="discount-card">
+                            <div class="discount-header farmacias">
+                                <i class="fas fa-pills fa-2x"></i>
+                                <h4>Farmácias</h4>
+                            </div>
+                            <div class="discount-body">
+                                <div class="discount-value">20% OFF</div>
+                                <p>Medicamentos e produtos de saúde</p>
+                                <button class="btn btn-primary">Usar Desconto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pedidos Recentes -->
+                <div class="orders-section">
+                    <div class="section-header">
+                        <h3>Pedidos Recentes</h3>
+                        <a href="#">Ver todos os pedidos</a>
+                    </div>
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Nº do Pedido</th>
+                                <th>Data</th>
+                                <th>Fornecedor</th>
+                                <th>Valor</th>
+                                <th>Cashback</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ORD-2023-0987</td>
+                                <td>05/12/2023</td>
+                                <td>AutoPeças Silva</td>
+                                <td>R$ 1.245,00</td>
+                                <td>R$ 62,25</td>
+                                <td><span class="status processing">Processando</span></td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-2023-0986</td>
+                                <td>04/12/2023</td>
+                                <td>Peças Premium</td>
+                                <td>R$ 867,50</td>
+                                <td>R$ 43,38</td>
+                                <td><span class="status shipped">Enviado</span></td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-2023-0985</td>
+                                <td>04/12/2023</td>
+                                <td>AutoPeças RJ</td>
+                                <td>R$ 2.134,00</td>
+                                <td>R$ 106,70</td>
+                                <td><span class="status delivered">Entregue</span></td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-2023-0984</td>
+                                <td>03/12/2023</td>
+                                <td>MegaPeças</td>
+                                <td>R$ 543,00</td>
+                                <td>R$ 27,15</td>
+                                <td><span class="status pending">Pendente</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Ações Rápidas -->
+                <div class="quick-actions">
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Comprar Peças</h3>
+                        <p>Encontre as melhores peças com cashback</p>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3>Resgatar Cashback</h3>
+                        <p>Use seu cashback acumulado</p>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <h3>Ver Descontos</h3>
+                        <p>Descontos exclusivos para você</p>
+                    </div>
+                    
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3>Meus Pedidos</h3>
+                        <p>Acompanhe seus pedidos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Vantagens</h3>
+                    <ul>
+                        <li><i class="fas fa-coins"></i> <a href="#">Cashback em Todas as Compras</a></li>
+                        <li><i class="fas fa-tags"></i> <a href="#">Descontos Exclusivos</a></li>
+                        <li><i class="fas fa-truck"></i> <a href="#">Entrega Rápida</a></li>
+                        <li><i class="fas fa-shield-alt"></i> <a href="#">Compra Segura</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Adicionar interatividade aos cards de ação rápida
+            document.querySelectorAll('.action-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h3').textContent;
+                    alert(`Redirecionando para: ${title}`);
+                    // Em um sistema real, isso redirecionaria para a página apropriada
+                });
+            });
+
+            // Adicionar interatividade aos botões de desconto
+            document.querySelectorAll('.discount-body .btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const discountType = this.closest('.discount-card').querySelector('.discount-header h4').textContent;
+                    alert(`Ativando desconto para: ${discountType}`);
+                });
+            });
+
+            // Adicionar interatividade aos cards de cashback
+            document.querySelectorAll('.cashback-card .btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const action = this.textContent;
+                    alert(`Executando ação: ${action}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

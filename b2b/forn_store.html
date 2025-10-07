@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Loja - Painel do Fornecedor - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Painel do Fornecedor */
+        .supplier-panel {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .supplier-sidebar {
+            width: 250px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra);
+            height: fit-content;
+        }
+
+        .supplier-sidebar h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--vermelho);
+        }
+
+        .supplier-menu li {
+            margin-bottom: 10px;
+        }
+
+        .supplier-menu a {
+            display: block;
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            color: var(--cinza-escuro);
+        }
+
+        .supplier-menu a:hover, .supplier-menu a.active {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+
+        .supplier-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .supplier-content {
+            flex: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .supplier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .supplier-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        /* Informações da Loja */
+        .store-info {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .store-logo {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            background-color: var(--cinza-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .store-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .store-logo-edit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .store-logo-edit:hover {
+            opacity: 1;
+        }
+
+        .store-details {
+            flex: 1;
+        }
+
+        .store-details h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+        }
+
+        .store-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .store-stat {
+            background-color: var(--cinza-claro);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .store-stat .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin-bottom: 5px;
+        }
+
+        .store-stat .label {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        /* Formulários */
+        .form-section {
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Banner e Vitrine */
+        .banner-section {
+            margin-bottom: 30px;
+        }
+
+        .banner-preview {
+            width: 100%;
+            height: 200px;
+            background-color: var(--cinza-claro);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Produtos em Destaque */
+        .featured-products {
+            margin-bottom: 30px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra);
+        }
+
+        .product-image {
+            height: 150px;
+            background-color: var(--cinza-claro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-info h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .product-info .price {
+            color: var(--vermelho);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Configurações de Entrega */
+        .delivery-settings {
+            margin-bottom: 30px;
+        }
+
+        .delivery-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .delivery-option {
+            background-color: var(--cinza-claro);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .delivery-option h4 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+        }
+
+        .delivery-option .form-group {
+            margin-bottom: 15px;
+        }
+
+        /* Preview da Loja */
+        .store-preview {
+            background-color: var(--cinza-claro);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .preview-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .supplier-panel {
+                flex-direction: column;
+            }
+            
+            .supplier-sidebar {
+                width: 100%;
+            }
+            
+            .store-info {
+                flex-direction: column;
+            }
+            
+            .store-logo {
+                align-self: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .store-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .store-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .banner-actions {
+                flex-direction: column;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <span>Olá, AutoPeças Silva</span>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="forn_dashboard.html">Dashboard do Fornecedor</a>
+            <span>&gt;</span>
+            <a href="#">Minha Loja</a>
+        </div>
+    </div>
+
+    <!-- Painel do Fornecedor -->
+    <div class="container">
+        <div class="supplier-panel">
+            <!-- Sidebar -->
+            <div class="supplier-sidebar">
+                <h3>Painel do Fornecedor</h3>
+                <ul class="supplier-menu">
+                    <li><a href="forn_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="forn_estoque.html"><i class="fas fa-box"></i> Gestão de Estoque</a></li>
+                    <li><a href="forn_addproduct.html"><i class="fas fa-plus-circle"></i> Adicionar Produto</a></li>
+                    <li><a href="forn_pedrecebido.html"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                    <li><a href="forn_relvendas.html"><i class="fas fa-chart-line"></i> Relatórios de Vendas</a></li>
+                    <li><a href="forn_store.html" class="active"><i class="fas fa-store"></i> Minha Loja</a></li>
+                    <li><a href="forn_config.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="supplier-content">
+                <div class="supplier-header">
+                    <h2>Minha Loja - AutoPeças Silva</h2>
+                    <div>
+                        <span>Visualizações: 1.245 | Visitas: 568</span>
+                    </div>
+                </div>
+
+                <!-- Informações da Loja -->
+                <div class="store-info">
+                    <div class="store-logo">
+                        <img src="https://via.placeholder.com/200x200/7793c1/ffffff?text=AutoPeças+Silva" alt="AutoPeças Silva">
+                        <div class="store-logo-edit">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <div class="store-details">
+                        <h3>AutoPeças Silva</h3>
+                        <p>Especializada em peças para sistema de freios e suspensão. Atendemos todo o território nacional com qualidade e agilidade.</p>
+                        <div class="store-stats">
+                            <div class="store-stat">
+                                <div class="value">4.8</div>
+                                <div class="label">Avaliação</div>
+                            </div>
+                            <div class="store-stat">
+                                <div class="value">568</div>
+                                <div class="label">Produtos</div>
+                            </div>
+                            <div class="store-stat">
+                                <div class="value">98%</div>
+                                <div class="label">Avaliações Positivas</div>
+                            </div>
+                            <div class="store-stat">
+                                <div class="value">2.4k</div>
+                                <div class="label">Clientes</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações Básicas -->
+                <div class="form-section">
+                    <h3>Informações Básicas da Loja</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="store-name">Nome da Loja</label>
+                            <input type="text" id="store-name" value="AutoPeças Silva">
+                        </div>
+                        <div class="form-group">
+                            <label for="store-category">Categoria Principal</label>
+                            <select id="store-category">
+                                <option selected>Peças para Veículos</option>
+                                <option>Serviços Automotivos</option>
+                                <option>Acessórios</option>
+                                <option>Ferramentas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="store-description">Descrição da Loja</label>
+                        <textarea id="store-description">Especializada em peças para sistema de freios e suspensão. Atendemos todo o território nacional com qualidade e agilidade. Temos mais de 15 anos de experiência no mercado automotivo.</textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-outline">Cancelar</button>
+                        <button class="btn btn-primary">Salvar Alterações</button>
+                    </div>
+                </div>
+
+                <!-- Banner e Vitrine -->
+                <div class="banner-section">
+                    <h3>Banner da Loja</h3>
+                    <div class="banner-preview">
+                        <img src="https://via.placeholder.com/1000x200/334563/ffffff?text=Banner+AutoPeças+Silva+-+Especialista+em+Freios+e+Suspensão" alt="Banner AutoPeças Silva">
+                    </div>
+                    <div class="banner-actions">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-upload"></i> Alterar Banner
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-times"></i> Remover Banner
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Produtos em Destaque -->
+                <div class="featured-products">
+                    <h3>Produtos em Destaque</h3>
+                    <p>Selecione até 6 produtos para exibir em destaque na sua loja</p>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/7793c1/ffffff?text=Pastilha+Freio" alt="Pastilha de Freio">
+                            </div>
+                            <div class="product-info">
+                                <h4>Pastilha de Freio Dianteira</h4>
+                                <div class="price">R$ 85,00</div>
+                                <div class="product-actions">
+                                    <button class="btn btn-sm btn-outline">Remover</button>
+                                    <button class="btn btn-sm btn-primary">Editar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/334563/ffffff?text=Disco+Freio" alt="Disco de Freio">
+                            </div>
+                            <div class="product-info">
+                                <h4>Disco de Freio Dianteiro</h4>
+                                <div class="price">R$ 225,00</div>
+                                <div class="product-actions">
+                                    <button class="btn btn-sm btn-outline">Remover</button>
+                                    <button class="btn btn-sm btn-primary">Editar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/c83134/ffffff?text=Amortecedor" alt="Amortecedor">
+                            </div>
+                            <div class="product-info">
+                                <h4>Amortecedor Dianteiro</h4>
+                                <div class="price">R$ 352,00</div>
+                                <div class="product-actions">
+                                    <button class="btn btn-sm btn-outline">Remover</button>
+                                    <button class="btn btn-sm btn-primary">Editar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/200x150/4CAF50/ffffff?text=Kit+Correia" alt="Kit Correia">
+                            </div>
+                            <div class="product-info">
+                                <h4>Kit Correia Dentada</h4>
+                                <div class="price">R$ 140,00</div>
+                                <div class="product-actions">
+                                    <button class="btn btn-sm btn-outline">Remover</button>
+                                    <button class="btn btn-sm btn-primary">Editar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions" style="margin-top: 20px;">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Adicionar Produto em Destaque
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configurações de Entrega -->
+                <div class="delivery-settings">
+                    <h3>Configurações de Entrega</h3>
+                    <div class="delivery-options">
+                        <div class="delivery-option">
+                            <h4>Opções de Entrega</h4>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" checked> Oferecer entrega padrão
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" checked> Oferecer entrega expressa
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox"> Oferecer retirada na loja
+                                </label>
+                            </div>
+                        </div>
+                        <div class="delivery-option">
+                            <h4>Política de Entrega</h4>
+                            <div class="form-group">
+                                <label for="delivery-time">Prazo de Entrega (dias úteis)</label>
+                                <input type="number" id="delivery-time" value="5" min="1" max="30">
+                            </div>
+                            <div class="form-group">
+                                <label for="free-shipping">Frete Grátis a partir de</label>
+                                <input type="text" id="free-shipping" value="R$ 299,00">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-outline">Cancelar</button>
+                        <button class="btn btn-primary">Salvar Configurações</button>
+                    </div>
+                </div>
+
+                <!-- Preview da Loja -->
+                <div class="store-preview">
+                    <div class="preview-header">
+                        <h3>Visualize sua Loja</h3>
+                        <p>Veja como sua loja está aparecendo para os clientes</p>
+                    </div>
+                    <div class="preview-actions">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-eye"></i> Visualizar Loja
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-sync"></i> Publicar Alterações
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulação de upload de imagem
+            const logoEdit = document.querySelector('.store-logo-edit');
+            const bannerActions = document.querySelectorAll('.banner-actions button');
+            
+            logoEdit.addEventListener('click', function() {
+                alert('Selecione uma nova imagem para o logo da loja');
+                // Em uma aplicação real, abriria um seletor de arquivos
+            });
+            
+            bannerActions[0].addEventListener('click', function() {
+                alert('Selecione uma nova imagem para o banner');
+                // Em uma aplicação real, abriria um seletor de arquivos
+            });
+            
+            bannerActions[1].addEventListener('click', function() {
+                if(confirm('Tem certeza que deseja remover o banner?')) {
+                    document.querySelector('.banner-preview img').src = 'https://via.placeholder.com/1000x200/f5f7fa/333333?text=Sem+Banner+-+Clique+para+Adicionar';
+                }
+            });
+            
+            // Adicionar produto em destaque
+            document.querySelector('.featured-products .btn-primary').addEventListener('click', function() {
+                alert('Abrindo modal para selecionar produtos em destaque');
+                // Em uma aplicação real, abriria um modal com todos os produtos
+            });
+            
+            // Botão de visualizar loja
+            document.querySelector('.preview-actions .btn-outline').addEventListener('click', function() {
+                alert('Abrindo página de visualização da loja em uma nova aba');
+                // Em uma aplicação real, abriria a página da loja em uma nova aba
+            });
+            
+            // Botão de publicar alterações
+            document.querySelector('.preview-actions .btn-primary').addEventListener('click', function() {
+                alert('Alterações publicadas com sucesso!');
+                // Em uma aplicação real, enviaria as alterações para o servidor
+            });
+        });
+    </script>
+</body>
+</html>

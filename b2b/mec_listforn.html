@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fornecedores - ABM Oficial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variáveis de cores baseadas no logo */
+        :root {
+            --azul-escuro: #334563;
+            --vermelho: #c83134;
+            --branco: #ffffff;
+            --azul-claro: #7793c1;
+            --cinza-claro: #f5f7fa;
+            --cinza-escuro: #333333;
+            --sombra: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--vermelho);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--azul-escuro);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-escuro);
+            color: var(--azul-escuro);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--branco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 12px;
+        }
+
+        .logo h1 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: var(--cinza-escuro);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            color: var(--vermelho);
+            background-color: rgba(200, 49, 52, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            font-weight: bold;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 20px 0;
+            background-color: var(--branco);
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .breadcrumb-content a {
+            color: var(--azul-escuro);
+            transition: color 0.3s;
+        }
+
+        .breadcrumb-content a:hover {
+            color: var(--vermelho);
+        }
+
+        .breadcrumb-content span {
+            margin: 0 10px;
+            color: var(--azul-claro);
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: var(--branco);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra);
+        }
+
+        .page-header h2 {
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+        }
+
+        .page-description {
+            color: var(--cinza-escuro);
+            margin-top: 10px;
+            max-width: 600px;
+        }
+
+        /* Filtros */
+        .filters-container {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 30px;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filters-header h3 {
+            color: var(--azul-escuro);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        /* Fornecedores Grid */
+        .suppliers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .supplier-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            transition: transform 0.3s ease;
+        }
+
+        .supplier-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .supplier-header {
+            position: relative;
+            height: 120px;
+            background: linear-gradient(135deg, var(--azul-escuro), var(--azul-claro));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--branco);
+            padding: 20px;
+        }
+
+        .supplier-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--branco);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-escuro);
+            font-size: 1.8rem;
+            font-weight: bold;
+            border: 3px solid var(--branco);
+        }
+
+        .supplier-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--vermelho);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .supplier-body {
+            padding: 20px;
+        }
+
+        .supplier-name {
+            color: var(--azul-escuro);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .supplier-specialty {
+            color: var(--cinza-escuro);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .supplier-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #FF9800;
+        }
+
+        .supplier-rating span {
+            color: var(--cinza-escuro);
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+
+        .supplier-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background-color: var(--cinza-claro);
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--cinza-escuro);
+        }
+
+        .supplier-footer {
+            padding: 15px 20px;
+            background-color: var(--cinza-claro);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .supplier-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Mapa de Fornecedores */
+        .suppliers-map {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+            height: 400px;
+            position: relative;
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .map-header h3 {
+            color: var(--azul-escuro);
+        }
+
+        .map-container {
+            height: 320px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-escuro);
+            font-weight: 500;
+        }
+
+        /* Categorias de Fornecedores */
+        .categories-section {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h3 {
+            color: var(--azul-escuro);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background-color: var(--cinza-claro);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            transform: translateY(-3px);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+
+        .category-card:hover .category-icon {
+            color: var(--branco);
+        }
+
+        .category-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .category-count {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Paginação */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .pagination button {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination button.active {
+            background-color: var(--azul-escuro);
+            color: white;
+            border-color: var(--azul-escuro);
+        }
+
+        .pagination button:hover:not(.active) {
+            background-color: var(--cinza-claro);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--branco);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--vermelho);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--azul-claro);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Modal de Detalhes do Fornecedor */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--branco);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--cinza-escuro);
+            z-index: 10;
+            background: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--sombra);
+        }
+
+        .modal-header {
+            padding: 25px;
+            background: linear-gradient(135deg, var(--azul-escuro), var(--azul-claro));
+            color: white;
+            position: relative;
+        }
+
+        .supplier-modal-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--branco);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+            font-size: 2.5rem;
+            font-weight: bold;
+            border: 4px solid var(--branco);
+        }
+
+        .modal-title {
+            margin-bottom: 10px;
+        }
+
+        .modal-subtitle {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .modal-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #FF9800;
+            font-size: 1.1rem;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-section {
+            margin-bottom: 30px;
+        }
+
+        .modal-section h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .supplier-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: var(--azul-escuro);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--cinza-escuro);
+        }
+
+        .specialties-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .specialty-badge {
+            padding: 8px 15px;
+            background-color: var(--cinza-claro);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .reviews-container {
+            margin-top: 20px;
+        }
+
+        .review-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reviewer {
+            font-weight: 500;
+            color: var(--azul-escuro);
+        }
+
+        .review-date {
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+
+        .review-rating {
+            color: #FF9800;
+            margin-bottom: 10px;
+        }
+
+        .review-content {
+            color: var(--cinza-escuro);
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            padding: 20px 25px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .suppliers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .suppliers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .supplier-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .supplier-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .supplier-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .supplier-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="assets/images/logo_abm.png" alt="ABM Oficial" onerror="this.src='https://via.placeholder.com/200x50/334563/ffffff?text=ABM+Oficial'">
+                <h1>ABM Oficial</h1>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="all_produtos.html">Produtos</a></li>
+                    <li><a href="fornecedores.html" style="color: var(--vermelho);">Fornecedores</a></li>
+                    <li><a href="index_categoria.html">Categorias</a></li>
+                    <li><a href="index_sobrenos.html">Sobre Nós</a></li>
+                    <li><a href="index_contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-actions">
+                <div class="user-info">
+                    <div class="user-avatar">MC</div>
+                    <span>Mecânica Central</span>
+                </div>
+                <a href="#" class="btn btn-secondary">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container breadcrumb-content">
+            <a href="index.html">Início</a>
+            <span>&gt;</span>
+            <a href="fornecedores.html">Fornecedores</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="container">
+        <div class="page-header">
+            <div>
+                <h2>Nossos Fornecedores</h2>
+                <p class="page-description">Encontre os melhores fornecedores de peças automotivas do Brasil. Conecte-se com empresas confiáveis e aproveite condições exclusivas.</p>
+            </div>
+            <a href="all_produtos.html" class="btn btn-primary">Ver Catálogo Completo</a>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filters-container">
+            <div class="filters-header">
+                <h3>Filtrar Fornecedores</h3>
+                <a href="#" class="btn btn-outline btn-sm">Limpar Filtros</a>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label for="categoryFilter">Categoria</label>
+                    <select id="categoryFilter">
+                        <option value="">Todas as categorias</option>
+                        <option value="motor">Motor</option>
+                        <option value="suspensao">Suspensão</option>
+                        <option value="freios">Freios</option>
+                        <option value="eletrica">Elétrica</option>
+                        <option value="transmissao">Transmissão</option>
+                        <option value="acessorios">Acessórios</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="stateFilter">Estado</label>
+                    <select id="stateFilter">
+                        <option value="">Todos os estados</option>
+                        <option value="sp">São Paulo</option>
+                        <option value="rj">Rio de Janeiro</option>
+                        <option value="mg">Minas Gerais</option>
+                        <option value="rs">Rio Grande do Sul</option>
+                        <option value="pr">Paraná</option>
+                        <option value="sc">Santa Catarina</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="ratingFilter">Avaliação Mínima</label>
+                    <select id="ratingFilter">
+                        <option value="">Qualquer avaliação</option>
+                        <option value="4">4 estrelas ou mais</option>
+                        <option value="3">3 estrelas ou mais</option>
+                        <option value="2">2 estrelas ou mais</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="deliveryFilter">Tempo de Entrega</label>
+                    <select id="deliveryFilter">
+                        <option value="">Qualquer entrega</option>
+                        <option value="24">Até 24h</option>
+                        <option value="48">Até 48h</option>
+                        <option value="72">Até 72h</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="btn btn-primary">Aplicar Filtros</button>
+                <button class="btn btn-outline">Ver no Mapa</button>
+            </div>
+        </div>
+
+        <!-- Categorias de Fornecedores -->
+        <div class="categories-section">
+            <div class="section-header">
+                <h3>Buscar por Categoria</h3>
+                <a href="#" class="btn btn-outline btn-sm">Ver todas</a>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="category-name">Motor</div>
+                    <div class="category-count">42 fornecedores</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="category-name">Suspensão</div>
+                    <div class="category-count">28 fornecedores</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-stop-circle"></i>
+                    </div>
+                    <div class="category-name">Freios</div>
+                    <div class="category-count">35 fornecedores</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="category-name">Elétrica</div>
+                    <div class="category-count">31 fornecedores</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="category-name">Transmissão</div>
+                    <div class="category-count">22 fornecedores</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="category-name">Acessórios</div>
+                    <div class="category-count">47 fornecedores</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mapa de Fornecedores -->
+        <div class="suppliers-map">
+            <div class="map-header">
+                <h3>Fornecedores por Região</h3>
+                <button class="btn btn-outline btn-sm">Ampliar Mapa</button>
+            </div>
+            <div class="map-container">
+                <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-right: 15px;"></i>
+                <span>Mapa interativo de fornecedores por região</span>
+            </div>
+        </div>
+
+        <!-- Lista de Fornecedores -->
+        <div class="suppliers-grid">
+            <!-- Fornecedor 1 -->
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <div class="supplier-logo">AS</div>
+                    <div class="supplier-badge">Premium</div>
+                </div>
+                <div class="supplier-body">
+                    <h3 class="supplier-name">AutoPeças Silva</h3>
+                    <p class="supplier-specialty">Especialista em motor e transmissão</p>
+                    <div class="supplier-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.5 (128 avaliações)</span>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">98%</div>
+                            <div class="stat-label">Entregas no Prazo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.8</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">24h</div>
+                            <div class="stat-label">Entrega</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">SP</div>
+                            <div class="stat-label">Localização</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier-footer">
+                    <span>+500 peças disponíveis</span>
+                    <div class="supplier-actions">
+                        <button class="btn btn-outline btn-sm view-supplier" data-supplier="1">Ver Detalhes</button>
+                        <button class="btn btn-primary btn-sm">Contatar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fornecedor 2 -->
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <div class="supplier-logo">PP</div>
+                </div>
+                <div class="supplier-body">
+                    <h3 class="supplier-name">Peças Premium</h3>
+                    <p class="supplier-specialty">Suspensão e direção</p>
+                    <div class="supplier-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>4.9 (204 avaliações)</span>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">99%</div>
+                            <div class="stat-label">Entregas no Prazo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.9</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">48h</div>
+                            <div class="stat-label">Entrega</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">MG</div>
+                            <div class="stat-label">Localização</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier-footer">
+                    <span>+350 peças disponíveis</span>
+                    <div class="supplier-actions">
+                        <button class="btn btn-outline btn-sm view-supplier" data-supplier="2">Ver Detalhes</button>
+                        <button class="btn btn-primary btn-sm">Contatar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fornecedor 3 -->
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <div class="supplier-logo">MP</div>
+                    <div class="supplier-badge">Frete Grátis</div>
+                </div>
+                <div class="supplier-body">
+                    <h3 class="supplier-name">MegaPeças</h3>
+                    <p class="supplier-specialty">Sistema elétrico e baterias</p>
+                    <div class="supplier-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span>4.0 (87 avaliações)</span>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">Entregas no Prazo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.2</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">72h</div>
+                            <div class="stat-label">Entrega</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">RJ</div>
+                            <div class="stat-label">Localização</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier-footer">
+                    <span>+420 peças disponíveis</span>
+                    <div class="supplier-actions">
+                        <button class="btn btn-outline btn-sm view-supplier" data-supplier="3">Ver Detalhes</button>
+                        <button class="btn btn-primary btn-sm">Contatar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fornecedor 4 -->
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <div class="supplier-logo">AP</div>
+                </div>
+                <div class="supplier-body">
+                    <h3 class="supplier-name">AutoPeças RJ</h3>
+                    <p class="supplier-specialty">Freios e sistema de segurança</p>
+                    <div class="supplier-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.3 (156 avaliações)</span>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">96%</div>
+                            <div class="stat-label">Entregas no Prazo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.5</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">24h</div>
+                            <div class="stat-label">Entrega</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">RJ</div>
+                            <div class="stat-label">Localização</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier-footer">
+                    <span>+380 peças disponíveis</span>
+                    <div class="supplier-actions">
+                        <button class="btn btn-outline btn-sm view-supplier" data-supplier="4">Ver Detalhes</button>
+                        <button class="btn btn-primary btn-sm">Contatar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fornecedor 5 -->
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <div class="supplier-logo">FP</div>
+                    <div class="supplier-badge">Novo</div>
+                </div>
+                <div class="supplier-body">
+                    <h3 class="supplier-name">Ferramentas Pro</h3>
+                    <p class="supplier-specialty">Ferramentas e equipamentos</p>
+                    <div class="supplier-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.6 (42 avaliações)</span>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">Entregas no Prazo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.7</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">48h</div>
+                            <div class="stat-label">Entrega</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">PR</div>
+                            <div class="stat-label">Localização</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier-footer">
+                    <span>+280 peças disponíveis</span>
+                    <div class="supplier-actions">
+                        <button class="btn btn-outline btn-sm view-supplier" data-supplier="5">Ver Detalhes</button>
+                        <button class="btn btn-primary btn-sm">Contatar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fornecedor 6 -->
+            <div class="supplier-card">
+                <div class="supplier-header">
+                    <div class="supplier-logo">OP</div>
+                </div>
+                <div class="supplier-body">
+                    <h3 class="supplier-name">Oficina Peças</h3>
+                    <p class="supplier-specialty">Acessórios e componentes</p>
+                    <div class="supplier-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span>4.1 (93 avaliações)</span>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">94%</div>
+                            <div class="stat-label">Entregas no Prazo</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.3</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">72h</div>
+                            <div class="stat-label">Entrega</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">SC</div>
+                            <div class="stat-label">Localização</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="supplier-footer">
+                    <span>+510 peças disponíveis</span>
+                    <div class="supplier-actions">
+                        <button class="btn btn-outline btn-sm view-supplier" data-supplier="6">Ver Detalhes</button>
+                        <button class="btn btn-primary btn-sm">Contatar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginação -->
+        <div class="pagination">
+            <button><i class="fas fa-chevron-left"></i></button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ABM Oficial</h3>
+                    <p>A maior plataforma B2B de peças automotivas, conectando fornecedores a mecânicos.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="all_produtos.html">Produtos</a></li>
+                        <li><a href="fornecedores.html">Fornecedores</a></li>
+                        <li><a href="index_categoria.html">Categorias</a></li>
+                        <li><a href="index_contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categorias</h3>
+                    <ul>
+                        <li><a href="#">Motor</a></li>
+                        <li><a href="#">Suspensão</a></li>
+                        <li><a href="#">Freios</a></li>
+                        <li><a href="#">Elétrica</a></li>
+                        <li><a href="#">Transmissão</a></li>
+                        <li><a href="#">Acessórios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ABM Oficial - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Detalhes do Fornecedor -->
+    <div class="modal" id="supplierModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <div class="modal-header">
+                <div class="supplier-modal-logo">AS</div>
+                <h2 class="modal-title">AutoPeças Silva</h2>
+                <p class="modal-subtitle">Especialista em motor e transmissão • São Paulo, SP</p>
+                <div class="modal-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>4.5 (128 avaliações)</span>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3><i class="fas fa-info-circle"></i> Informações da Empresa</h3>
+                    
+                    <div class="supplier-details">
+                        <div class="detail-item">
+                            <div class="detail-label">CNPJ</div>
+                            <div class="detail-value">12.345.678/0001-90</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Telefone</div>
+                            <div class="detail-value">(11) 3456-7890</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">E-mail</div>
+                            <div class="detail-value">contato@autopecassilva.com.br</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Anos no Mercado</div>
+                            <div class="detail-value">15 anos</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Entregas no Prazo</div>
+                            <div class="detail-value">98%</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Tempo de Resposta</div>
+                            <div class="detail-value">Menos de 2h</div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Descrição</div>
+                        <div class="detail-value">A AutoPeças Silva é especializada em componentes para motor e transmissão, com mais de 15 anos de experiência no mercado. Oferecemos produtos de alta qualidade e garantia em todas as peças.</div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3><i class="fas fa-tags"></i> Especialidades</h3>
+                    <div class="specialties-list">
+                        <span class="specialty-badge">Motor</span>
+                        <span class="specialty-badge">Transmissão</span>
+                        <span class="specialty-badge">Sistema de Arrefecimento</span>
+                        <span class="specialty-badge">Correias e Polias</span>
+                        <span class="specialty-badge">Kit de Embreagem</span>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3><i class="fas fa-truck"></i> Condições de Entrega</h3>
+                    <div class="supplier-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Frete Grátis</div>
+                            <div class="detail-value">Acima de R$ 500,00</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Entrega Expressa</div>
+                            <div class="detail-value">24h para Grande SP</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Regiões de Entrega</div>
+                            <div class="detail-value">Todo Brasil</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Formas de Envio</div>
+                            <div class="detail-value">Transportadora própria e parceiros</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h3><i class="fas fa-star"></i> Avaliações Recentes</h3>
+                    <div class="reviews-container">
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="reviewer">Mecânica do João</span>
+                                <span class="review-date">12/12/2023</span>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="review-content">Produtos de alta qualidade e entrega sempre no prazo. Recomendo!</div>
+                        </div>
+                        
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="reviewer">AutoCenter São Paulo</span>
+                                <span class="review-date">10/12/2023</span>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <div class="review-content">Bom atendimento e preços competitivos. Peças sempre conforme o pedido.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-outline">
+                    <i class="fas fa-store"></i> Ver Catálogo
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-comment"></i> Contatar Fornecedor
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('supplierModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const viewSupplierButtons = document.querySelectorAll('.view-supplier');
+            
+            // Abrir modal ao clicar em Ver Detalhes
+            viewSupplierButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const supplierId = this.getAttribute('data-supplier');
+                    // Aqui poderia carregar dados específicos do fornecedor baseado no ID
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Fechar modal
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Filtros de fornecedores
+            const filterButton = document.querySelector('.filter-actions .btn-primary');
+            filterButton.addEventListener('click', function() {
+                const categoryFilter = document.getElementById('categoryFilter').value;
+                const stateFilter = document.getElementById('stateFilter').value;
+                const ratingFilter = document.getElementById('ratingFilter').value;
+                const deliveryFilter = document.getElementById('deliveryFilter').value;
+                
+                // Simulação de filtragem
+                alert(`Filtros aplicados:\nCategoria: ${categoryFilter}\nEstado: ${stateFilter}\nAvaliação: ${ratingFilter}\nEntrega: ${deliveryFilter}`);
+            });
+            
+            // Visualização no mapa
+            const mapButton = document.querySelector('.filter-actions .btn-outline');
+            mapButton.addEventListener('click', function() {
+                alert('Visualização do mapa de fornecedores');
+            });
+            
+            // Categorias - navegação
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const categoryName = this.querySelector('.category-name').textContent;
+                    alert(`Filtrando fornecedores da categoria: ${categoryName}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
