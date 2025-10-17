@@ -306,7 +306,7 @@
         
         <div class="content-section active" id="aulas-section">
             <div class="grid" id="aulas-grid">
-                <!-- Aulas 1-5 serão carregadas aqui -->
+                <!-- Aulas 1-7 serão carregadas aqui -->
             </div>
             
             <div class="coming-soon">
@@ -314,14 +314,14 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <h3>Mais Conteúdo em Breve!</h3>
-                <p>As aulas 6 à 10 estarão disponíveis em breve com conteúdos avançados sobre Gestão de Projetos, Qualidade de Software, Processos Ágeis, IA na Engenharia e o Futuro da Profissão.</p>
+                <p>As aulas 8 à 10 estarão disponíveis em breve com conteúdos avançados sobre Processos Ágeis, IA na Engenharia e o Futuro da Profissão.</p>
                 <p><strong>Fique ligado para novas atualizações!</strong></p>
             </div>
         </div>
         
         <div class="content-section" id="exercicios-section">
             <div class="grid" id="exercicios-grid">
-                <!-- Exercícios 1-5 serão carregados aqui -->
+                <!-- Exercícios 1-7 serão carregados aqui -->
             </div>
             
             <div class="coming-soon">
@@ -329,7 +329,7 @@
                     <i class="fas fa-puzzle-piece"></i>
                 </div>
                 <h3>Mais Exercícios em Breve!</h3>
-                <p>Os exercícios 6 à 10 com desafios práticos sobre Gestão de Projetos, Métricas de Qualidade, Metodologias Ágeis, IA aplicada e Tendências Futuras estarão disponíveis em breve.</p>
+                <p>Os exercícios 8 à 10 com desafios práticos sobre Metodologias Ágeis, IA aplicada e Tendências Futuras estarão disponíveis em breve.</p>
                 <p><strong>Continue praticando!</strong></p>
             </div>
         </div>
@@ -344,7 +344,7 @@
     </div>
 
     <script>
-        // Dados das aulas (apenas primeiras 5 liberadas)
+        // Dados das aulas (agora com 7 primeiras liberadas)
         const aulas = [
             { 
                 id: 1, 
@@ -384,16 +384,16 @@
             { 
                 id: 6, 
                 title: "Gestão de Projeto", 
-                file: "#", 
+                file: "es_aulas/06_gestao_projeto.html", 
                 description: "Planejamento, estimativa, acompanhamento e controle de projetos de software.",
-                status: "bloqueada"
+                status: "liberada"
             },
             { 
                 id: 7, 
                 title: "Qualidade de Software", 
-                file: "#", 
+                file: "es_aulas/07_qualidade_software.html", 
                 description: "Métricas, padrões e processos para garantir a qualidade em produtos de software.",
-                status: "bloqueada"
+                status: "liberada"
             },
             { 
                 id: 8, 
@@ -418,7 +418,7 @@
             }
         ];
 
-        // Dados dos exercícios (apenas primeiros 5 liberados)
+        // Dados dos exercícios (agora com 7 primeiros liberados)
         const exercicios = [
             { 
                 id: 1, 
@@ -458,16 +458,16 @@
             { 
                 id: 6, 
                 title: "Exercícios - Gestão de Projeto", 
-                file: "#", 
+                file: "es_exercicios/es_exec06.html", 
                 description: "Pratique conceitos de planejamento e controle de projetos de software.",
-                status: "bloqueada"
+                status: "liberada"
             },
             { 
                 id: 7, 
                 title: "Exercícios - Qualidade de Software", 
-                file: "#", 
+                file: "es_exercicios/es_exec07.html", 
                 description: "Teste seus conhecimentos sobre métricas e processos de qualidade de software.",
-                status: "bloqueada"
+                status: "liberada"
             },
             { 
                 id: 8, 
@@ -507,11 +507,11 @@
             window.open(file, '_blank');
         }
 
-        // Carregar aulas (apenas primeiras 5)
+        // Carregar aulas (apenas primeiras 7)
         function carregarAulas() {
             aulasGrid.innerHTML = '';
             
-            // Filtra apenas as aulas liberadas (1-5)
+            // Filtra apenas as aulas liberadas (1-7)
             const aulasLiberadas = aulas.filter(aula => aula.status === "liberada");
             
             aulasLiberadas.forEach(aula => {
@@ -539,11 +539,11 @@
             });
         }
 
-        // Carregar exercícios (apenas primeiros 5)
+        // Carregar exercícios (apenas primeiros 7)
         function carregarExercicios() {
             exerciciosGrid.innerHTML = '';
             
-            // Filtra apenas os exercícios liberados (1-5)
+            // Filtra apenas os exercícios liberados (1-7)
             const exerciciosLiberados = exercicios.filter(exercicio => exercicio.status === "liberada");
             
             exerciciosLiberados.forEach(exercicio => {
